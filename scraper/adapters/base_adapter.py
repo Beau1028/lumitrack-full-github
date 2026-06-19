@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 from datetime import date
 import os
 import random
+import shutil
 import time
 from urllib.parse import urlparse
 
@@ -62,16 +63,43 @@ class BaseAdapter(ABC):
 
     def launch_browser(self, playwright: Playwright) -> Browser:
         """Launch the browser used by this adapter."""
+        launch_args = []
+        if os.name != "nt":
+            launch_args = ["--no-sandbox", "--disable-dev-shm-usage"]
+
+        chromium_executable = os.getenv("PLAYWRIGHT_CHROMIUM_EXECUTABLE")
+        if not chromium_executable and os.name != "nt":
+            for executable_name in (
+                "chromium",
+                "chromium-browser",
+                "google-chrome",
+                "google-chrome-stable",
+            ):
+                found = shutil.which(executable_name)
+                if found:
+                    chromium_executable = found
+                    break
+
         try:
             if os.getenv("ESCAPE_ROOM_MONITOR_USE_EDGE") == "1":
                 return playwright.chromium.launch(
-                    channel="msedge", headless=True
+                    channel="msedge",
+                    headless=True,
+                    args=launch_args,
                 )
-            return playwright.chromium.launch(headless=True)
+            if chromium_executable:
+                return playwright.chromium.launch(
+                    executable_path=chromium_executable,
+                    headless=True,
+                    args=launch_args,
+                )
+            return playwright.chromium.launch(headless=True, args=launch_args)
         except PlaywrightError:
             # The packaged Windows app uses the installed Microsoft Edge
             # when a Playwright-managed Chromium is not available.
-            return playwright.chromium.launch(channel="msedge", headless=True)
+            if os.name == "nt":
+                return playwright.chromium.launch(channel="msedge", headless=True)
+            raise
 
     def fetch_slots_for_dates_in_browser(
         self,

@@ -7,6 +7,7 @@
 - Streamlit UI
 - Playwright 예약 수집 코드
 - APScheduler 자동수집 코드
+- Streamlit Cloud 서버용 Chromium 설치 설정 `packages.txt`
 - dry-run 도구
 - 가격/매장 설정 YAML
 - 전체 adapter 코드
@@ -60,6 +61,8 @@ python dry_run.py --store_id yumeplay_hongdae
 ```text
 streamlit_app.py
 ```
+
+Advanced settings에서 Python 버전을 고를 수 있으면 3.11 또는 3.12를 선택합니다.
 
 다만 무료 Streamlit Cloud는 장시간 Playwright 수집이나 자동 스케줄러에는 안정적이지 않을 수 있습니다.
 투자자에게 보여주는 읽기 전용 데모만 필요하면 main file path를 아래처럼 둡니다.
