@@ -4,6 +4,7 @@ import os
 import io
 import json
 import sqlite3
+import traceback
 from datetime import date, datetime, timedelta
 from html import escape
 from pathlib import Path
@@ -88,6 +89,61 @@ TODAY = datetime.now(KST).date()
 PRODUCT_NAME = "LumiTrack"
 PRODUCT_NAME_KO = "루미트랙"
 PRODUCT_TAGLINE = "Escape Revenue OS"
+
+
+def env_flag(name: str, default: bool = False) -> bool:
+    value = os.getenv(name)
+    if value is None:
+        return default
+    return value.casefold() in {"1", "true", "yes", "on"}
+
+
+def env_int(name: str, default: int, minimum: int, maximum: int) -> int:
+    try:
+        value = int(os.getenv(name, str(default)))
+    except ValueError:
+        value = default
+    return max(minimum, min(maximum, value))
+
+
+def is_streamlit_cloud_runtime() -> bool:
+    """Best-effort detection for Streamlit Community Cloud."""
+    return (
+        Path("/mount/src").exists()
+        or bool(os.getenv("STREAMLIT_SHARING_MODE"))
+        or bool(os.getenv("STREAMLIT_CLOUD"))
+    )
+
+
+STREAMLIT_CLOUD_RUNTIME = is_streamlit_cloud_runtime()
+CLOUD_SAFE_CRAWL = env_flag(
+    "LUMITRACK_CLOUD_SAFE",
+    default=STREAMLIT_CLOUD_RUNTIME,
+)
+CRAWL_MAX_PARALLEL_ORIGINS = env_int(
+    "LUMITRACK_MAX_PARALLEL_ORIGINS",
+    2 if CLOUD_SAFE_CRAWL else 8,
+    1,
+    8,
+)
+CRAWL_NAVIGATION_TIMEOUT_MS = env_int(
+    "LUMITRACK_NAVIGATION_TIMEOUT_MS",
+    12_000 if CLOUD_SAFE_CRAWL else 18_000,
+    8_000,
+    30_000,
+)
+CRAWL_DELAY_MIN_SECONDS = env_int(
+    "LUMITRACK_DELAY_MIN_SECONDS",
+    5,
+    5,
+    30,
+)
+CRAWL_DELAY_MAX_SECONDS = env_int(
+    "LUMITRACK_DELAY_MAX_SECONDS",
+    6 if CLOUD_SAFE_CRAWL else 8,
+    CRAWL_DELAY_MIN_SECONDS,
+    45,
+)
 
 STATUS_LABELS = {
     "play33": "자동 수집",
@@ -2653,11 +2709,11 @@ def run_online_refresh(
         stores=stores,
         target_dates=[TODAY + timedelta(days=offset) for offset in range(days)],
         database=Database(DB_PATH),
-        delay_min_seconds=5,
-        delay_max_seconds=8,
+        delay_min_seconds=CRAWL_DELAY_MIN_SECONDS,
+        delay_max_seconds=CRAWL_DELAY_MAX_SECONDS,
         minimum_recrawl_minutes=0,
-        max_parallel_origins=8,
-        max_navigation_timeout_ms=18_000,
+        max_parallel_origins=CRAWL_MAX_PARALLEL_ORIGINS,
+        max_navigation_timeout_ms=CRAWL_NAVIGATION_TIMEOUT_MS,
         progress_callback=progress_callback,
     )
 
@@ -2706,6 +2762,72 @@ def progress_ui(label: str):
             )
 
     return update
+
+
+def render_refresh_notice() -> None:
+    notice = st.session_state.pop("refresh_notice", None)
+    if not notice:
+        return
+    level = str(notice.get("level", "info"))
+    message = str(notice.get("message", ""))
+    detail = str(notice.get("detail", ""))
+    if level == "success":
+        st.success(message)
+    elif level == "warning":
+        st.warning(message)
+    elif level == "error":
+        st.error(message)
+    else:
+        st.info(message)
+    if detail:
+        with st.expander("자세한 오류 보기", expanded=False):
+            st.code(detail, language="text")
+
+
+def run_refresh_action(
+    label: str,
+    target_ids: set[str] | None,
+    days: int,
+) -> None:
+    update_progress = progress_ui(label)
+    try:
+        result = run_online_refresh(
+            target_ids,
+            days=days,
+            progress_callback=update_progress,
+        )
+    except Exception as exc:
+        read_data.clear()
+        st.session_state["refresh_notice"] = {
+            "level": "error",
+            "message": (
+                f"{label}가 중단됐습니다. 서버 자원 또는 브라우저 실행 문제일 수 있습니다. "
+                "아래 오류를 확인하고 GitHub 반영 후 Streamlit 앱을 Reboot 해주세요."
+            ),
+            "detail": "".join(
+                traceback.format_exception(type(exc), exc, exc.__traceback__)
+            ),
+        }
+        render_refresh_notice()
+        return
+
+    read_data.clear()
+    if result["failed"]:
+        st.session_state["refresh_notice"] = {
+            "level": "warning",
+            "message": (
+                f"{label} 완료: 성공 {result['success']}건, 실패 {result['failed']}건, "
+                f"슬롯 {result['slots']:,}개. 일부 사이트는 느리거나 접근이 제한되어 실패할 수 있습니다."
+            ),
+        }
+    else:
+        st.session_state["refresh_notice"] = {
+            "level": "success",
+            "message": (
+                f"{label} 완료: 성공 {result['success']}건, 슬롯 {result['slots']:,}개"
+            ),
+        }
+    st.rerun()
 
 
 active_view = current_app_view()
@@ -2897,6 +3019,7 @@ if filter_summary:
         ),
         unsafe_allow_html=True,
     )
+render_refresh_notice()
 
 filtered = filter_slots(
     data,
@@ -2977,28 +3100,12 @@ with refresh_col:
         type="primary",
         width="stretch",
         help=(
-            "같은 사이트의 매장은 5~8초 간격으로 순차 확인하고, "
-            "서로 다른 사이트는 최대 8개까지 병렬 확인합니다."
+            f"같은 사이트의 매장은 {CRAWL_DELAY_MIN_SECONDS}~{CRAWL_DELAY_MAX_SECONDS}초 간격으로 "
+            f"순차 확인하고, 서로 다른 사이트는 최대 {CRAWL_MAX_PARALLEL_ORIGINS}개까지 병렬 확인합니다."
         ),
     ):
         target_ids = active_selected_ids if selected_regions or selected_stores else None
-        update_progress = progress_ui("오늘 예약 현황 업데이트")
-        result = run_online_refresh(
-            target_ids,
-            days=1,
-            progress_callback=update_progress,
-        )
-        read_data.clear()
-        if result["failed"]:
-            st.warning(
-                f"수집 완료: 성공 {result['success']}건, 실패 {result['failed']}건, "
-                f"슬롯 {result['slots']:,}개"
-            )
-        else:
-            st.success(
-                f"온라인 수집 완료: {result['success']}건, 슬롯 {result['slots']:,}개"
-            )
-        st.rerun()
+        run_refresh_action("오늘 예약 현황 업데이트", target_ids, days=1)
 with week_col:
     week_label = (
         "선택 매장 7일 예약 업데이트"
@@ -3017,27 +3124,12 @@ with week_col:
         width="stretch",
         help=(
             "매장당 브라우저를 한 번만 열어 오늘부터 7일을 연속 확인합니다. "
-            "느린 사이트는 25초 안에 다음 작업으로 넘기고 서로 다른 사이트는 최대 8개까지 병렬 확인합니다."
+            f"느린 사이트는 {CRAWL_NAVIGATION_TIMEOUT_MS // 1000}초 안에 다음 작업으로 넘기고 "
+            f"서로 다른 사이트는 최대 {CRAWL_MAX_PARALLEL_ORIGINS}개까지 병렬 확인합니다."
         ),
     ):
         target_ids = active_selected_ids if selected_regions or selected_stores else None
-        update_progress = progress_ui("7일 예약 현황 업데이트")
-        result = run_online_refresh(
-            target_ids,
-            days=7,
-            progress_callback=update_progress,
-        )
-        read_data.clear()
-        if result["failed"]:
-            st.warning(
-                f"7일 수집 완료: 성공 {result['success']}건, 실패 {result['failed']}건, "
-                f"슬롯 {result['slots']:,}개"
-            )
-        else:
-            st.success(
-                f"7일 온라인 수집 완료: {result['success']}건, 슬롯 {result['slots']:,}개"
-            )
-        st.rerun()
+        run_refresh_action("7일 예약 현황 업데이트", target_ids, days=7)
 with scope_col:
     st.metric(
         "예약 확인 대상",
@@ -3047,12 +3139,18 @@ with scope_col:
         help="접근 제한 매장은 우회하지 않습니다.",
     )
 with info_col:
+    crawl_mode_label = (
+        "서버 안전 모드"
+        if CLOUD_SAFE_CRAWL
+        else "고속 수집 모드"
+    )
     if active_view == "home":
         st.markdown(
             f"""
             <div class="home-status-card">
               <b>{start_date} ~ {end_date}</b>
               <span>자동 {len(active_selected_ids):,}곳 · 수동 {manual_store_scope['store_id'].nunique():,}곳 · 최신 {escape(freshness_text(filtered))}</span>
+              <span>{crawl_mode_label} · 병렬 {CRAWL_MAX_PARALLEL_ORIGINS}개 · 제한 {CRAWL_NAVIGATION_TIMEOUT_MS // 1000}초</span>
             </div>
             """,
             unsafe_allow_html=True,
@@ -3063,6 +3161,7 @@ with info_col:
             <div class="summary-box">
             <b>조회 기간</b> {start_date} ~ {end_date}<br>
             <b>매장별 공개 예약표 확인 시각</b> {freshness_text(filtered)}<br>
+            <b>수집 모드</b> {crawl_mode_label} · 병렬 {CRAWL_MAX_PARALLEL_ORIGINS}개 · 제한 {CRAWL_NAVIGATION_TIMEOUT_MS // 1000}초<br>
             타임 시작 전에 예약 완료로 확인된 경우만 예약으로 집계합니다.
             이미 지난 뒤 처음 확인한 타임은 확인 불가로 제외합니다.
             예약 1건당 평균 2.7명을 기준으로 인원별 총액표를 보간합니다.
