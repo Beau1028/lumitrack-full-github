@@ -3,6 +3,7 @@
 import os
 import io
 import json
+import logging
 import sqlite3
 import traceback
 from datetime import date, datetime, timedelta
@@ -52,6 +53,7 @@ from scraper.analytics import (
 )
 from scraper.config import load_stores
 from scraper.database import Database
+from scraper.logging_utils import configure_logging
 
 if DEMO_MODE:
     NON_CRAWLING_ADAPTERS = {
@@ -143,6 +145,18 @@ CRAWL_DELAY_MAX_SECONDS = env_int(
     6 if CLOUD_SAFE_CRAWL else 8,
     CRAWL_DELAY_MIN_SECONDS,
     45,
+)
+ALLOW_CLOUD_FULL_WEEK = env_flag("LUMITRACK_ALLOW_CLOUD_FULL_WEEK", False)
+
+configure_logging(APP_HOME / "logs")
+LOGGER = logging.getLogger("lumitrack.app")
+LOGGER.info(
+    "LumiTrack booted demo=%s cloud_runtime=%s cloud_safe=%s parallel=%s timeout_ms=%s",
+    DEMO_MODE,
+    STREAMLIT_CLOUD_RUNTIME,
+    CLOUD_SAFE_CRAWL,
+    CRAWL_MAX_PARALLEL_ORIGINS,
+    CRAWL_NAVIGATION_TIMEOUT_MS,
 )
 
 STATUS_LABELS = {
@@ -2705,6 +2719,16 @@ def run_online_refresh(
         if store.adapter_type not in NON_CRAWLING_ADAPTERS
         and (not store_ids or store.store_id in store_ids)
     ]
+    LOGGER.info(
+        "Starting crawl days=%s stores=%s selected=%s delay=%s-%s parallel=%s timeout_ms=%s",
+        days,
+        len(stores),
+        bool(store_ids),
+        CRAWL_DELAY_MIN_SECONDS,
+        CRAWL_DELAY_MAX_SECONDS,
+        CRAWL_MAX_PARALLEL_ORIGINS,
+        CRAWL_NAVIGATION_TIMEOUT_MS,
+    )
     return run_crawl(
         stores=stores,
         target_dates=[TODAY + timedelta(days=offset) for offset in range(days)],
@@ -2789,6 +2813,24 @@ def run_refresh_action(
     target_ids: set[str] | None,
     days: int,
 ) -> None:
+    if (
+        CLOUD_SAFE_CRAWL
+        and STREAMLIT_CLOUD_RUNTIME
+        and days >= 7
+        and not target_ids
+        and not ALLOW_CLOUD_FULL_WEEK
+    ):
+        message = (
+            "Streamlit Cloud 무료 서버에서는 전체 매장 7일 수집을 한 번에 실행하면 "
+            "브라우저 프로세스가 많아져 화면이 하얗게 멈출 수 있습니다. "
+            "검색/필터에서 지역이나 매장을 선택해서 나눠 실행하거나, "
+            "전체 7일 수집은 로컬 컴퓨터/VPS에서 실행해 주세요."
+        )
+        LOGGER.warning("Blocked full 7-day crawl on Streamlit Cloud safe mode.")
+        st.warning(message)
+        return
+
+    LOGGER.info("Refresh action requested label=%s days=%s selected=%s", label, days, bool(target_ids))
     update_progress = progress_ui(label)
     try:
         result = run_online_refresh(
@@ -2797,6 +2839,7 @@ def run_refresh_action(
             progress_callback=update_progress,
         )
     except Exception as exc:
+        LOGGER.exception("Refresh action failed label=%s days=%s", label, days)
         read_data.clear()
         st.session_state["refresh_notice"] = {
             "level": "error",
@@ -2811,6 +2854,7 @@ def run_refresh_action(
         render_refresh_notice()
         return
 
+    LOGGER.info("Refresh action finished label=%s days=%s result=%s", label, days, result)
     read_data.clear()
     if result["failed"]:
         st.session_state["refresh_notice"] = {
