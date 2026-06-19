@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>샘플 방탈출 예약</title>
+  <style>
+    body { font-family: sans-serif; max-width: 960px; margin: 40px auto; padding: 0 20px; }
+    .theme { margin: 28px 0; padding: 20px; border: 1px solid #ddd; border-radius: 12px; }
+    .slots { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+    .booking-slot { padding: 14px; border-radius: 8px; background: #f4f4f4; }
+    .available { border-left: 6px solid #2e8b57; }
+    .reserved { border-left: 6px solid #c23b22; }
+    .closed { border-left: 6px solid #555; }
+  </style>
+</head>
+<body>
+  <h1>샘플 공개 예약 페이지</h1>
+  <p>Playwright와 generic adapter 검증을 위한 로컬 HTML입니다.</p>
+
+  <section class="theme" data-theme-name="사라진 연구원">
+    <h2>사라진 연구원</h2>
+    <div class="slots">
+      <div class="booking-slot available" data-booking-slot
+           data-theme="사라진 연구원" data-date="2026-06-15"
+           data-time="11:00" data-status="available">11:00 예약가능</div>
+      <div class="booking-slot reserved" data-booking-slot
+           data-theme="사라진 연구원" data-date="2026-06-15"
+           data-time="13:00" data-status="reserved">13:00 예약완료</div>
+      <div class="booking-slot reserved" data-booking-slot
+           data-theme="사라진 연구원" data-date="2026-06-15"
+           data-time="15:00" data-status="sold out">15:00 sold out</div>
+      <div class="booking-slot closed" data-booking-slot
+           data-theme="사라진 연구원" data-date="2026-06-15"
+           data-time="17:00" data-status="closed">17:00 마감</div>
+    </div>
+  </section>
+
+  <section class="theme" data-theme-name="마지막 열차">
+    <h2>마지막 열차</h2>
+    <div class="slots">
+      <div class="booking-slot available" data-booking-slot
+           data-theme="마지막 열차" data-date="2026-06-15"
+           data-time="12:00" data-status="예약하기">12:00 예약하기</div>
+      <div class="booking-slot reserved" data-booking-slot
+           data-theme="마지막 열차" data-date="2026-06-15"
+           data-time="14:00" data-status="예약 완료">14:00 예약 완료</div>
+      <div class="booking-slot unknown" data-booking-slot
+           data-theme="마지막 열차" data-date="2026-06-15"
+           data-time="16:00" data-status="문의">16:00 문의</div>
+      <div class="booking-slot closed" data-booking-slot
+           data-theme="마지막 열차" data-date="2026-06-15"
+           data-time="18:00" data-status="전화문의">18:00 전화문의</div>
+    </div>
+  </section>
+
+  <section class="theme" data-theme-name="사라진 연구원">
+    <h2>사라진 연구원 - 다음 날</h2>
+    <div class="slots">
+      <div class="booking-slot available" data-booking-slot
+           data-theme="사라진 연구원" data-date="2026-06-16"
+           data-time="11:00" data-status="available">11:00 available</div>
+      <div class="booking-slot reserved" data-booking-slot
+           data-theme="사라진 연구원" data-date="2026-06-16"
+           data-time="13:00" data-status="reserved">13:00 예약완료</div>
+    </div>
+  </section>
+</body>
+</html>

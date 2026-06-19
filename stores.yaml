@@ -1,0 +1,1118 @@
+catalog_version: 2026-06-19.1
+
+# 2026-06-12 기준 공식 공개 페이지에서 확인한 초기 카탈로그입니다.
+# price: 0은 무료가 아니라 공식 가격을 아직 확인하지 못했다는 뜻입니다.
+# adapter_type: catalog은 자동 접속하지 않고 카탈로그에만 표시합니다.
+# 실제 수집 전 robots.txt와 이용약관은 사용자가 직접 다시 확인해야 합니다.
+stores:
+  - store_id: play33_konkuk
+    store_name: 플레이33 건대점
+    region: 서울 건대
+    booking_url: https://play33.kr/reservation?branch=1
+    adapter_type: play33
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집
+    themes:
+      - {theme_name: "목격자 (5/7~)", genre: "드라마/스릴러", price: 29000, duration_minutes: 65, price_note: "공개 예약 모달 3명 총액 87,000원 기준", price_source_url: "https://play33.kr/reservation?branch=1", price_verified_at: "2026-06-13"}
+      - {theme_name: "그 날 (5/7~)", genre: "공포/드라마", price: 28000, duration_minutes: 60, price_note: "공개 예약 모달 3명 총액 84,000원 기준", price_source_url: "https://play33.kr/reservation?branch=1", price_verified_at: "2026-06-13"}
+      - {theme_name: "다이얼 (5/7~)", genre: "공포/스릴러", price: 27000, duration_minutes: 60, price_note: "공개 예약 모달 3명 총액 81,000원 기준", price_source_url: "https://play33.kr/reservation?branch=1", price_verified_at: "2026-06-13"}
+
+  - store_id: play33_hongdae
+    store_name: 플레이33 홍대점
+    region: 서울 홍대
+    booking_url: https://play33.kr/reservation?branch=4
+    adapter_type: play33
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집
+    themes:
+      - {theme_name: "피안화", genre: "공포", price: 34000, duration_minutes: 70, price_note: "공개 예약 모달 3명 총액 102,000원 기준", price_source_url: "https://play33.kr/reservation?branch=4", price_verified_at: "2026-06-13"}
+
+  - store_id: play33_daejeon
+    store_name: 플레이33 대전점
+    region: 대전
+    booking_url: https://play33.kr/reservation?branch=5
+    adapter_type: play33
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집
+    themes:
+      - {theme_name: "좌충우돌 꼬마마법사", genre: "판타지", price: 26000, duration_minutes: 60, price_note: "공개 예약 모달 3명 총액 78,000원 기준", price_source_url: "https://play33.kr/reservation?branch=5", price_verified_at: "2026-06-13"}
+      - {theme_name: "자각몽(自覺夢)", genre: "스릴러", price: 24000, duration_minutes: 60, price_note: "공개 예약 모달 3명 총액 72,000원 기준", price_source_url: "https://play33.kr/reservation?branch=5", price_verified_at: "2026-06-13"}
+      - {theme_name: "강천여자고등학교", genre: "공포", price: 28000, duration_minutes: 60, price_note: "공개 예약 모달 3명 총액 84,000원 기준", price_source_url: "https://play33.kr/reservation?branch=5", price_verified_at: "2026-06-13"}
+
+  - store_id: xdungeon_101
+    store_name: 비트포비아 던전101
+    region: 서울 홍대
+    booking_url: https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=1
+    adapter_type: xdungeon
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집
+    themes:
+      - {theme_name: "화생설화 : Blooming", genre: "", price: 22000, duration_minutes: 0, price_note: "3명 공개 표시 총액 66,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=1", price_verified_at: "2026-06-12"}
+      - {theme_name: "MST 엔터테인먼트", genre: "", price: 17000, duration_minutes: 0, price_note: "3명 공개 표시 총액 51,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=1", price_verified_at: "2026-06-12"}
+      - {theme_name: "LET’S PLAY TOGETHER", genre: "", price: 17000, duration_minutes: 0, price_note: "3명 공개 표시 총액 51,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=1", price_verified_at: "2026-06-12"}
+      - {theme_name: "전래동 자살사건", genre: "", price: 24000, duration_minutes: 0, price_note: "3명 공개 표시 총액 72,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=1", price_verified_at: "2026-06-12"}
+
+  - store_id: xdungeon_gangnam
+    store_name: 비트포비아 강남던전
+    region: 서울 강남
+    booking_url: https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=2
+    adapter_type: xdungeon
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집
+    themes:
+      - {theme_name: "강남목욕탕", genre: "", price: 26000, duration_minutes: 0, price_note: "3명 공개 표시 총액 78,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=2", price_verified_at: "2026-06-12"}
+      - {theme_name: "대호시장 살인사건", genre: "", price: 21000, duration_minutes: 0, price_note: "3명 공개 표시 총액 63,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=2", price_verified_at: "2026-06-12"}
+      - {theme_name: "마음을 그려드립니다", genre: "", price: 21000, duration_minutes: 0, price_note: "3명 공개 표시 총액 63,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=2", price_verified_at: "2026-06-12"}
+      - {theme_name: "LOST KINGDOM : 잊혀진 전설", genre: "", price: 21000, duration_minutes: 0, price_note: "3명 공개 표시 총액 63,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=2", price_verified_at: "2026-06-12"}
+
+  - store_id: xdungeon_luna
+    store_name: 비트포비아 던전루나
+    region: 서울 강남
+    booking_url: https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=6
+    adapter_type: xdungeon
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집
+    themes:
+      - {theme_name: "검은 운명의 밤", genre: "", price: 18000, duration_minutes: 0, price_note: "3명 공개 표시 총액 54,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=6", price_verified_at: "2026-06-12"}
+      - {theme_name: "3일", genre: "", price: 19000, duration_minutes: 0, price_note: "3명 공개 표시 총액 57,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=6", price_verified_at: "2026-06-12"}
+
+  - store_id: xdungeon_hongdae2
+    store_name: 비트포비아 서면던전
+    region: 부산 서면
+    booking_url: https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=7
+    adapter_type: xdungeon
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집
+    themes:
+      - {theme_name: "오늘 나는 (부산 서면)", genre: "", price: 21000, duration_minutes: 0, price_note: "3명 공개 표시 총액 63,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=7", price_verified_at: "2026-06-12"}
+      - {theme_name: "꿈의 공장 (부산 서면)", genre: "", price: 21000, duration_minutes: 0, price_note: "3명 공개 표시 총액 63,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=7", price_verified_at: "2026-06-12"}
+      - {theme_name: "날씨의 신 (부산 서면)", genre: "", price: 21000, duration_minutes: 0, price_note: "3명 공개 표시 총액 63,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=7", price_verified_at: "2026-06-12"}
+
+  - store_id: xdungeon_hongdae3
+    store_name: 비트포비아 홍대던전
+    region: 서울 홍대
+    booking_url: https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=3
+    adapter_type: xdungeon
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집
+    themes:
+      - {theme_name: "사라진 보물 : 대저택의 비밀", genre: "", price: 16000, duration_minutes: 0, price_note: "3명 공개 표시 총액 48,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=3", price_verified_at: "2026-06-12"}
+      - {theme_name: "날씨의 신 (홍대)", genre: "", price: 16000, duration_minutes: 0, price_note: "3명 공개 표시 총액 48,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=3", price_verified_at: "2026-06-12"}
+      - {theme_name: "꿈의 공장 (홍대)", genre: "", price: 16000, duration_minutes: 0, price_note: "3명 공개 표시 총액 48,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=3", price_verified_at: "2026-06-12"}
+      - {theme_name: "오늘 나는 (홍대)", genre: "", price: 16000, duration_minutes: 0, price_note: "3명 공개 표시 총액 48,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=3", price_verified_at: "2026-06-12"}
+
+  - store_id: xdungeon_sinchon
+    store_name: 비트포비아 강남던전Ⅱ
+    region: 서울 강남
+    booking_url: https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=4
+    adapter_type: xdungeon
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집
+    themes:
+      - {theme_name: "LOST KINGDOM2 : 대탐험의 시작", genre: "", price: 24000, duration_minutes: 0, price_note: "3명 공개 표시 총액 72,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=4", price_verified_at: "2026-06-12"}
+      - {theme_name: "MAYDAY", genre: "", price: 23000, duration_minutes: 0, price_note: "3명 공개 표시 총액 69,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=4", price_verified_at: "2026-06-12"}
+
+  - store_id: xdungeon_seomyeon
+    store_name: 비트포비아 홍대던전Ⅲ
+    region: 서울 홍대
+    booking_url: https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=5
+    adapter_type: xdungeon
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집
+    themes:
+      - {theme_name: "그달동네", genre: "", price: 24000, duration_minutes: 0, price_note: "3명 공개 표시 총액 72,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=5", price_verified_at: "2026-06-12"}
+      - {theme_name: "이미지 세탁소", genre: "", price: 24000, duration_minutes: 0, price_note: "3명 공개 표시 총액 72,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=5", price_verified_at: "2026-06-12"}
+      - {theme_name: "경성 연쇄실종사건", genre: "", price: 24000, duration_minutes: 0, price_note: "3명 공개 표시 총액 72,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=5", price_verified_at: "2026-06-12"}
+      - {theme_name: "And I met E", genre: "", price: 24000, duration_minutes: 0, price_note: "3명 공개 표시 총액 72,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=5", price_verified_at: "2026-06-12"}
+
+  - store_id: xdungeon_stella
+    store_name: 비트포비아 던전스텔라
+    region: 서울 강남
+    booking_url: https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=9
+    adapter_type: xdungeon
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집
+    themes:
+      - {theme_name: "데스티니 앤드 타로", genre: "", price: 29000, duration_minutes: 0, price_note: "3명 공개 표시 총액 87,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=9", price_verified_at: "2026-06-12"}
+      - {theme_name: "響 : 향", genre: "", price: 24000, duration_minutes: 0, price_note: "3명 공개 표시 총액 72,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=9", price_verified_at: "2026-06-12"}
+      - {theme_name: "TIENTANG CITY", genre: "탈출/잠입", price: 29000, duration_minutes: 75, min_people: 2, max_people: 6, party_prices: {2: 58000, 3: 87000, 4: 116000, 5: 145000, 6: 174000}, price_note: "공개 상세 페이지의 1인 29,000원 및 2~6인 총액", price_source_url: "https://web.zamfit.kr/escapes/6938/TIENTANG-CITY", price_verified_at: "2026-06-15"}
+
+  - store_id: xdungeon_bupyeong
+    store_name: 비트포비아 서면던전 레드
+    region: 부산 서면
+    booking_url: https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=10
+    adapter_type: xdungeon
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집
+    themes:
+      - {theme_name: "어느 수집가의 집", genre: "", price: 17000, duration_minutes: 0, price_note: "3명 공개 표시 총액 51,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=10", price_verified_at: "2026-06-12"}
+      - {theme_name: "AMEN", genre: "", price: 17000, duration_minutes: 0, price_note: "3명 공개 표시 총액 51,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=10", price_verified_at: "2026-06-12"}
+      - {theme_name: "고시원 살인사건", genre: "", price: 15000, duration_minutes: 0, price_note: "3명 공개 표시 총액 45,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=10", price_verified_at: "2026-06-12"}
+      - {theme_name: "당감동 정육점", genre: "", price: 15000, duration_minutes: 0, price_note: "3명 공개 표시 총액 45,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=10", price_verified_at: "2026-06-12"}
+      - {theme_name: "부적", genre: "", price: 17000, duration_minutes: 0, price_note: "3명 공개 표시 총액 51,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=10", price_verified_at: "2026-06-12"}
+      - {theme_name: "산장으로의 초대", genre: "", price: 15000, duration_minutes: 0, price_note: "3명 공개 표시 총액 45,000원 기준", price_source_url: "https://xdungeon.net/layout/res/home.php?go=rev.main&s_zizum=10", price_verified_at: "2026-06-12"}
+
+  - store_id: zero_gimpo
+    store_name: 제로월드 김포점
+    region: 경기 김포
+    booking_url: https://zeroesc.com/reservation
+    adapter_type: zero_world
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집
+    themes:
+      - {theme_name: "FEAR", genre: "미스터리/판타지", price: 24000, duration_minutes: 75, price_note: "3인 75분 총액 72,000원 기준", price_source_url: "https://zeroesc.com/about", price_verified_at: "2026-06-12"}
+      - {theme_name: "해리포터의 모험 SE :마법모자의 위기", genre: "모험/판타지", price: 20000, duration_minutes: 60, price_note: "3인 60분 총액 60,000원 기준", price_source_url: "https://zeroesc.com/about", price_verified_at: "2026-06-12"}
+      - {theme_name: "검은사원 SE", genre: "판타지/스릴러", price: 24000, duration_minutes: 75, price_note: "3인 75분 총액 72,000원 기준", price_source_url: "https://zeroesc.com/about", price_verified_at: "2026-06-12"}
+      - {theme_name: "피노키오 대탈출", genre: "모험/판타지", price: 20000, duration_minutes: 60, price_note: "공개 예약 모달 3명 총액 60,000원 기준", price_source_url: "https://zeroesc.com/reservation", price_verified_at: "2026-06-13"}
+      - {theme_name: "복희네 사진관 SE", genre: "공포/드라마/멜로", price: 20000, duration_minutes: 60, price_note: "3인 60분 총액 60,000원 기준", price_source_url: "https://zeroesc.com/about", price_verified_at: "2026-06-12"}
+      - {theme_name: "최면", genre: "미스터리/드라마", price: 20000, duration_minutes: 60, price_note: "3인 60분 총액 60,000원 기준", price_source_url: "https://zeroesc.com/about", price_verified_at: "2026-06-12"}
+      - {theme_name: "성역전설", genre: "모험/판타지", price: 24000, duration_minutes: 75, price_note: "3인 75분 총액 72,000원 기준", price_source_url: "https://zeroesc.com/about", price_verified_at: "2026-06-12"}
+      - {theme_name: "인형괴담", genre: "공포/미스터리", price: 24000, duration_minutes: 75, price_note: "3인 75분 총액 72,000원 기준", price_source_url: "https://zeroesc.com/about", price_verified_at: "2026-06-12"}
+      - {theme_name: "어느겨울밤", genre: "모험/판타지", price: 20000, duration_minutes: 60, price_note: "3인 60분 총액 60,000원 기준", price_source_url: "https://zeroesc.com/about", price_verified_at: "2026-06-12"}
+      - {theme_name: "탈옥:특별수용소", genre: "스릴러", price: 24000, duration_minutes: 75, price_note: "3인 75분 총액 72,000원 기준", price_source_url: "https://zeroesc.com/about", price_verified_at: "2026-06-12"}
+      - {theme_name: "제로호텔", genre: "스릴러", price: 22000, duration_minutes: 70, price_note: "3인 70분 총액 66,000원 기준", price_source_url: "https://zeroesc.com/about", price_verified_at: "2026-06-12"}
+
+  - store_id: zero_gangnam
+    store_name: 제로월드 강남점
+    region: 서울 강남
+    booking_url: https://zerogangnam.com/reservation
+    adapter_type: zero_world
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집
+    themes:
+      - {theme_name: "헐!", genre: "코믹", price: 25000, duration_minutes: 90, price_note: "공개 예약 모달 3명 총액 75,000원 기준", price_source_url: "https://zerogangnam.com/reservation", price_verified_at: "2026-06-13"}
+      - {theme_name: "포레스트 (FORREST)", genre: "공포/도전", price: 25000, duration_minutes: 75, price_note: "3인 75분 총액 75,000원 기준", price_source_url: "https://zerogangnam.com/about", price_verified_at: "2026-06-12"}
+      - {theme_name: "DONE", genre: "범죄/잠입/액션", price: 25000, duration_minutes: 75, price_note: "3인 75분 총액 75,000원 기준", price_source_url: "https://zerogangnam.com/about", price_verified_at: "2026-06-12"}
+      - {theme_name: "제로호텔L", genre: "스릴러", price: 20000, duration_minutes: 60, price_note: "3인 60분 총액 60,000원 기준", price_source_url: "https://zerogangnam.com/about", price_verified_at: "2026-06-12"}
+      - {theme_name: "아이엠", genre: "추리/스릴러", price: 25000, duration_minutes: 75, price_note: "3인 75분 총액 75,000원 기준", price_source_url: "https://zerogangnam.com/about", price_verified_at: "2026-06-12"}
+      - {theme_name: "어느겨울밤2", genre: "판타지", price: 20000, duration_minutes: 60, price_note: "3인 60분 총액 60,000원 기준", price_source_url: "https://zerogangnam.com/about", price_verified_at: "2026-06-12"}
+      - {theme_name: "콜러", genre: "공포", price: 25000, duration_minutes: 75, price_note: "3인 75분 총액 75,000원 기준", price_source_url: "https://zerogangnam.com/about", price_verified_at: "2026-06-12"}
+      - {theme_name: "나비효과", genre: "SF/드라마", price: 25000, duration_minutes: 75, price_note: "3인 75분 총액 75,000원 기준", price_source_url: "https://zerogangnam.com/about", price_verified_at: "2026-06-12"}
+      - {theme_name: "링", genre: "공포", price: 25000, duration_minutes: 75, price_note: "3인 75분 총액 75,000원 기준", price_source_url: "https://zerogangnam.com/about", price_verified_at: "2026-06-12"}
+
+  - store_id: zero_hongdae
+    store_name: 제로월드 홍대점
+    region: 서울 홍대
+    booking_url: https://zerohongdae.com/reservation
+    adapter_type: zero_world
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집
+    themes:
+      - {theme_name: "층간소음", genre: "공포", price: 25000, duration_minutes: 65, price_note: "3인 총액 75,000원 기준", price_source_url: "https://zerohongdae.com/about", price_verified_at: "2026-06-12"}
+      - {theme_name: "NOX", genre: "잠입/미스터리", price: 27000, duration_minutes: 70, price_note: "3인 총액 81,000원 기준", price_source_url: "https://zerohongdae.com/about", price_verified_at: "2026-06-12"}
+      - {theme_name: "깜방탈출 : WAY OUT", genre: "잠입", price: 28000, duration_minutes: 75, price_note: "3인 총액 84,000원 기준", price_source_url: "https://zerohongdae.com/about", price_verified_at: "2026-06-12"}
+      - {theme_name: "사랑...하는...감?", genre: "코믹", price: 23000, duration_minutes: 60, price_note: "3인 총액 69,000원 기준", price_source_url: "https://zerohongdae.com/about", price_verified_at: "2026-06-12"}
+      - {theme_name: "ALIVE", genre: "스릴러/생존", price: 30000, duration_minutes: 80, price_note: "3인 총액 90,000원 기준", price_source_url: "https://zerohongdae.com/about", price_verified_at: "2026-06-12"}
+
+  - store_id: zero_lotteworld
+    store_name: 제로월드 롯데월드점
+    region: 서울 잠실
+    booking_url: https://zerolotteworld.com/reservation
+    adapter_type: blocked
+    avg_people: 2.7
+    collection_note: 공식 예약 도메인이 현재 DNS에서 확인되지 않아 자동 수집 불가
+    themes:
+      - {theme_name: "[롯데] 아랑_굶주린이리", genre: "공포/도전", price: 0, duration_minutes: 70}
+      - {theme_name: "[롯데]바람_우리는 그저 바람이었소", genre: "역사/판타지", price: 0, duration_minutes: 75}
+
+  - store_id: zero_black
+    store_name: 제로월드 블랙
+    region: 서울 강남
+    booking_url: https://zeroworldblack.com/reservation
+    adapter_type: limited
+    avg_people: 2.7
+    collection_note: 공개 페이지가 네이버 예약으로 연결되며 자체 예약 타임표를 제공하지 않음
+    themes:
+      - {theme_name: "제로", genre: "공포/스릴러", price: 0, duration_minutes: 120}
+
+  - store_id: keyescape_gangnam
+    store_name: 키이스케이프 강남
+    region: 서울 강남
+    booking_url: https://keyescape.com/reservation1.php?theme_info_num=7&theme_num=7&zizum_num=3
+    adapter_type: permission_required
+    avg_people: 2.7
+    collection_note: 공식 데이터 사용 서면 허가 전 자동 접근 중단 · 가격과 테마 정보만 표시
+    themes:
+      - {theme_name: "그카지말라캤자나", genre: "코믹", price: 25000, duration_minutes: 60, min_people: 2, price_note: "1인 50,000원, 2인 이상 1인 25,000원", price_source_url: "https://keyescape.com/reservation1.php?theme_info_num=7&theme_num=7&zizum_num=3", price_verified_at: "2026-06-15"}
+      - {theme_name: "살랑살랑연구소", genre: "감성", price: 0, duration_minutes: 60, min_people: 1, max_people: 2, party_prices: {1: 40000, 2: 48000}, price_note: "공개 인원별 총액표", price_source_url: "https://web.zamfit.kr/escapes/5818/", price_verified_at: "2026-06-15"}
+      - {theme_name: "월야애담-영문병행표기", genre: "동화/로맨스", price: 0, duration_minutes: 60, min_people: 1, max_people: 6, party_prices: {1: 40000, 2: 46000, 3: 66000, 4: 88000, 5: 110000, 6: 132000}, price_note: "공개 인원별 총액표", price_source_url: "https://web.zamfit.kr/escapes/5819/", price_verified_at: "2026-06-15"}
+
+  - store_id: keyescape_hongdae
+    store_name: 키이스케이프 홍대
+    region: 서울 홍대
+    booking_url: https://keyescape.com/reservation1.php?theme_info_num=23&theme_num=43&zizum_num=10
+    adapter_type: permission_required
+    avg_people: 2.7
+    collection_note: 공식 데이터 사용 서면 허가 전 자동 접근 중단 · 가격과 테마 정보만 표시
+    themes:
+      - {theme_name: "삐릿-뽀", genre: "SF/판타지", price: 27000, duration_minutes: 75, min_people: 2, max_people: 6, party_prices: {2: 54000, 3: 81000, 4: 108000, 5: 135000, 6: 162000}, price_note: "공개 인원별 총액표", price_source_url: "https://web.zamfit.kr/escapes/5825/", price_verified_at: "2026-06-15"}
+      - {theme_name: "홀리데이", genre: "감성/판타지", price: 23000, duration_minutes: 60, min_people: 2, max_people: 6, party_prices: {2: 46000, 3: 69000, 4: 92000, 5: 115000, 6: 138000}, price_note: "공개 인원별 총액표", price_source_url: "https://web.zamfit.kr/escapes/5826/", price_verified_at: "2026-06-15"}
+      - {theme_name: "고백", genre: "범죄/스릴러", price: 28000, duration_minutes: 85, min_people: 2, max_people: 6, party_prices: {2: 56000, 3: 84000, 4: 112000, 5: 140000, 6: 168000}, price_note: "공개 인원별 총액표", price_source_url: "https://web.zamfit.kr/escapes/5824/", price_verified_at: "2026-06-15"}
+
+  - store_id: keyescape_busan
+    store_name: 키이스케이프 부산
+    region: 부산
+    booking_url: https://keyescape.com/reservation1.php?theme_info_num=18&theme_num=38&zizum_num=9
+    adapter_type: permission_required
+    avg_people: 2.7
+    collection_note: 공식 데이터 사용 서면 허가 전 자동 접근 중단 · 가격과 테마 정보만 표시
+    themes:
+      - {theme_name: "난쟁이의 장난-영문병행표기", genre: "아케이드", price: 0, duration_minutes: 60}
+      - {theme_name: "신비의숲 고대마법의 비밀", genre: "판타지", price: 0, duration_minutes: 60}
+      - {theme_name: "정신병동", genre: "공포", price: 0, duration_minutes: 60}
+      - {theme_name: "파파라치", genre: "잠입/스릴러", price: 0, duration_minutes: 60}
+
+  - store_id: keyescape_jeonju
+    store_name: 키이스케이프 전주
+    region: 전북 전주
+    booking_url: https://keyescape.com/reservation1.php?theme_info_num=8&theme_num=33&zizum_num=7
+    adapter_type: permission_required
+    avg_people: 2.7
+    collection_note: 공식 데이터 사용 서면 허가 전 자동 접근 중단 · 가격과 테마 정보만 표시
+    themes:
+      - {theme_name: "살랑살랑연구소", genre: "", price: 0, duration_minutes: 60}
+      - {theme_name: "월야애담-영문병행표기", genre: "동화", price: 0, duration_minutes: 60}
+
+  - store_id: keyescape_theoreum
+    store_name: 키이스케이프 더오름
+    region: 서울 강남
+    booking_url: https://keyescape.com/reservation1.php?theme_info_num=26&theme_num=48&zizum_num=14
+    adapter_type: permission_required
+    avg_people: 2.7
+    collection_note: 공식 데이터 사용 서면 허가 전 자동 접근 중단 · 가격과 테마 정보만 표시
+    themes:
+      - {theme_name: "엔제리오", genre: "", price: 27000, duration_minutes: 70, min_people: 2, max_people: 6, party_prices: {2: 54000, 3: 81000, 4: 108000, 5: 135000, 6: 162000}, price_note: "공개 인원별 총액표", price_source_url: "https://web.zamfit.kr/escapes/5816/", price_verified_at: "2026-06-15"}
+      - {theme_name: "네드", genre: "판타지/어드벤처", price: 28000, duration_minutes: 75, min_people: 2, max_people: 6, party_prices: {2: 56000, 3: 84000, 4: 112000, 5: 130000, 6: 158000}, price_note: "공식 페이지와 공개 인원별 총액표", price_source_url: "https://web.zamfit.kr/escapes/5815/", price_verified_at: "2026-06-15"}
+
+  - store_id: keyescape_woozoolike
+    store_name: 키이스케이프 우주라이크
+    region: 서울 강남
+    booking_url: https://keyescape.com/reservation1.php?theme_info_num=31&theme_num=55&zizum_num=16
+    adapter_type: permission_required
+    avg_people: 2.7
+    collection_note: 공식 데이터 사용 서면 허가 전 자동 접근 중단 · 가격과 테마 정보만 표시
+    themes:
+      - {theme_name: "US", genre: "", price: 0, duration_minutes: 0}
+      - {theme_name: "WANNA GO HOME", genre: "", price: 0, duration_minutes: 0}
+
+  - store_id: keyescape_memorycompany
+    store_name: 키이스케이프 메모리컴퍼니
+    region: 서울 강남
+    booking_url: https://keyescape.com/reservation1.php?theme_info_num=34&theme_num=57&zizum_num=18
+    adapter_type: permission_required
+    avg_people: 2.7
+    collection_note: 공식 데이터 사용 서면 허가 전 자동 접근 중단 · 가격과 테마 정보만 표시
+    themes:
+      - {theme_name: "FILM BY EDDY", genre: "일상 드라마", price: 32000, duration_minutes: 75, min_people: 2, party_prices: {2: 68000, 3: 96000, 4: 128000, 5: 160000, 6: 192000}, price_note: "2인 1인 34,000원, 3인 이상 1인 32,000원", price_source_url: "https://keyescape.com/reservation1.php?theme_info_num=34&theme_num=57&zizum_num=18", price_verified_at: "2026-06-15"}
+      - {theme_name: "FILM BY STEVE", genre: "잠입", price: 33000, duration_minutes: 80, min_people: 2, party_prices: {2: 70000, 3: 99000, 4: 132000, 5: 165000, 6: 198000}, price_note: "2인 1인 35,000원, 3인 이상 1인 33,000원", price_source_url: "https://keyescape.com/reservation1.php?theme_info_num=35&theme_num=58&zizum_num=18", price_verified_at: "2026-06-15"}
+      - {theme_name: "FILM BY BOB", genre: "일상 드라마", price: 34000, duration_minutes: 75, min_people: 2, party_prices: {2: 72000, 3: 102000, 4: 136000, 5: 170000, 6: 204000}, price_note: "2인 1인 36,000원, 3인 이상 1인 34,000원", price_source_url: "https://keyescape.com/reservation1.php?theme_info_num=36&theme_num=59&zizum_num=18", price_verified_at: "2026-06-15"}
+
+  - store_id: keyescape_login1
+    store_name: 키이스케이프 LOG_IN 1
+    region: 서울 강남
+    booking_url: https://keyescape.com/reservation1.php?theme_info_num=41&theme_num=63&zizum_num=19
+    adapter_type: permission_required
+    avg_people: 2.7
+    collection_note: 공식 데이터 사용 서면 허가 전 자동 접근 중단 · 가격과 테마 정보만 표시
+    themes:
+      - {theme_name: "FOR FREE", genre: "", price: 32000, duration_minutes: 65, min_people: 2, price_note: "공식 공개 페이지 1인 금액", price_source_url: "https://keyescape.com/reservation1.php?theme_info_num=41&theme_num=63&zizum_num=19", price_verified_at: "2026-06-15"}
+      - {theme_name: "머니머니패키지", genre: "머니머니", price: 30000, duration_minutes: 65, min_people: 2, price_note: "공식 공개 페이지 1인 금액", price_source_url: "https://keyescape.com/reservation1.php?theme_info_num=38&theme_num=60&zizum_num=19", price_verified_at: "2026-06-15"}
+
+  - store_id: keyescape_login2
+    store_name: 키이스케이프 LOG_IN 2
+    region: 서울 강남
+    booking_url: https://keyescape.com/reservation1.php?theme_info_num=40&theme_num=61&zizum_num=20
+    adapter_type: permission_required
+    avg_people: 2.7
+    collection_note: 공식 데이터 사용 서면 허가 전 자동 접근 중단 · 가격과 테마 정보만 표시
+    themes:
+      - {theme_name: "A GENTLE MONDAY", genre: "", price: 28000, duration_minutes: 65, min_people: 2, price_note: "공식 공개 페이지 1인 금액", price_source_url: "https://keyescape.com/reservation1.php?theme_info_num=40&theme_num=61&zizum_num=20", price_verified_at: "2026-06-15"}
+      - {theme_name: "BACK TO THE SCENE+", genre: "잠입/액션", price: 34000, duration_minutes: 75, min_people: 2, price_note: "공식 공개 페이지 1인 금액", price_source_url: "https://keyescape.com/reservation1.php?theme_info_num=42&theme_num=64&zizum_num=20", price_verified_at: "2026-06-15"}
+
+  - store_id: keyescape_station
+    store_name: 키이스케이프 STATION
+    region: 서울 강남
+    booking_url: https://keyescape.com/reservation1.php?theme_info_num=43&theme_num=65&zizum_num=22
+    adapter_type: permission_required
+    avg_people: 2.7
+    collection_note: 공식 데이터 사용 서면 허가 전 자동 접근 중단 · 가격과 테마 정보만 표시
+    themes:
+      - {theme_name: "머니머니부동산", genre: "머니머니", price: 34000, duration_minutes: 80, min_people: 2, price_note: "공식 공개 페이지 1인 금액", price_source_url: "https://keyescape.com/reservation1.php?theme_info_num=43&theme_num=65&zizum_num=22", price_verified_at: "2026-06-15"}
+      - {theme_name: "내 방", genre: "코믹", price: 30000, duration_minutes: 65, min_people: 2, price_note: "공식 공개 페이지 1인 금액", price_source_url: "https://keyescape.com/reservation1.php?theme_info_num=44&theme_num=66&zizum_num=22", price_verified_at: "2026-06-15"}
+      - {theme_name: "NOSTALGIA VISTA", genre: "미스터리 드라마", price: 31000, duration_minutes: 65, min_people: 2, price_note: "공식 공개 페이지 1인 금액", price_source_url: "https://keyescape.com/reservation1.php?theme_info_num=45&theme_num=67&zizum_num=22", price_verified_at: "2026-06-15"}
+
+  - store_id: keyescape_whosthere
+    store_name: "키이스케이프 Who's there?"
+    region: 서울 강남
+    booking_url: https://keyescape.com/reservation1.php?theme_info_num=61&theme_num=70&zizum_num=23
+    adapter_type: permission_required
+    avg_people: 2.7
+    collection_note: 공식 데이터 사용 서면 허가 전 자동 접근 중단 · 미확인 가격은 매출에서 제외
+    themes:
+      - {theme_name: "AYAKO", genre: "드라마/스릴러", price: 35000, duration_minutes: 70, min_people: 2, price_note: "공개 페이지 1인 금액", price_source_url: "https://web.zamfit.kr/escapes/7090/", price_verified_at: "2026-06-15"}
+      - {theme_name: "투투 어드벤쳐", genre: "어드벤처", price: 35000, duration_minutes: 70, min_people: 2, price_note: "동일 지점 공개 가격 표시", price_source_url: "https://web.zamfit.kr/escapes/7090/", price_verified_at: "2026-06-15"}
+      - {theme_name: "괴록", genre: "미스터리/드림코어", price: 35000, duration_minutes: 70, min_people: 2, max_people: 4, price_note: "동일 지점 공개 가격 표시", price_source_url: "https://web.zamfit.kr/escapes/7090/", price_verified_at: "2026-06-15"}
+
+  - store_id: keyescape_moviemood
+    store_name: 키이스케이프 MOVIE MOOD
+    region: 서울 강남
+    booking_url: https://keyescape.com/reservation1.php?theme_info_num=68&theme_num=75&zizum_num=25
+    adapter_type: permission_required
+    avg_people: 2.7
+    collection_note: 공식 데이터 사용 서면 허가 전 자동 접근 중단 · 미확인 가격은 매출에서 제외
+    themes:
+      - {theme_name: "HAVE A GOOD TAPE, DAVE", genre: "", price: 0, duration_minutes: 0}
+      - {theme_name: "Cat", genre: "", price: 0, duration_minutes: 0}
+      - {theme_name: "시아와세 환전소", genre: "", price: 0, duration_minutes: 0}
+      - {theme_name: "AFTERLIFE AIRLINES", genre: "", price: 0, duration_minutes: 0}
+      - {theme_name: "5관 E열 4번", genre: "", price: 0, duration_minutes: 0}
+      - {theme_name: "ONCE OVEN A TIME", genre: "", price: 0, duration_minutes: 0}
+
+  - store_id: codek_gangnam
+    store_name: 코드케이 강남점
+    region: 서울 강남
+    booking_url: https://www.code-k.co.kr/
+    adapter_type: blocked
+    avg_people: 2.7
+    collection_note: 공식 사이트가 현재 404를 반환해 예약표 확인 불가
+    themes:
+      - {theme_name: "도둑들", genre: "", price: 0, duration_minutes: 0}
+      - {theme_name: "504호", genre: "", price: 0, duration_minutes: 0}
+      - {theme_name: "얼어붙은 물의 신전", genre: "", price: 0, duration_minutes: 0}
+      - {theme_name: "살인사건 현장", genre: "", price: 0, duration_minutes: 0}
+      - {theme_name: "기술자들", genre: "", price: 0, duration_minutes: 0}
+
+  - store_id: codek_guwol
+    store_name: 코드케이 구월점
+    region: 인천 구월
+    booking_url: https://www.code-k.co.kr/
+    adapter_type: blocked
+    avg_people: 2.7
+    collection_note: 공식 사이트가 현재 404를 반환해 예약표 확인 불가
+    themes:
+      - {theme_name: "감옥탈출", genre: "", price: 0, duration_minutes: 0}
+      - {theme_name: "좀비 90일후", genre: "", price: 0, duration_minutes: 0}
+      - {theme_name: "납치(2인전용)", genre: "", price: 0, duration_minutes: 0}
+
+  - store_id: codek_hongdae
+    store_name: 코드케이 홍대점
+    region: 서울 홍대
+    booking_url: http://www.code-k.co.kr/sub/code_sub04_1.html?R_JIJEM=S3&R_THEMA=%C0%FC%C3%BC
+    adapter_type: codek
+    avg_people: 2.7
+    collection_note: 공식 HTTP 공개 예약표의 전체 타임과 예약 가능/완료 상태 자동 수집
+    themes:
+      - {theme_name: "꼬레아 우라 A", genre: "역사/드라마", price: 28000, duration_minutes: 75, min_people: 2, max_people: 6, party_prices: {2: 56000, 3: 84000, 4: 112000, 5: 140000, 6: 168000}, price_note: "공식 테마 안내의 1인 28,000원", price_source_url: "http://www.code-k.co.kr/sub/code_sub03_2.html?R_JIJEM=S3", price_verified_at: "2026-06-15"}
+      - {theme_name: "꼬레아 우라 B", genre: "역사/드라마", price: 28000, duration_minutes: 75, min_people: 2, max_people: 6, party_prices: {2: 56000, 3: 84000, 4: 112000, 5: 140000, 6: 168000}, price_note: "A/B는 동일 테마의 분리 회차이며 공식 1인 28,000원", price_source_url: "http://www.code-k.co.kr/sub/code_sub03_2.html?R_JIJEM=S3", price_verified_at: "2026-06-15"}
+
+  - store_id: page_today
+    store_name: 오늘의한페이지
+    region: 서울
+    booking_url: https://page-today.co.kr/
+    adapter_type: page_today
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집
+    themes:
+      - {theme_name: "버디", genre: "", price: 29000, duration_minutes: 70, price_note: "공개 예약 모달 3명 총액 87,000원 기준", price_source_url: "https://page-today.co.kr/", price_verified_at: "2026-06-13"}
+      - {theme_name: "용하다 용해!! 용팔도령", genre: "", price: 35000, duration_minutes: 65, price_note: "공개 예약 모달 3명 총액 105,000원 기준", price_source_url: "https://page-today.co.kr/", price_verified_at: "2026-06-13"}
+
+  # 2026-06-14 공식 공개 예약표에서 확인한 추가 브랜드입니다.
+  # 가격에 "대표 추정"이 표시된 경우 실제 테마·인원별 결제액과 다를 수 있습니다.
+  - store_id: doomescape_1
+    store_name: 둠이스케이프 1호점
+    region: 인천 구월
+    booking_url: https://doomescape.com/layout/res/home.php?go=rev.make&s_zizum=1
+    adapter_type: sinbi
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집 · 전체 타임 표시
+    themes:
+      - {theme_name: "나폴리탄", genre: "공포", price: 28000, duration_minutes: 70, min_people: 2, max_people: 5, party_prices: {2: 56000, 3: 84000, 4: 112000, 5: 140000}, price_note: "공식 공개 안내의 1인 28,000원", price_source_url: "https://www.instagram.com/doomescape/", price_verified_at: "2026-06-15"}
+      - {theme_name: "Rendering", genre: "추리/판타지", price: 23000, duration_minutes: 65, min_people: 2, max_people: 4, party_prices: {2: 46000, 3: 66000, 4: 84000}, price_note: "공개 인원별 총액표", price_source_url: "https://web.zamfit.kr/escapes/5016/Rendering", price_verified_at: "2026-06-15"}
+      - {theme_name: "기담정", genre: "감성", price: 25000, duration_minutes: 70, min_people: 2, max_people: 6, party_prices: {2: 50000, 3: 69000, 4: 84000, 5: 95000, 6: 102000}, price_note: "공개 인원별 총액표", price_source_url: "https://web.zamfit.kr/escapes/5015", price_verified_at: "2026-06-15"}
+      - {theme_name: "인앤아웃", genre: "판타지", price: 23000, duration_minutes: 65, min_people: 2, max_people: 4, party_prices: {2: 46000, 3: 66000, 4: 84000}, price_note: "공개 인원별 총액표", price_source_url: "https://web.zamfit.kr/escapes/5017", price_verified_at: "2026-06-15"}
+
+  - store_id: doomescape_2
+    store_name: 둠이스케이프 2호점
+    region: 인천 구월
+    booking_url: https://doomescape.com/layout/res/home.php?go=rev.make&s_zizum=2
+    adapter_type: sinbi
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집 · 전체 타임 표시
+    themes:
+      - {theme_name: "운명", genre: "추리/멜로", price: 26000, duration_minutes: 70, min_people: 2, max_people: 6, party_prices: {2: 52000, 3: 75000, 4: 96000, 5: 115000, 6: 132000}, price_note: "2호점 공개 인원별 총액표", price_source_url: "https://web.zamfit.kr/escapes/5019", price_verified_at: "2026-06-15"}
+      - {theme_name: "디스토피아", genre: "공포", price: 26000, duration_minutes: 70, min_people: 2, max_people: 6, party_prices: {2: 52000, 3: 75000, 4: 96000, 5: 115000, 6: 132000}, price_note: "2호점 공개 인원별 총액표", price_source_url: "https://web.zamfit.kr/escapes/5020", price_verified_at: "2026-06-15"}
+      - {theme_name: "죄", genre: "추격", price: 26000, duration_minutes: 70, min_people: 2, max_people: 5, party_prices: {2: 52000, 3: 75000, 4: 96000, 5: 115000}, price_note: "공식 예약표 2~5명·공개 인원별 총액표", price_source_url: "https://web.zamfit.kr/escapes/5022/%EC%A3%84", price_verified_at: "2026-06-15"}
+      - {theme_name: "인바이트", genre: "", price: 26000, duration_minutes: 70, min_people: 2, max_people: 5, party_prices: {2: 52000, 3: 75000, 4: 96000, 5: 115000}, price_note: "공식 예약표 2~5명·공개 인원별 총액표", price_source_url: "https://web.zamfit.kr/escapes/5021/%EC%9D%B8%EB%B0%94%EC%9D%B4%ED%8A%B8", price_verified_at: "2026-06-15"}
+
+  - store_id: doomescape_dth
+    store_name: 둠이스케이프 DTH점
+    region: 인천 부평
+    booking_url: https://doomescape.com/layout/res/home.php?go=rev.make&s_zizum=3
+    adapter_type: sinbi
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집 · 전체 타임 표시
+    themes:
+      - {theme_name: "슬래셔", genre: "공포", price: 42000, duration_minutes: 100, min_people: 3, max_people: 6, party_prices: {3: 126000, 4: 168000, 5: 210000, 6: 252000}, price_note: "공식 예약 입력 화면과 Q&A의 최소 3인 126,000원", price_source_url: "https://doomescape.com/layout/res/home.php?go=rev.make.input&rev_days=2026-06-01&theme_time_num=1021", price_verified_at: "2026-06-15"}
+      - {theme_name: "트리거", genre: "탈출", price: 26000, duration_minutes: 65, min_people: 2, max_people: 4, party_prices: {2: 52000, 3: 78000, 4: 104000}, price_note: "공개 인원별 총액표", price_source_url: "https://web.zamfit.kr/escapes/6845", price_verified_at: "2026-06-15"}
+      - {theme_name: "언리얼", genre: "잠입", price: 28000, duration_minutes: 80, min_people: 2, max_people: 5, party_prices: {2: 56000, 3: 84000, 4: 112000, 5: 140000}, price_note: "공개 인원별 총액표", price_source_url: "https://web.zamfit.kr/escapes/6846", price_verified_at: "2026-06-15"}
+      - {theme_name: "스네어", genre: "스릴러", price: 26000, duration_minutes: 65, min_people: 2, max_people: 5, party_prices: {2: 52000, 3: 78000, 4: 104000, 5: 130000}, price_note: "공식 예약 입력 화면의 2인 52,000원 및 공개 1인 26,000원", price_source_url: "https://doomescape.com/layout/res/home.php?go=rev.make.input&rev_days=2026-05-21&theme_time_num=1455", price_verified_at: "2026-06-15"}
+
+  - store_id: doomescape_fear
+    store_name: 둠이스케이프 FEAR점
+    region: 경기 수원
+    booking_url: https://doomescape.com/layout/res/home.php?go=rev.make&s_zizum=4
+    adapter_type: sinbi
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집 · 전체 타임 표시
+    themes:
+      - {theme_name: "허수아비", genre: "공포", price: 31000, duration_minutes: 70, min_people: 2, max_people: 3, party_prices: {2: 62000, 3: 93000}, price_note: "둠이스케이프 공식 Q&A의 1인 31,000원", price_source_url: "https://www.doomescape.com/layout/res/home.php?go=pds.list&mid=&num=1195&pds_type=2", price_verified_at: "2026-06-15"}
+      - {theme_name: "옵스큐라", genre: "공포", price: 31000, duration_minutes: 70, min_people: 2, max_people: 4, party_prices: {2: 62000, 3: 93000, 4: 124000}, price_note: "둠이스케이프 공식 Q&A의 1인 31,000원", price_source_url: "https://www.doomescape.com/layout/res/home.php?go=pds.list&mid=&num=1195&pds_type=2", price_verified_at: "2026-06-15"}
+      - {theme_name: "데이투어", genre: "공포", price: 0, duration_minutes: 44, min_people: 4, max_people: 4, price_note: "공식 페이지 COMING SOON 및 가격 미정; 매출 계산 제외", price_source_url: "https://doomescape.com/layout/res/home.php?go=theme.list&theme_num=36", price_verified_at: "2026-06-15"}
+
+  - store_id: imaginary_door_daehangno
+    store_name: 상상의문 대학로점
+    region: 서울 대학로
+    booking_url: https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=1
+    adapter_type: sinbi
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집 · 가격은 시간별 대표 추정 포함
+    themes:
+      - {theme_name: "나이트워크", genre: "판타지", price: 35000, duration_minutes: 100, price_note: "공개 예약 입력 단계 2인 70,000원 기준", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=1", price_verified_at: "2026-06-14"}
+      - {theme_name: "스포일러", genre: "미스터리", price: 35000, duration_minutes: 85, price_note: "85분 테마 대표 추정; 실제 결제액 확인 필요", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=1", price_verified_at: "2026-06-14"}
+      - {theme_name: "경찰과 도둑", genre: "추리", price: 25000, duration_minutes: 60, price_note: "60분 테마 대표 추정; 실제 결제액 확인 필요", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=1", price_verified_at: "2026-06-14"}
+
+  - store_id: imaginary_door_seohyeon
+    store_name: 상상의문 분당서현점
+    region: 경기 성남
+    booking_url: https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=2
+    adapter_type: sinbi
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집 · 가격은 시간별 대표 추정
+    themes:
+      - {theme_name: "시크릿 왕국의 스캔들 (감독판)", genre: "추리/잔혹동화", price: 35000, duration_minutes: 90, price_note: "90분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=2", price_verified_at: "2026-06-14"}
+      - {theme_name: "HERE I AM", genre: "생존/탐험", price: 25000, duration_minutes: 70, price_note: "70분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=2", price_verified_at: "2026-06-14"}
+      - {theme_name: "몽염 : 도망칠 수 없는 꿈", genre: "공포", price: 30000, duration_minutes: 80, price_note: "80분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=2", price_verified_at: "2026-06-14"}
+      - {theme_name: "역만", genre: "", price: 35000, duration_minutes: 90, price_note: "90분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=2", price_verified_at: "2026-06-14"}
+      - {theme_name: "셔플월드", genre: "게임/판타지", price: 25000, duration_minutes: 70, price_note: "70분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=2", price_verified_at: "2026-06-14"}
+      - {theme_name: "전당포 조필두", genre: "스릴러", price: 25000, duration_minutes: 60, price_note: "60분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=2", price_verified_at: "2026-06-14"}
+
+  - store_id: imaginary_door_gwangju
+    store_name: 상상의문 광주점
+    region: 광주
+    booking_url: https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=4
+    adapter_type: sinbi
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집 · 가격은 시간별 대표 추정
+    themes:
+      - {theme_name: "영결식(靈結式)", genre: "공포", price: 25000, duration_minutes: 60, price_note: "60분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=4", price_verified_at: "2026-06-14"}
+      - {theme_name: "시크릿 왕국의 스캔들", genre: "추리/잔혹동화", price: 30000, duration_minutes: 80, price_note: "80분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=4", price_verified_at: "2026-06-14"}
+      - {theme_name: "호러맨스", genre: "로맨스/스릴러", price: 25000, duration_minutes: 70, price_note: "70분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=4", price_verified_at: "2026-06-14"}
+      - {theme_name: "서울만가면된다", genre: "일상/코미디", price: 25000, duration_minutes: 69, price_note: "69분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=4", price_verified_at: "2026-06-14"}
+      - {theme_name: "TITAN : 전쟁의경계", genre: "SF", price: 25000, duration_minutes: 70, price_note: "70분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=4", price_verified_at: "2026-06-14"}
+      - {theme_name: "그럼에도 불구하고,", genre: "드라마", price: 25000, duration_minutes: 70, price_note: "70분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=4", price_verified_at: "2026-06-14"}
+
+  - store_id: imaginary_door_suwon
+    store_name: 상상의문 수원점
+    region: 경기 수원
+    booking_url: https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=5
+    adapter_type: sinbi
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집 · 가격은 시간별 대표 추정
+    themes:
+      - {theme_name: "직박구리:남친탐구생활", genre: "코믹", price: 25000, duration_minutes: 70, price_note: "70분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=5", price_verified_at: "2026-06-14"}
+      - {theme_name: "복도끝", genre: "공포", price: 30000, duration_minutes: 75, price_note: "75분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=5", price_verified_at: "2026-06-14"}
+      - {theme_name: "혼숨", genre: "미스터리/스릴러", price: 25000, duration_minutes: 70, price_note: "70분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=5", price_verified_at: "2026-06-14"}
+      - {theme_name: "DKDK컴퍼니", genre: "판타지/코미디", price: 30000, duration_minutes: 80, price_note: "80분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=5", price_verified_at: "2026-06-14"}
+      - {theme_name: "영안실", genre: "공포", price: 30000, duration_minutes: 80, price_note: "80분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=5", price_verified_at: "2026-06-14"}
+      - {theme_name: "퍼펫쇼", genre: "미스터리", price: 25000, duration_minutes: 70, price_note: "70분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=5", price_verified_at: "2026-06-14"}
+
+  - store_id: imaginary_door_bupyeong
+    store_name: 상상의문 부평점
+    region: 인천 부평
+    booking_url: https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=6
+    adapter_type: sinbi
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집 · 가격은 시간별 대표 추정
+    themes:
+      - {theme_name: "쇼쿠진", genre: "공포", price: 25000, duration_minutes: 70, price_note: "70분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=6", price_verified_at: "2026-06-14"}
+      - {theme_name: "420번지", genre: "스릴러", price: 25000, duration_minutes: 70, price_note: "70분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=6", price_verified_at: "2026-06-14"}
+      - {theme_name: "흑신소", genre: "판타지/코미디", price: 25000, duration_minutes: 70, price_note: "70분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=6", price_verified_at: "2026-06-14"}
+      - {theme_name: "행복목욕탕", genre: "드라마/판타지", price: 30000, duration_minutes: 80, price_note: "80분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=6", price_verified_at: "2026-06-14"}
+
+  - store_id: imaginary_door_suwon2
+    store_name: 상상의문 수원2호점
+    region: 경기 수원
+    booking_url: https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=7
+    adapter_type: sinbi
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집 · 가격은 시간별 대표 추정
+    themes:
+      - {theme_name: "알케이드 빌리지", genre: "아케이드", price: 30000, duration_minutes: 80, price_note: "80분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=7", price_verified_at: "2026-06-14"}
+      - {theme_name: "OKCUT", genre: "코메디", price: 35000, duration_minutes: 90, price_note: "90분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=7", price_verified_at: "2026-06-14"}
+      - {theme_name: "성지기숙학원 : 특수교정반", genre: "공포", price: 30000, duration_minutes: 80, price_note: "80분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=7", price_verified_at: "2026-06-14"}
+      - {theme_name: "춘화각 : 피할 수 없는 저주", genre: "공포", price: 30000, duration_minutes: 80, price_note: "80분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=7", price_verified_at: "2026-06-14"}
+      - {theme_name: "낙화 : 떨어지는 꽃", genre: "스릴러", price: 30000, duration_minutes: 80, price_note: "80분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=7", price_verified_at: "2026-06-14"}
+      - {theme_name: "HINDSIGHT", genre: "잠입/드라마", price: 30000, duration_minutes: 80, price_note: "80분 테마 대표 추정", price_source_url: "https://xn--z92b74ha268d.com/layout/res/home.php?go=rev.make&s_zizum=7", price_verified_at: "2026-06-14"}
+
+  - store_id: earthstar_daegu
+    store_name: 지구별방탈출 대구점
+    region: 대구
+    booking_url: https://www.xn--2e0b040a4xj.com/reservation?branch=1
+    adapter_type: earthstar
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집 · 공식 가격표 일반 테마 2인 기준
+    themes:
+      - {theme_name: "잉카", genre: "어드벤처/모험/챌린지", price: 23000, duration_minutes: 80, price_note: "공식 가격 안내 일반 테마 2인 1인당 23,000원 기준", price_source_url: "https://www.xn--2e0b040a4xj.com/notice/1", price_verified_at: "2026-06-14"}
+      - {theme_name: "우리 아빠", genre: "공포", price: 23000, duration_minutes: 70, price_note: "공식 가격 안내 일반 테마 대표가", price_source_url: "https://www.xn--2e0b040a4xj.com/notice/1", price_verified_at: "2026-06-14"}
+      - {theme_name: "사명 : 투쟁의 노래", genre: "탈옥", price: 23000, duration_minutes: 69, price_note: "공식 가격 안내 일반 테마 대표가", price_source_url: "https://www.xn--2e0b040a4xj.com/notice/1", price_verified_at: "2026-06-14"}
+      - {theme_name: "펭귄키우기", genre: "문제방", price: 21000, duration_minutes: 60, price_note: "공식 가격 안내 소형 테마 2인 1인당 21,000원 기준", price_source_url: "https://www.xn--2e0b040a4xj.com/notice/1", price_verified_at: "2026-06-14"}
+      - {theme_name: "너의 겨울은 가고, 봄은 온다", genre: "감성", price: 23000, duration_minutes: 60, price_note: "공식 가격 안내 일반 테마 대표가", price_source_url: "https://www.xn--2e0b040a4xj.com/notice/1", price_verified_at: "2026-06-14"}
+      - {theme_name: "만월 <<꿈을 훔치는 요괴>>", genre: "잠입/미스터리", price: 26000, duration_minutes: 75, price_note: "공식 가격 안내 프리미엄 테마 2인 1인당 26,000원 기준", price_source_url: "https://www.xn--2e0b040a4xj.com/notice/1", price_verified_at: "2026-06-14"}
+      - {theme_name: "단디해라", genre: "코믹", price: 23000, duration_minutes: 65, price_note: "공식 가격 안내 일반 테마 대표가", price_source_url: "https://www.xn--2e0b040a4xj.com/notice/1", price_verified_at: "2026-06-14"}
+
+  - store_id: earthstar_hongdae_adventure
+    store_name: 지구별방탈출 홍대어드벤처점
+    region: 서울 홍대
+    booking_url: https://www.xn--2e0b040a4xj.com/reservation?branch=2
+    adapter_type: earthstar
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집 · 최신 공개 가격을 테마별로 적용
+    themes:
+      - {theme_name: "PINOCCHIO(피노키오)", genre: "공포", price: 27000, duration_minutes: 70, min_people: 2, max_people: 4, price_note: "현재 공개 목록 2인 기준 1인 27,000원; 인원별 총액표는 추가 확인 중", price_source_url: "https://escape-mate.co.kr/sites", price_verified_at: "2026-06-15"}
+      - {theme_name: "잔향", genre: "드라마/서스펜스", price: 0, duration_minutes: 60, min_people: 2, max_people: 4, price_note: "현재 인원별 공식 금액 미확인으로 매출 계산 제외", price_source_url: "https://www.xn--2e0b040a4xj.com/reservation?branch=2", price_verified_at: "2026-06-15"}
+      - {theme_name: "아몬 : 새벽을 여는 소년", genre: "어드벤처", price: 28000, duration_minutes: 70, min_people: 2, max_people: 6, party_prices: {2: 56000, 3: 84000, 4: 112000, 5: 140000, 6: 168000}, price_note: "현재 공개 인원별 총액표 확인", price_source_url: "https://web.zamfit.kr/escapes/6906", price_verified_at: "2026-06-15"}
+      - {theme_name: "퀘스트 : 여정의 시작", genre: "판타지", price: 0, duration_minutes: 50, min_people: 2, max_people: 6, price_note: "현재 인원별 공식 금액 미확인으로 매출 계산 제외", price_source_url: "https://www.xn--2e0b040a4xj.com/reservation?branch=2", price_verified_at: "2026-06-15"}
+      - {theme_name: "지난날을 잊었다", genre: "감성", price: 23000, duration_minutes: 65, min_people: 2, max_people: 6, party_prices: {2: 46000, 3: 66000, 4: 84000, 5: 100000, 6: 120000}, price_note: "현재 공개 인원별 총액표 확인", price_source_url: "https://web.zamfit.kr/escapes/5734", price_verified_at: "2026-06-15"}
+      - {theme_name: "미스터리", genre: "미스터리", price: 28000, duration_minutes: 85, min_people: 2, max_people: 6, party_prices: {2: 56000, 3: 81000, 4: 104000, 5: 125000, 6: 150000}, price_note: "현재 공개 인원별 총액표 확인", price_source_url: "https://web.zamfit.kr/escapes/5733", price_verified_at: "2026-06-15"}
+
+  - store_id: earthstar_hongdae_lastcity
+    store_name: 지구별방탈출 홍대라스트시티점
+    region: 서울 홍대
+    booking_url: https://www.xn--2e0b040a4xj.com/reservation?branch=4
+    adapter_type: earthstar
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집 · 공식 가격표 대표가 적용
+    themes:
+      - {theme_name: "스텔라", genre: "드라마", price: 23000, duration_minutes: 70, price_note: "공식 가격 안내 일반 테마 대표가", price_source_url: "https://www.xn--2e0b040a4xj.com/notice/1", price_verified_at: "2026-06-14"}
+      - {theme_name: "카부트", genre: "잠입/스릴러", price: 23000, duration_minutes: 65, price_note: "공식 가격 안내 일반 테마 대표가", price_source_url: "https://www.xn--2e0b040a4xj.com/notice/1", price_verified_at: "2026-06-14"}
+      - {theme_name: "alone(얼론)", genre: "드라마/미스터리", price: 23000, duration_minutes: 65, price_note: "공식 가격 안내 일반 테마 대표가", price_source_url: "https://www.xn--2e0b040a4xj.com/notice/1", price_verified_at: "2026-06-14"}
+      - {theme_name: "라스트코어", genre: "SF", price: 26000, duration_minutes: 90, price_note: "공식 가격 안내 프리미엄 테마 대표가", price_source_url: "https://www.xn--2e0b040a4xj.com/notice/1", price_verified_at: "2026-06-14"}
+      - {theme_name: "纹身(문신)", genre: "스릴러", price: 23000, duration_minutes: 67, price_note: "공식 가격 안내 일반 테마 대표가", price_source_url: "https://www.xn--2e0b040a4xj.com/notice/1", price_verified_at: "2026-06-14"}
+      - {theme_name: "멸종위기종 탐사대", genre: "어드벤처/미션", price: 23000, duration_minutes: 65, price_note: "공식 가격 안내 일반 테마 대표가", price_source_url: "https://www.xn--2e0b040a4xj.com/notice/1", price_verified_at: "2026-06-14"}
+      - {theme_name: "스위티", genre: "", price: 23000, duration_minutes: 60, price_note: "공식 가격 안내 일반 테마 대표가", price_source_url: "https://www.xn--2e0b040a4xj.com/notice/1", price_verified_at: "2026-06-14"}
+      - {theme_name: "섀도우", genre: "범죄/미스터리", price: 26000, duration_minutes: 75, price_note: "공식 가격 안내 프리미엄 테마 대표가", price_source_url: "https://www.xn--2e0b040a4xj.com/notice/1", price_verified_at: "2026-06-14"}
+
+  - store_id: cubeescape_hongdae
+    store_name: 큐브이스케이프 홍대점
+    region: 서울 홍대
+    booking_url: http://www.cubeescape.co.kr/?sc=3_1&sd=3
+    adapter_type: cubeescape
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집 · HTTPS 오류로 공식 HTTP 페이지 사용
+    themes:
+      - {theme_name: "피라미드", genre: "", price: 20000, duration_minutes: 60, price_note: "공개 테마 대표가 추정; 실제 결제액 확인 필요", price_source_url: "http://www.cubeescape.co.kr/?sc=3_1&sd=3", price_verified_at: "2026-06-14"}
+      - {theme_name: "Monkey House", genre: "", price: 20000, duration_minutes: 60, price_note: "공개 테마 대표가 추정; 실제 결제액 확인 필요", price_source_url: "http://www.cubeescape.co.kr/?sc=3_1&sd=3", price_verified_at: "2026-06-14"}
+      - {theme_name: "장기밀매", genre: "", price: 20000, duration_minutes: 60, price_note: "공개 테마 대표가 추정; 실제 결제액 확인 필요", price_source_url: "http://www.cubeescape.co.kr/?sc=3_1&sd=3", price_verified_at: "2026-06-14"}
+      - {theme_name: "헨젤과 그레텔", genre: "", price: 20000, duration_minutes: 60, price_note: "공개 테마 대표가 추정; 실제 결제액 확인 필요", price_source_url: "http://www.cubeescape.co.kr/?sc=3_1&sd=3", price_verified_at: "2026-06-14"}
+      - {theme_name: "Gestapo", genre: "", price: 20000, duration_minutes: 60, price_note: "공개 테마 대표가 추정; 실제 결제액 확인 필요", price_source_url: "http://www.cubeescape.co.kr/?sc=3_1&sd=3", price_verified_at: "2026-06-14"}
+      - {theme_name: "Towering", genre: "", price: 20000, duration_minutes: 60, price_note: "공개 테마 대표가 추정; 실제 결제액 확인 필요", price_source_url: "http://www.cubeescape.co.kr/?sc=3_1&sd=3", price_verified_at: "2026-06-14"}
+      - {theme_name: "Deliver", genre: "", price: 20000, duration_minutes: 60, price_note: "공개 테마 대표가 추정; 실제 결제액 확인 필요", price_source_url: "http://www.cubeescape.co.kr/?sc=3_1&sd=3", price_verified_at: "2026-06-14"}
+      - {theme_name: "Romeo Point", genre: "", price: 20000, duration_minutes: 60, price_note: "공개 테마 대표가 추정; 실제 결제액 확인 필요", price_source_url: "http://www.cubeescape.co.kr/?sc=3_1&sd=3", price_verified_at: "2026-06-14"}
+
+  - store_id: cubeescape_jamsil
+    store_name: 큐브이스케이프 잠실점
+    region: 서울 잠실
+    booking_url: http://jamsil.cubeescape.co.kr/?sc=3_1&sd=3
+    adapter_type: cubeescape
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집 · HTTPS 오류로 공식 HTTP 페이지 사용
+    themes:
+      - {theme_name: "Romeo Point", genre: "", price: 20000, duration_minutes: 60, price_note: "공개 테마 대표가 추정; 실제 결제액 확인 필요", price_source_url: "http://jamsil.cubeescape.co.kr/?sc=3_1&sd=3", price_verified_at: "2026-06-14"}
+      - {theme_name: "신데렐라", genre: "", price: 20000, duration_minutes: 60, price_note: "공개 테마 대표가 추정; 실제 결제액 확인 필요", price_source_url: "http://jamsil.cubeescape.co.kr/?sc=3_1&sd=3", price_verified_at: "2026-06-14"}
+      - {theme_name: "집착", genre: "", price: 20000, duration_minutes: 60, price_note: "공개 테마 대표가 추정; 실제 결제액 확인 필요", price_source_url: "http://jamsil.cubeescape.co.kr/?sc=3_1&sd=3", price_verified_at: "2026-06-14"}
+      - {theme_name: "마션", genre: "", price: 20000, duration_minutes: 60, price_note: "공개 테마 대표가 추정; 실제 결제액 확인 필요", price_source_url: "http://jamsil.cubeescape.co.kr/?sc=3_1&sd=3", price_verified_at: "2026-06-14"}
+      - {theme_name: "타이타닉", genre: "", price: 20000, duration_minutes: 60, price_note: "공개 테마 대표가 추정; 실제 결제액 확인 필요", price_source_url: "http://jamsil.cubeescape.co.kr/?sc=3_1&sd=3", price_verified_at: "2026-06-14"}
+      - {theme_name: "카타콤", genre: "", price: 20000, duration_minutes: 60, price_note: "공개 테마 대표가 추정; 실제 결제액 확인 필요", price_source_url: "http://jamsil.cubeescape.co.kr/?sc=3_1&sd=3", price_verified_at: "2026-06-14"}
+
+  - store_id: frank_gangnam
+    store_name: 프랭크의 골동품가게
+    region: 서울 강남
+    booking_url: https://thefrank.co.kr/layout/res/home.php?go=rev.make
+    adapter_type: frank
+    avg_people: 2.7
+    collection_note: 공개 예약표 테마 탭 자동 수집
+    themes:
+      - {theme_name: "My Private Heaven", genre: "", price: 28000, duration_minutes: 75, price_note: "공개 가격정보 2인 56,000원 기준", price_source_url: "https://thefrank.co.kr/layout/res/home.php?go=rev.make&theme_num=5", price_verified_at: "2026-06-14"}
+      - {theme_name: "Brooklyn My Love", genre: "공포", price: 29000, duration_minutes: 75, price_note: "공개 가격정보 2인 58,000원 기준", price_source_url: "https://thefrank.co.kr/layout/res/home.php?go=rev.make&theme_num=6", price_verified_at: "2026-06-14"}
+      - {theme_name: "Plan to save my dear", genre: "", price: 28000, duration_minutes: 75, price_note: "공개 가격정보 2인 56,000원 기준", price_source_url: "https://thefrank.co.kr/layout/res/home.php?go=rev.make&theme_num=7", price_verified_at: "2026-06-14"}
+
+  - store_id: horror_switch_hongdae
+    store_name: 호러스위치 홍대점
+    region: 서울 홍대
+    booking_url: https://horrorswitch.com/ko/reservation?branch=1&theme=1
+    adapter_type: horror_switch
+    avg_people: 2.7
+    collection_note: 공개 잔여 좌석표 자동 수집 · 0/6일 때 예약 완료로 계산
+    themes:
+      - {theme_name: "에덴병원", genre: "호러 체험", price: 23000, duration_minutes: 30, price_note: "공식 FAQ 1인 23,000원 기준", price_source_url: "https://www.horrorswitch.com/FAQ", price_verified_at: "2026-06-14"}
+
+  - store_id: xescape_playground
+    store_name: 엑스이스케이프 홍대놀이터점
+    region: 서울 홍대
+    booking_url: https://xescape.com/web/home.php?go=rev_make&zzcd=20170221002
+    adapter_type: limited
+    avg_people: 2.7
+    collection_note: 마감 타임을 페이지에서 숨겨 전체 타임·예약률 산출 불가
+    themes:
+      - {theme_name: "증언 / 證言", genre: "", price: 0, duration_minutes: 50}
+      - {theme_name: "선물", genre: "", price: 0, duration_minutes: 50}
+      - {theme_name: "홈스윗홈", genre: "", price: 0, duration_minutes: 50}
+      - {theme_name: "리페인팅", genre: "", price: 0, duration_minutes: 50}
+      - {theme_name: "인형살인", genre: "", price: 0, duration_minutes: 50}
+      - {theme_name: "인육식당", genre: "", price: 0, duration_minutes: 50}
+      - {theme_name: "저주인형", genre: "", price: 0, duration_minutes: 50}
+      - {theme_name: "사진괴담", genre: "", price: 0, duration_minutes: 50}
+
+  - store_id: xescape_sangsangmadang
+    store_name: 엑스이스케이프 홍대상상마당점
+    region: 서울 홍대
+    booking_url: https://xescape.com/web/home.php?go=rev_make&zzcd=20170223001
+    adapter_type: limited
+    avg_people: 2.7
+    collection_note: 마감 타임을 페이지에서 숨겨 전체 타임·예약률 산출 불가
+    themes:
+      - {theme_name: "타로술사의비밀", genre: "", price: 0, duration_minutes: 50}
+      - {theme_name: "애인탈옥", genre: "", price: 0, duration_minutes: 50}
+      - {theme_name: "몬스터탐험가", genre: "", price: 0, duration_minutes: 50}
+      - {theme_name: "인육판매자", genre: "", price: 0, duration_minutes: 50}
+
+  - store_id: xescape_doobdoo
+    store_name: 엑스이스케이프 둡두
+    region: 서울 홍대
+    booking_url: https://xescape.com/web/home.php?go=rev_make&zzcd=20240819001
+    adapter_type: limited
+    avg_people: 2.7
+    collection_note: 일부 날짜가 네이버 예약이며 마감 타임을 숨겨 예약률 산출 불가
+    themes:
+      - {theme_name: "라스트에피소드", genre: "", price: 0, duration_minutes: 50}
+      - {theme_name: "카르마", genre: "", price: 0, duration_minutes: 50}
+      - {theme_name: "행복을드림니다", genre: "", price: 0, duration_minutes: 50}
+      - {theme_name: "둡두의정석", genre: "", price: 0, duration_minutes: 50}
+      - {theme_name: "노이즈", genre: "", price: 0, duration_minutes: 50}
+      - {theme_name: "아이디어", genre: "", price: 0, duration_minutes: 50}
+
+  - store_id: thechapter_hongdae
+    store_name: 더챕터 홍대
+    region: 서울 홍대
+    booking_url: https://naver.me/ID3BxtnL
+    adapter_type: naver_booking
+    avg_people: 2.7
+    collection_note: 로그인 없이 공개된 네이버 예약 상품·날짜·시간 상태만 읽음
+    themes:
+      - {theme_name: "선택", genre: "스릴러", price: 31000, duration_minutes: 65, min_people: 2, max_people: 4, party_prices: {2: 62000, 3: 93000, 4: 124000}, public_schedule_url: "https://web.zamfit.kr/escapes/7138/%EC%84%A0%ED%83%9D-", price_note: "공개 상세 페이지의 1인 31,000원 및 2~4인 총액", price_source_url: "https://web.zamfit.kr/escapes/7138/%EC%84%A0%ED%83%9D-", price_verified_at: "2026-06-15"}
+      - {theme_name: "쿠키", genre: "일상/미스터리", price: 33000, duration_minutes: 70, min_people: 2, max_people: 6, party_prices: {2: 66000, 3: 93000, 4: 116000, 5: 145000, 6: 174000}, price_note: "공식 공개 안내: 2인 1인당 33,000원, 3인 31,000원, 4인 이상 29,000원", price_source_url: "https://www.instagram.com/thechapterescape/", price_verified_at: "2026-06-15"}
+
+  - store_id: livecinema_hongdae
+    store_name: 라이브시네마 홍대
+    region: 서울 홍대
+    booking_url: https://booking.naver.com/booking/12/bizes/1163669?area=pll
+    adapter_type: naver_booking
+    avg_people: 2.7
+    collection_note: 로그인 없이 공개된 네이버 예약 상품·날짜·시간 상태만 읽음
+    themes:
+      - {theme_name: "우정", genre: "롤플레잉/스릴러/이머시브", price: 0, duration_minutes: 100, min_people: 3, max_people: 5, party_prices: {3: 240000, 4: 240000, 5: 240000}, public_schedule_url: "https://web.zamfit.kr/escapes/6914", price_note: "공개 상세 안내의 인원 무관 회차 고정 총액 240,000원", price_source_url: "https://web.zamfit.kr/escapes/6914", price_verified_at: "2026-06-15"}
+      - {theme_name: "학교 : 그 날의 이야기", genre: "공포/이머시브", price: 0, duration_minutes: 100, min_people: 3, max_people: 4, party_prices: {3: 240000, 4: 240000}, public_schedule_url: "https://web.zamfit.kr/escapes/6964/%ED%95%99%EA%B5%90--%EA%B7%B8-%EB%82%A0%EC%9D%98-%EC%9D%B4%EC%95%BC%EA%B8%B0", price_note: "공개 본문과 최근 안내의 회차 고정 총액 240,000원 적용; 상세표의 상충하는 220,000원 표기는 제외", price_source_url: "https://web.zamfit.kr/escapes/6964/%ED%95%99%EA%B5%90--%EA%B7%B8-%EB%82%A0%EC%9D%98-%EC%9D%B4%EC%95%BC%EA%B8%B0", price_verified_at: "2026-06-15"}
+
+  - store_id: umeplay_hongdae
+    store_name: 유미플레이 1호점
+    region: 서울 홍대
+    booking_url: https://booking.naver.com/booking/12/bizes/1661745/items/7713929
+    adapter_type: naver_booking
+    avg_people: 2.7
+    collection_note: 로그인 없이 공개된 공식 네이버 예약 상품·날짜·시간 상태만 읽음
+    themes:
+      - {theme_name: "인세인 / INSANE", genre: "공포/스릴러/이머시브", price: 69000, duration_minutes: 75, min_people: 1, max_people: 0, public_schedule_url: "https://booking.naver.com/booking/12/bizes/1661745/items/7713929", price_note: "공식 네이버 예약 공개 가격 69,000원부터; 현재 오픈특가 1인 69,000원 기준 적용", price_source_url: "https://booking.naver.com/booking/12/bizes/1661745/items/7713929", price_verified_at: "2026-06-19"}
+
+  - store_id: roomsa_policy
+    store_name: 룸즈에이
+    region: 전국
+    booking_url: https://roomsa.co.kr/reservation.html
+    adapter_type: blocked
+    avg_people: 2.7
+    collection_note: 공식 페이지에 무단 크롤링 금지 문구가 있어 자동 수집 제외
+    themes: []
+
+
+  - store_id: nextedition_policy
+    store_name: 넥스트에디션
+    region: 전국
+    booking_url: https://www.nextedition.co.kr/
+    adapter_type: blocked
+    avg_people: 2.7
+    collection_note: 사이트에 크롤링 금지 안내가 있어 자동 수집 대상에서 제외
+    themes: []
+
+  # 아래 매장들은 2026-06-14 공식 공개 페이지를 다시 확인해 추가했습니다.
+  - store_id: pointnine_gangnam
+    store_name: 포인트나인 강남점
+    region: 서울 강남
+    booking_url: https://point-nine.com/layout/res/home.php?go=rev.make&s_zizum=1
+    adapter_type: sinbi
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집
+    themes:
+      - {theme_name: "EP1 : 시간이 멈춘 마을", genre: "판타지/드라마", price: 27000, duration_minutes: 70, price_note: "공개 예약 폼 2명 총액 54,000원 기준 대표 인당가", price_source_url: "https://point-nine.com/layout/res/home.php?go=rev.make&s_zizum=1", price_verified_at: "2026-06-14"}
+      - {theme_name: "EP2 : 열쇠공의 이중생활", genre: "미스터리", price: 27000, duration_minutes: 70, price_note: "강남점 공개 예약 폼 대표 인당가", price_source_url: "https://point-nine.com/layout/res/home.php?go=rev.make&s_zizum=1", price_verified_at: "2026-06-14"}
+      - {theme_name: "EP3 : 눈 먼 귀금속상인의 후회", genre: "미스터리", price: 27000, duration_minutes: 70, price_note: "강남점 공개 예약 폼 대표 인당가", price_source_url: "https://point-nine.com/layout/res/home.php?go=rev.make&s_zizum=1", price_verified_at: "2026-06-14"}
+      - {theme_name: "EP4 : 주인 없는 낡은 서점", genre: "판타지/드라마", price: 27000, duration_minutes: 70, price_note: "강남점 공개 예약 폼 대표 인당가", price_source_url: "https://point-nine.com/layout/res/home.php?go=rev.make&s_zizum=1", price_verified_at: "2026-06-14"}
+
+  - store_id: pointnine_konkuk
+    store_name: 포인트나인 건대점
+    region: 서울 건대
+    booking_url: https://point-nine.com/layout/res/home.php?go=rev.make&s_zizum=5
+    adapter_type: sinbi
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집
+    themes:
+      - {theme_name: "Jack in the Show", genre: "다크판타지", price: 34000, duration_minutes: 75, price_note: "공개 예약 폼 2명 총액 68,000원 기준", price_source_url: "https://point-nine.com/layout/res/home.php?go=rev.make&s_zizum=5", price_verified_at: "2026-06-14"}
+      - {theme_name: "RETURN", genre: "드라마", price: 34000, duration_minutes: 60, price_note: "건대점 공개 예약 폼 대표 인당가", price_source_url: "https://point-nine.com/layout/res/home.php?go=rev.make&s_zizum=5", price_verified_at: "2026-06-14"}
+      - {theme_name: "ALBA", genre: "잠입", price: 34000, duration_minutes: 70, price_note: "건대점 공개 예약 폼 대표 인당가", price_source_url: "https://point-nine.com/layout/res/home.php?go=rev.make&s_zizum=5", price_verified_at: "2026-06-14"}
+
+  - store_id: pointnine_hongdae
+    store_name: 포인트나인 홍대점
+    region: 서울 홍대
+    booking_url: https://point-nine.com/layout/res/home.php?go=rev.make&s_zizum=6
+    adapter_type: sinbi
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집
+    themes:
+      - {theme_name: "SILENT", genre: "스릴/수사", price: 32000, duration_minutes: 75, price_note: "공개 예약 폼 2명 총액 64,000원 기준", price_source_url: "https://point-nine.com/layout/res/home.php?go=rev.make&s_zizum=6", price_verified_at: "2026-06-14"}
+      - {theme_name: "LISTEN", genre: "스릴", price: 32000, duration_minutes: 75, price_note: "홍대점 공개 예약 폼 대표 인당가", price_source_url: "https://point-nine.com/layout/res/home.php?go=rev.make&s_zizum=6", price_verified_at: "2026-06-14"}
+
+  - store_id: studioesc_gangnam
+    store_name: Studio ESC 강남
+    region: 서울 강남
+    booking_url: https://studioesc.co.kr/layout/res/home.php?go=rev.make
+    adapter_type: sinbi
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집
+    themes:
+      - {theme_name: "검은마법사", genre: "판타지", price: 28000, duration_minutes: 75, price_note: "공개 예약 폼 2명 총액 56,000원 기준 대표 인당가", price_source_url: "https://studioesc.co.kr/layout/res/home.php?go=rev.make", price_verified_at: "2026-06-14"}
+      - {theme_name: "하얀마법사", genre: "판타지", price: 28000, duration_minutes: 75, price_note: "공개 예약 폼 대표 인당가", price_source_url: "https://studioesc.co.kr/layout/res/home.php?go=rev.make", price_verified_at: "2026-06-14"}
+
+  - store_id: deepthinker_hongdae
+    store_name: 딥띵커 홍대
+    region: 서울 홍대
+    booking_url: https://deepthinker.co.kr/reservation/
+    adapter_type: deepthinker
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집
+    themes:
+      - {theme_name: "옹이의 꿈", genre: "감성/드라마", price: 26000, duration_minutes: 65, price_note: "공식 변경사항 공지 인당 26,000원", price_source_url: "https://deepthinker.co.kr/notices/%EC%98%B9%EC%9D%B4%EC%9D%98-%EA%BF%88-%ED%85%8C%EB%A7%88-%EB%B3%80%EA%B2%BD%EC%82%AC%ED%95%AD/", price_verified_at: "2026-06-14"}
+
+  - store_id: oasis_hongdae
+    store_name: 오아시스 뮤지엄 홍대
+    region: 서울 홍대
+    booking_url: https://oasismuseum.com/ticket
+    adapter_type: oasis
+    avg_people: 2.7
+    collection_note: 공개 예약표 자동 수집 · 인원/요일별 공식 총액 적용
+    themes:
+      - {theme_name: "업사이드 다운", genre: "판타지", price: 29000, duration_minutes: 75, min_people: 2, max_people: 6, price_note: "공식 티켓 페이지 1인 29,000원", price_source_url: "https://oasismuseum.com/ticket", price_verified_at: "2026-06-15"}
+      - {theme_name: "미씽 삭스 미스터리", genre: "미스터리", price: 28000, duration_minutes: 65, min_people: 2, max_people: 6, price_note: "공식 티켓 페이지 1인 28,000원", price_source_url: "https://oasismuseum.com/ticket", price_verified_at: "2026-06-15"}
+      - {theme_name: "배드 타임 (BÆD TIME)", genre: "판타지/드라마", price: 32000, duration_minutes: 75, min_people: 3, max_people: 6, price_note: "공식 티켓 페이지 1인 32,000원 · 최소 3인", price_source_url: "https://oasismuseum.com/ticket", price_verified_at: "2026-06-15"}
+      - {theme_name: "하이 맥스 (HIGH MAX)", genre: "액션/어드벤처", price: 0, duration_minutes: 130, min_people: 2, max_people: 6, weekday_party_prices: {2: 120000, 3: 132000, 4: 156000, 5: 180000, 6: 216000}, weekend_party_prices: {2: 110000, 3: 147000, 4: 176000, 5: 205000, 6: 246000}, price_note: "공식 티켓 페이지 인원·평일/주말별 총액", price_source_url: "https://oasismuseum.com/ticket", price_verified_at: "2026-06-15"}
+      - {theme_name: "4 SUM 1", genre: "어드벤처", price: 0, duration_minutes: 240, min_people: 2, max_people: 6, price_note: "공식 페이지 가격 미정 · 매출 계산 제외", price_source_url: "https://oasismuseum.com/ticket", price_verified_at: "2026-06-15"}
+
+  - store_id: doorescape_policy
+    store_name: 도어이스케이프
+    region: 전국
+    booking_url: https://doorescape.co.kr/reservation.html
+    adapter_type: blocked
+    avg_people: 2.7
+    collection_note: 공식 페이지에 무단 크롤링 금지 문구가 있어 자동 수집 제외
+    themes: []
+
+  - store_id: shortstories_gangnam
+    store_name: 단편선 강남
+    region: 서울 강남
+    booking_url: https://www.dpsnnn.com/reserve_g
+    adapter_type: shortstories
+    avg_people: 2.7
+    collection_note: 로그인 없이 공개된 공식 예약 달력과 내부 프레임의 테마·날짜·시간 상태만 읽음
+    themes:
+      - {theme_name: "그림자 없는 상자", genre: "드라마", price: 27000, duration_minutes: 75, min_people: 2, max_people: 4, party_prices: {2: 54000, 3: 81000, 4: 108000}, public_schedule_url: "https://web.zamfit.kr/escapes/5283", price_note: "단편선 강남 공식 예약 페이지 1인 27,000원", price_source_url: "https://www.dpsnnn.com/reserve_g", price_verified_at: "2026-06-15"}
+      - {theme_name: "사람들은 그것을 행복이라 부르기로 했다", genre: "드라마", price: 28000, duration_minutes: 80, min_people: 2, max_people: 4, party_prices: {2: 56000, 3: 84000, 4: 112000}, public_schedule_url: "https://web.zamfit.kr/escapes/5284", price_note: "단편선 강남 공식 예약 페이지 1인 28,000원", price_source_url: "https://www.dpsnnn.com/reserve_g", price_verified_at: "2026-06-15"}
+
+  - store_id: shortstories_seongsu
+    store_name: 단편선 성수
+    region: 서울 성수
+    booking_url: https://dpsnnn-s.imweb.me/reserve_ss
+    adapter_type: shortstories
+    avg_people: 2.7
+    collection_note: 로그인 없이 공개된 공식 예약 달력과 내부 프레임의 테마·날짜·시간 상태만 읽음
+    themes:
+      - {theme_name: "쓰여진 문장 속에 구원이 없다면", genre: "드라마", price: 32000, duration_minutes: 80, min_people: 2, max_people: 4, party_prices: {2: 64000, 3: 96000, 4: 128000}, public_schedule_url: "https://web.zamfit.kr/escapes/6869", price_note: "단편선 성수 공식 예약 페이지 1인 32,000원", price_source_url: "https://dpsnnn-s.imweb.me/reserve_ss", price_verified_at: "2026-06-15"}
+      - {theme_name: "존재할 자격", genre: "드라마", price: 32000, duration_minutes: 80, min_people: 2, max_people: 4, party_prices: {2: 64000, 3: 96000, 4: 128000}, public_schedule_url: "https://web.zamfit.kr/escapes/6851", price_note: "단편선 성수 공식 예약 페이지 1인 32,000원", price_source_url: "https://dpsnnn-s.imweb.me/reserve_ss", price_verified_at: "2026-06-15"}
+      - {theme_name: "쥐와 파시스트와 마지막 한 장", genre: "드라마", price: 25000, duration_minutes: 70, min_people: 2, max_people: 3, party_prices: {2: 50000, 3: 75000}, public_schedule_url: "https://web.zamfit.kr/escapes/6948", price_note: "단편선 성수 공식 예약 페이지 1인 25,000원; 공개 권장 인원 2~3인", price_source_url: "https://dpsnnn-s.imweb.me/reserve_ss", price_verified_at: "2026-06-15"}
+      - {theme_name: "뱃사람의 별", genre: "드라마", price: 31000, duration_minutes: 75, min_people: 2, max_people: 4, party_prices: {2: 62000, 3: 93000, 4: 124000}, public_schedule_url: "https://web.zamfit.kr/escapes/6852", price_note: "단편선 성수 공식 예약 페이지 1인 31,000원", price_source_url: "https://dpsnnn-s.imweb.me/reserve_ss", price_verified_at: "2026-06-15"}
+
+  - store_id: fantastrick_first
+    store_name: 판타스트릭 1호점
+    region: 서울 강남
+    booking_url: https://fantastrick.co.kr/booking/
+    adapter_type: limited
+    avg_people: 2.7
+    collection_note: 자동 브라우저 접근이 차단되어 공식 테마 정보만 등록
+    themes:
+      - {theme_name: "태초의 신부", genre: "판타지", price: 0, duration_minutes: 100, min_people: 3, max_people: 5, party_prices: {3: 96000, 4: 120000, 5: 150000}, price_note: "공식 안내: 3인 1인 32,000원, 4인 이상 1인 30,000원", price_source_url: "https://fantastrick.co.kr/rooms/firstfoundbride/", price_verified_at: "2026-06-15"}
+
+  - store_id: fantastrick_second
+    store_name: 판타스트릭 2호점
+    region: 서울 강남
+    booking_url: https://fantastrick.co.kr/booking/
+    adapter_type: limited
+    avg_people: 2.7
+    collection_note: 자동 브라우저 접근이 차단되어 공식 테마 정보만 등록
+    themes:
+      - {theme_name: "사자의 서", genre: "판타지/어드벤처", price: 0, duration_minutes: 80, min_people: 2, max_people: 4, party_prices: {2: 58000, 3: 84000, 4: 108000}, price_note: "공식 안내: 2인 58,000원, 3인 84,000원, 4인 108,000원", price_source_url: "https://fantastrick.co.kr/rooms/bookofduat/", price_verified_at: "2026-06-15"}
+
+  - store_id: fantastrick_third
+    store_name: 판타스트릭 3호점
+    region: 서울 강남
+    booking_url: https://fantastrick.co.kr/booking/
+    adapter_type: limited
+    avg_people: 2.7
+    collection_note: 자동 브라우저 접근이 차단되어 공식 테마·회차 정액 가격만 등록
+    themes:
+      - {theme_name: "시간의 영속성", genre: "SF/미스터리", price: 0, duration_minutes: 80, min_people: 3, max_people: 3, party_prices: {3: 63000}, price_note: "공식 안내의 3인 전용 회차 총액 63,000원", price_source_url: "https://fantastrick.co.kr/rooms/time/", price_verified_at: "2026-06-15"}
+      - {theme_name: "LOCKDOWN CITY", genre: "SF/액션", price: 0, duration_minutes: 100, min_people: 2, max_people: 4, party_prices: {2: 120000, 3: 120000, 4: 140000}, price_note: "공식 안내: 3인 이하 팀 120,000원, 4인 팀 140,000원", price_source_url: "https://fantastrick.co.kr/rooms/ldc/", price_verified_at: "2026-06-15"}
+
+  - store_id: goldenkey_gangnam_timesquare
+    store_name: 황금열쇠 강남 타임스퀘어
+    region: 서울 강남
+    booking_url: http://xn--jj0b998aq3cptw.com/layout/res/home.php?go=rev.make&s_zizum=5
+    adapter_type: sinbi
+    avg_people: 2.7
+    collection_note: 공식 공개 예약표의 전체 타임과 상태 자동 수집
+    themes:
+      - {theme_name: "NOMON : THE ORDEAL", genre: "판타지/어드벤처", price: 27000, duration_minutes: 80, min_people: 2, max_people: 6, party_prices: {2: 54000, 3: 81000, 4: 108000, 5: 135000, 6: 162000}, price_note: "공식 공개 예약 입력 화면의 인원별 총액", price_source_url: "http://xn--jj0b998aq3cptw.com/layout/res/home.php?go=rev.make&s_zizum=5", price_verified_at: "2026-06-15"}
+      - {theme_name: "섬 : 잊혀진 이야기", genre: "드라마/미스터리", price: 26000, duration_minutes: 80, min_people: 2, max_people: 6, party_prices: {2: 52000, 3: 78000, 4: 104000, 5: 130000, 6: 156000}, price_note: "공식 공개 예약 입력 화면의 인원별 총액", price_source_url: "http://xn--jj0b998aq3cptw.com/layout/res/home.php?go=rev.make&s_zizum=5", price_verified_at: "2026-06-15"}
+
+  - store_id: goldenkey_konkuk_utopia
+    store_name: 황금열쇠 건대 유토피아
+    region: 서울 건대
+    booking_url: http://xn--jj0b998aq3cptw.com/layout/res/home.php?go=rev.make&s_zizum=7
+    adapter_type: sinbi
+    avg_people: 2.7
+    collection_note: 공식 공개 예약표의 전체 타임과 상태 자동 수집
+    themes:
+      - {theme_name: "fl[ae]sh", genre: "SF/드라마", price: 25000, duration_minutes: 70, min_people: 2, max_people: 6, party_prices: {2: 50000, 3: 75000, 4: 100000, 5: 125000, 6: 150000}, price_note: "공식 공개 예약 입력 화면의 1인 25,000원", price_source_url: "http://xn--jj0b998aq3cptw.com/layout/res/home.php?go=rev.make&s_zizum=7", price_verified_at: "2026-06-15"}
+      - {theme_name: "NOW HERE", genre: "판타지/드라마", price: 25000, duration_minutes: 70, min_people: 2, max_people: 6, party_prices: {2: 50000, 3: 75000, 4: 100000, 5: 125000, 6: 150000}, price_note: "공식 공개 예약 입력 화면의 1인 25,000원", price_source_url: "http://xn--jj0b998aq3cptw.com/layout/res/home.php?go=rev.make&s_zizum=7", price_verified_at: "2026-06-15"}
+
+  - store_id: murderparker_konkuk1
+    store_name: 머더파커 건대1호점
+    region: 서울 건대
+    booking_url: http://murderparker.com/m/sub_02/sub02_1.html?JIJEM=S6
+    adapter_type: murderparker
+    avg_people: 2.7
+    collection_note: 공식 공개 예약표의 전체 타임과 예약 가능/완료 상태 자동 수집
+    themes:
+      - {theme_name: "음대출신 김수학", genre: "코믹/추리", price: 0, duration_minutes: 60, min_people: 2, max_people: 6, party_prices: {2: 44000, 3: 60000, 4: 72000, 5: 90000, 6: 102000}, price_note: "공식 지점 가격표의 인원별 총액", price_source_url: "http://murderparker.com/m/sub_01/sub01_1.html?JIJEM=S6", price_verified_at: "2026-06-15"}
+      - {theme_name: "파커4", genre: "미스터리", price: 0, duration_minutes: 80, min_people: 2, max_people: 6, party_prices: {2: 54000, 3: 75000, 4: 92000, 5: 105000, 6: 114000}, price_note: "공식 프리미엄 테마 인원별 총액", price_source_url: "http://murderparker.com/m/sub_01/sub01_1.html?JIJEM=S6", price_verified_at: "2026-06-15"}
+      - {theme_name: "우리 꼰대 진분홍", genre: "코믹", price: 0, duration_minutes: 60, min_people: 2, max_people: 6, party_prices: {2: 44000, 3: 60000, 4: 72000, 5: 90000, 6: 102000}, price_note: "공식 지점 가격표의 인원별 총액", price_source_url: "http://murderparker.com/m/sub_01/sub01_1.html?JIJEM=S6", price_verified_at: "2026-06-15"}
+      - {theme_name: "여행", genre: "드라마", price: 0, duration_minutes: 70, min_people: 2, max_people: 6, party_prices: {2: 50000, 3: 66000, 4: 80000, 5: 100000, 6: 108000}, price_note: "공식 프리미엄 테마 인원별 총액", price_source_url: "http://murderparker.com/m/sub_01/sub01_1.html?JIJEM=S6", price_verified_at: "2026-06-15"}
+      - {theme_name: "꽁노리", genre: "코믹", price: 0, duration_minutes: 60, min_people: 2, max_people: 6, party_prices: {2: 44000, 3: 60000, 4: 72000, 5: 90000, 6: 102000}, price_note: "공식 지점 가격표의 인원별 총액", price_source_url: "http://murderparker.com/m/sub_01/sub01_1.html?JIJEM=S6", price_verified_at: "2026-06-15"}
+      - {theme_name: "어은꿈이진루다", genre: "판타지", price: 0, duration_minutes: 60, min_people: 2, max_people: 6, party_prices: {2: 44000, 3: 60000, 4: 72000, 5: 90000, 6: 102000}, price_note: "공식 지점 가격표의 인원별 총액", price_source_url: "http://murderparker.com/m/sub_01/sub01_1.html?JIJEM=S6", price_verified_at: "2026-06-15"}
+
+  - store_id: murderparker_konkuk2
+    store_name: 머더파커 건대2호점
+    region: 서울 건대
+    booking_url: http://murderparker.com/m/sub_02/sub02_1.html?JIJEM=S8
+    adapter_type: murderparker
+    avg_people: 2.7
+    collection_note: 공식 공개 예약표의 전체 타임과 예약 가능/완료 상태 자동 수집
+    themes:
+      - {theme_name: "그림가문", genre: "미스터리", price: 27000, duration_minutes: 60, min_people: 2, max_people: 6, party_prices: {2: 54000, 3: 81000, 4: 108000, 5: 135000, 6: 162000}, price_note: "공식 지점 공통 가격표의 1인 27,000원", price_source_url: "http://murderparker.com/m/sub_01/sub01_1.html?JIJEM=S8", price_verified_at: "2026-06-15"}
+      - {theme_name: "특수사건대응반", genre: "수사", price: 27000, duration_minutes: 60, min_people: 2, max_people: 6, party_prices: {2: 54000, 3: 81000, 4: 108000, 5: 135000, 6: 162000}, price_note: "공식 지점 공통 가격표의 1인 27,000원", price_source_url: "http://murderparker.com/m/sub_01/sub01_1.html?JIJEM=S8", price_verified_at: "2026-06-15"}
+      - {theme_name: "미로:ME", genre: "미로/판타지", price: 27000, duration_minutes: 60, min_people: 2, max_people: 6, party_prices: {2: 54000, 3: 81000, 4: 108000, 5: 135000, 6: 162000}, price_note: "공식 지점 공통 가격표의 1인 27,000원", price_source_url: "http://murderparker.com/m/sub_01/sub01_1.html?JIJEM=S8", price_verified_at: "2026-06-15"}
+
+  - store_id: murderparker_hongdae1
+    store_name: 머더파커 홍대1호점
+    region: 서울 홍대
+    booking_url: http://murderparker.com/m/sub_02/sub02_1.html?JIJEM=S9
+    adapter_type: murderparker
+    avg_people: 2.7
+    collection_note: 공식 공개 예약표의 전체 타임과 예약 가능/완료 상태 자동 수집
+    themes:
+      - {theme_name: "구둣방손님", genre: "드라마", price: 0, duration_minutes: 60, min_people: 2, max_people: 6, party_prices: {2: 44000, 3: 63000, 4: 80000, 5: 100000, 6: 120000}, price_note: "공식 지점 가격표의 인원별 총액", price_source_url: "http://murderparker.com/m/sub_01/sub01_1.html?JIJEM=S9", price_verified_at: "2026-06-15"}
+      - {theme_name: "밴드의 탄생", genre: "음악/드라마", price: 0, duration_minutes: 60, min_people: 2, max_people: 6, party_prices: {2: 44000, 3: 63000, 4: 80000, 5: 100000, 6: 120000}, price_note: "공식 지점 가격표의 인원별 총액", price_source_url: "http://murderparker.com/m/sub_01/sub01_1.html?JIJEM=S9", price_verified_at: "2026-06-15"}
+      - {theme_name: "주마등", genre: "드라마", price: 0, duration_minutes: 60, min_people: 2, max_people: 6, party_prices: {2: 44000, 3: 63000, 4: 80000, 5: 100000, 6: 120000}, price_note: "공식 지점 가격표의 인원별 총액", price_source_url: "http://murderparker.com/m/sub_01/sub01_1.html?JIJEM=S9", price_verified_at: "2026-06-15"}
+      - {theme_name: "칠칠77", genre: "미스터리", price: 0, duration_minutes: 70, min_people: 2, max_people: 6, party_prices: {2: 50000, 3: 72000, 4: 92000, 5: 115000, 6: 138000}, price_note: "공식 70분 프리미엄 가격표", price_source_url: "http://murderparker.com/m/sub_01/sub01_1.html?JIJEM=S9", price_verified_at: "2026-06-15"}
+      - {theme_name: "엠M", genre: "혼방/스릴러", price: 0, duration_minutes: 70, min_people: 1, max_people: 2, party_prices: {1: 22000, 2: 38000}, price_note: "공식 1~2인 혼방 가격표", price_source_url: "http://murderparker.com/m/sub_01/sub01_1.html?JIJEM=S9", price_verified_at: "2026-06-15"}
+
+  - store_id: murderparker_jamsil
+    store_name: 머더파커 잠실점
+    region: 서울 잠실
+    booking_url: http://murderparker.com/m/sub_02/sub02_1.html?JIJEM=S11
+    adapter_type: murderparker
+    avg_people: 2.7
+    collection_note: 공식 공개 예약표의 전체 타임과 예약 가능/완료 상태 자동 수집
+    themes:
+      - {theme_name: "집으로 가자 야호!", genre: "판타지/코믹", price: 0, duration_minutes: 70, min_people: 2, max_people: 6, party_prices: {2: 52000, 3: 72000, 4: 96000, 5: 120000, 6: 144000}, price_note: "공식 지점 공통 인원별 총액", price_source_url: "http://murderparker.com/m/sub_01/sub01_1.html?JIJEM=S11", price_verified_at: "2026-06-15"}
+      - {theme_name: "두목 이스케이프", genre: "코믹/액션", price: 0, duration_minutes: 70, min_people: 2, max_people: 6, party_prices: {2: 52000, 3: 72000, 4: 96000, 5: 120000, 6: 144000}, price_note: "공식 지점 공통 인원별 총액", price_source_url: "http://murderparker.com/m/sub_01/sub01_1.html?JIJEM=S11", price_verified_at: "2026-06-15"}
+      - {theme_name: "정육각형", genre: "미스터리", price: 0, duration_minutes: 80, min_people: 2, max_people: 6, party_prices: {2: 52000, 3: 72000, 4: 96000, 5: 120000, 6: 144000}, price_note: "공식 지점 공통 인원별 총액", price_source_url: "http://murderparker.com/m/sub_01/sub01_1.html?JIJEM=S11", price_verified_at: "2026-06-15"}
+
+  - store_id: murderparker_wow_hongdae
+    store_name: 머더파커 WOW 홍대점
+    region: 서울 홍대
+    booking_url: http://murderparker.com/m/sub_02/sub02_1.html?JIJEM=S13
+    adapter_type: murderparker
+    avg_people: 2.7
+    collection_note: 공식 공개 예약표의 전체 타임과 예약 가능/완료 상태 자동 수집
+    themes:
+      - {theme_name: "홈그라운드", genre: "스포츠/드라마", price: 25000, duration_minutes: 60, min_people: 2, max_people: 6, party_prices: {2: 50000, 3: 75000, 4: 100000, 5: 125000, 6: 150000}, price_note: "공식 지점 공통 가격표의 1인 25,000원", price_source_url: "http://murderparker.com/m/sub_01/sub01_1.html?JIJEM=S13", price_verified_at: "2026-06-15"}
+      - {theme_name: "선택받은 자", genre: "판타지", price: 25000, duration_minutes: 60, min_people: 2, max_people: 6, party_prices: {2: 50000, 3: 75000, 4: 100000, 5: 125000, 6: 150000}, price_note: "공식 지점 공통 가격표의 1인 25,000원", price_source_url: "http://murderparker.com/m/sub_01/sub01_1.html?JIJEM=S13", price_verified_at: "2026-06-15"}
+      - {theme_name: "하(HA)", genre: "미스터리", price: 25000, duration_minutes: 60, min_people: 2, max_people: 6, party_prices: {2: 50000, 3: 75000, 4: 100000, 5: 125000, 6: 150000}, price_note: "공식 지점 공통 가격표의 1인 25,000원", price_source_url: "http://murderparker.com/m/sub_01/sub01_1.html?JIJEM=S13", price_verified_at: "2026-06-15"}
+
+  - store_id: murderparker_wow_jamsil
+    store_name: 머더파커 WOW 잠실점
+    region: 서울 잠실
+    booking_url: http://murderparker.com/m/sub_02/sub02_1.html?JIJEM=S14
+    adapter_type: murderparker
+    avg_people: 2.7
+    collection_note: 공식 공개 예약표의 전체 타임과 예약 가능/완료 상태 자동 수집
+    themes:
+      - {theme_name: "난 그저 여행만 했을 뿐인데..", genre: "어드벤처", price: 28000, duration_minutes: 70, min_people: 2, max_people: 6, party_prices: {2: 56000, 3: 84000, 4: 112000, 5: 140000, 6: 168000}, price_note: "공식 지점 공통 가격표의 1인 28,000원", price_source_url: "http://murderparker.com/m/sub_01/sub01_1.html?JIJEM=S14", price_verified_at: "2026-06-15"}
+      - {theme_name: "G.A.S.A.", genre: "SF", price: 28000, duration_minutes: 70, min_people: 2, max_people: 6, party_prices: {2: 56000, 3: 84000, 4: 112000, 5: 140000, 6: 168000}, price_note: "공식 지점 공통 가격표의 1인 28,000원", price_source_url: "http://murderparker.com/m/sub_01/sub01_1.html?JIJEM=S14", price_verified_at: "2026-06-15"}
+      - {theme_name: "파커랜드", genre: "판타지/코믹", price: 28000, duration_minutes: 70, min_people: 2, max_people: 6, party_prices: {2: 56000, 3: 84000, 4: 112000, 5: 140000, 6: 168000}, price_note: "공식 지점 공통 가격표의 1인 28,000원", price_source_url: "http://murderparker.com/m/sub_01/sub01_1.html?JIJEM=S14", price_verified_at: "2026-06-15"}
+      - {theme_name: "아틀라스", genre: "어드벤처", price: 28000, duration_minutes: 70, min_people: 2, max_people: 6, party_prices: {2: 56000, 3: 84000, 4: 112000, 5: 140000, 6: 168000}, price_note: "공식 지점 공통 가격표의 1인 28,000원", price_source_url: "http://murderparker.com/m/sub_01/sub01_1.html?JIJEM=S14", price_verified_at: "2026-06-15"}
+
+  - store_id: sowoojoo_suwon
+    store_name: 소우주 이스케이프 수원
+    region: 경기 수원
+    booking_url: http://sowoojoo-escape.com/layout/res/home.php?go=rev.make
+    adapter_type: sinbi
+    avg_people: 2.7
+    collection_note: 공식 공개 예약표 자동 수집 · 공식 예약 입력 화면 인원별 총액 적용
+    themes:
+      - {theme_name: "풀문", genre: "판타지", price: 0, duration_minutes: 75, min_people: 2, max_people: 5, party_prices: {2: 50000, 3: 72000, 4: 92000, 5: 115000}, price_note: "공식 공개 예약 입력 화면 인원별 총액", price_source_url: "http://sowoojoo-escape.com/layout/res/home.php?go=rev.make", price_verified_at: "2026-06-15"}
+      - {theme_name: "도고", genre: "미스터리", price: 0, duration_minutes: 60, min_people: 2, max_people: 5, party_prices: {2: 44000, 3: 63000, 4: 80000, 5: 100000}, price_note: "공식 공개 예약 입력 화면 인원별 총액", price_source_url: "http://sowoojoo-escape.com/layout/res/home.php?go=rev.make", price_verified_at: "2026-06-15"}
+      - {theme_name: "마지막 유산", genre: "어드벤처", price: 0, duration_minutes: 60, min_people: 2, max_people: 5, party_prices: {2: 44000, 3: 63000, 4: 80000, 5: 100000}, price_note: "공식 공개 예약 입력 화면 인원별 총액", price_source_url: "http://sowoojoo-escape.com/layout/res/home.php?go=rev.make", price_verified_at: "2026-06-15"}
+      - {theme_name: "영포에버", genre: "드라마", price: 0, duration_minutes: 70, min_people: 2, max_people: 5, party_prices: {2: 48000, 3: 69000, 4: 88000, 5: 110000}, price_note: "공식 공개 예약 입력 화면 인원별 총액", price_source_url: "http://sowoojoo-escape.com/layout/res/home.php?go=rev.make", price_verified_at: "2026-06-15"}
+      - {theme_name: "방과후 추리반 EP1.여고생 살인사건", genre: "추리", price: 0, duration_minutes: 70, min_people: 2, max_people: 5, party_prices: {2: 48000, 3: 69000, 4: 88000, 5: 110000}, price_note: "공식 공개 예약 입력 화면 인원별 총액", price_source_url: "http://sowoojoo-escape.com/layout/res/home.php?go=rev.make", price_verified_at: "2026-06-15"}
+      - {theme_name: "방과후 추리반 EP2. 여고생 실종사건", genre: "추리", price: 0, duration_minutes: 70, min_people: 2, max_people: 5, party_prices: {2: 48000, 3: 69000, 4: 88000, 5: 110000}, price_note: "공식 공개 예약 입력 화면 인원별 총액", price_source_url: "http://sowoojoo-escape.com/layout/res/home.php?go=rev.make", price_verified_at: "2026-06-15"}
+      - {theme_name: "SPIN - OFF", genre: "미스터리", price: 0, duration_minutes: 70, min_people: 2, max_people: 5, party_prices: {2: 48000, 3: 69000, 4: 88000, 5: 110000}, price_note: "공식 공개 예약 입력 화면 인원별 총액", price_source_url: "http://sowoojoo-escape.com/layout/res/home.php?go=rev.make", price_verified_at: "2026-06-15"}
+
+  - store_id: questionmark_hongdae
+    store_name: 퀘스천마크 홍대
+    region: 서울 홍대
+    booking_url: https://question-mark.co.kr/layout/res/home.php?go=rev.make
+    adapter_type: sinbi
+    avg_people: 2.7
+    collection_note: 공식 공개 예약표 자동 수집
+    themes:
+      - {theme_name: "퀘스천마크 ?", genre: "미스터리", price: 29000, duration_minutes: 75, min_people: 2, max_people: 6, party_prices: {2: 58000, 3: 87000, 4: 116000, 5: 145000, 6: 174000}, price_note: "공식 공개 예약 입력 화면의 1인 29,000원", price_source_url: "https://question-mark.co.kr/layout/res/home.php?go=rev.make", price_verified_at: "2026-06-15"}
+
+  - store_id: weyol_hongdae
+    store_name: 위욜 홍대
+    region: 서울 홍대
+    booking_url: https://weyol.com/layout/res/home.php?go=rev.make
+    adapter_type: sinbi
+    avg_people: 2.7
+    collection_note: 공식 공개 예약표 자동 수집
+    themes:
+      - {theme_name: "디어마이프렌드", genre: "드라마", price: 27000, duration_minutes: 70, min_people: 2, max_people: 6, party_prices: {2: 54000, 3: 81000, 4: 108000, 5: 135000, 6: 162000}, price_note: "공식 공개 예약 입력 화면의 현재 1인 27,000원", price_source_url: "https://weyol.com/layout/res/home.php?go=rev.make", price_verified_at: "2026-06-15"}
+      - {theme_name: "즐거운나의집", genre: "드라마/미스터리", price: 25000, duration_minutes: 60, min_people: 2, max_people: 4, party_prices: {2: 50000, 3: 75000, 4: 100000}, price_note: "공식 테마 권장 최대 4인 및 1인 25,000원", price_source_url: "https://weyol.com/layout/res/home.php?go=theme.list", price_verified_at: "2026-06-15"}
+
+  - store_id: hotelleto_seongsu
+    store_name: 호텔레토 성수
+    region: 서울 성수
+    booking_url: https://hotelletoh.co.kr/layout/res/home.php?go=rev.make
+    adapter_type: sinbi
+    avg_people: 2.7
+    collection_note: 공식 공개 예약표 자동 수집 · 회차 정액 가격 적용
+    themes:
+      - {theme_name: "호텔 레토", genre: "이머시브/미스터리", price: 0, duration_minutes: 100, min_people: 2, max_people: 6, party_prices: {2: 200000, 3: 200000, 4: 200000, 5: 220000, 6: 240000}, price_note: "공식 공개 예약 입력 화면의 인원별 회차 총액", price_source_url: "https://hotelletoh.co.kr/layout/res/home.php?go=rev.make", price_verified_at: "2026-06-15"}
+
+  - store_id: exodus_gangnam
+    store_name: 엑소더스 강남
+    region: 서울 강남
+    booking_url: https://exodusescape.co.kr/layout/res/home.php?go=rev.make
+    adapter_type: sinbi
+    avg_people: 2.7
+    collection_note: 공식 공개 예약표 자동 수집
+    themes:
+      - {theme_name: "CLAIM", genre: "미스터리", price: 27000, duration_minutes: 70, min_people: 2, max_people: 6, party_prices: {2: 54000, 3: 81000, 4: 108000, 5: 135000, 6: 162000}, price_note: "공식 공개 예약 입력 화면의 1인 27,000원", price_source_url: "https://exodusescape.co.kr/layout/res/home.php?go=rev.make", price_verified_at: "2026-06-15"}
+      - {theme_name: "WISH", genre: "판타지/드라마", price: 28000, duration_minutes: 75, min_people: 2, max_people: 6, party_prices: {2: 56000, 3: 84000, 4: 112000, 5: 140000, 6: 168000}, price_note: "공식 공개 예약 입력 화면의 1인 28,000원", price_source_url: "https://exodusescape.co.kr/layout/res/home.php?go=rev.make", price_verified_at: "2026-06-15"}
+
+  - store_id: dreamescape_konkuk
+    store_name: 드림이스케이프 건대
+    region: 서울 건대
+    booking_url: https://m.booking.naver.com/booking/12/bizes/843881
+    adapter_type: naver_booking
+    avg_people: 2.7
+    collection_note: 로그인 없이 공개된 네이버 예약 상품·날짜·시간 상태만 수집
+    themes:
+      - {theme_name: "V.E.T.", genre: "SF/미스터리", price: 25000, duration_minutes: 60, min_people: 2, max_people: 6, party_prices: {2: 50000, 3: 75000, 4: 100000, 5: 125000, 6: 150000}, price_note: "공식 네이버 예약의 현재 1인 25,000원", price_source_url: "https://m.booking.naver.com/booking/12/bizes/843881", price_verified_at: "2026-06-15"}
+      - {theme_name: "Dolphin", genre: "판타지/드라마", price: 26000, duration_minutes: 65, min_people: 2, max_people: 4, party_prices: {2: 52000, 3: 78000, 4: 104000}, price_note: "공식 네이버 예약의 2인 선결제 52,000원", price_source_url: "https://m.booking.naver.com/booking/12/bizes/843881", price_verified_at: "2026-06-15"}
+      - {theme_name: "ALLTHEBOX PARADISE", genre: "판타지", price: 30000, duration_minutes: 80, min_people: 2, max_people: 6, party_prices: {2: 60000, 3: 90000, 4: 120000, 5: 150000, 6: 180000}, price_note: "공식 네이버 예약의 2인 선결제 60,000원", price_source_url: "https://m.booking.naver.com/booking/12/bizes/843881", price_verified_at: "2026-06-15"}
+      - {theme_name: "바야흐로, 여름이었다.", genre: "드라마", price: 32000, duration_minutes: 80, min_people: 2, max_people: 6, party_prices: {2: 64000, 3: 96000, 4: 128000, 5: 160000, 6: 192000}, price_note: "공식 가격 변경 공지의 1인 32,000원; 현재 네이버 상품 목록 미노출", price_source_url: "https://www.instagram.com/p/C_2uuthywVX/", price_verified_at: "2026-06-15"}
+
+  - store_id: amazed_bupyeong2
+    store_name: 어메이즈드 부평2호점
+    region: 인천 부평
+    booking_url: https://amazed.co.kr/?page_id=3402
+    adapter_type: limited
+    avg_people: 2.7
+    collection_note: 공식 예약 페이지 응답 지연으로 가격 카탈로그만 등록; 수치 통계에서는 제외
+    themes:
+      - {theme_name: "이탈리안잡", genre: "범죄/액션", price: 24000, duration_minutes: 60, min_people: 2, max_people: 6, party_prices: {2: 48000, 3: 72000, 4: 96000, 5: 120000, 6: 144000}, price_note: "공개 상세 가격표의 1인 24,000원", price_source_url: "https://web.zamfit.kr/escapes/5565", price_verified_at: "2026-06-15"}
+      - {theme_name: "REC", genre: "공포", price: 24000, duration_minutes: 60, min_people: 2, max_people: 6, party_prices: {2: 48000, 3: 72000, 4: 96000, 5: 120000, 6: 144000}, price_note: "공개 상세 가격표의 1인 24,000원", price_source_url: "https://web.zamfit.kr/escapes/5566", price_verified_at: "2026-06-15"}
+      - {theme_name: "하시마", genre: "공포", price: 0, duration_minutes: 60, min_people: 2, max_people: 6, party_prices: {2: 26000, 3: 52000, 4: 78000, 5: 104000, 6: 130000}, price_note: "현재 공개 상세 페이지에 표시된 인원별 총액을 그대로 적용", price_source_url: "https://web.zamfit.kr/escapes/5567", price_verified_at: "2026-06-15"}
+
+  - store_id: amazed_bupyeong3
+    store_name: 어메이즈드 부평3호점
+    region: 인천 부평
+    booking_url: https://amazed.co.kr/?page_id=4808
+    adapter_type: amazed
+    avg_people: 2.7
+    collection_note: 로그인 없이 공개된 공식 전체 타임과 매진 상태 자동 수집
+    themes:
+      - {theme_name: "SHIFT:고쿄의 하루", genre: "SF/드라마", price: 38000, duration_minutes: 100, min_people: 2, max_people: 4, party_prices: {2: 76000, 3: 114000, 4: 152000}, price_note: "공개 상세 가격표의 1인 38,000원", price_source_url: "https://web.zamfit.kr/escapes/6768/SHIFT%EA%B3%A0%EC%BF%84%EC%9D%98-%ED%95%98%EB%A3%A8", price_verified_at: "2026-06-15"}
+
+  - store_id: decoder_hongdae
+    store_name: 디코더 홍대
+    region: 서울 홍대
+    booking_url: https://decoder.kr/
+    adapter_type: limited
+    avg_people: 2.7
+    collection_note: 공식 사이트가 자동 접근에 406을 반환해 검증된 공개 가격 카탈로그만 등록
+    themes:
+      - {theme_name: "Introverted Thief", genre: "잠입/미스터리", price: 0, duration_minutes: 60, min_people: 2, max_people: 5, party_prices: {2: 44000, 3: 60000, 4: 72000, 5: 85000}, price_note: "공개 인원별 총액표", price_source_url: "https://decoder.kr/", price_verified_at: "2026-06-15"}
+      - {theme_name: "Furious Revenge", genre: "액션/복수", price: 0, duration_minutes: 60, min_people: 2, max_people: 5, party_prices: {2: 44000, 3: 60000, 4: 72000, 5: 85000}, price_note: "공개 인원별 총액표", price_source_url: "https://decoder.kr/", price_verified_at: "2026-06-15"}
+      - {theme_name: "Tempo Rubato", genre: "음악/드라마", price: 0, duration_minutes: 75, min_people: 2, max_people: 6, party_prices: {2: 56000, 3: 81000, 4: 104000, 5: 125000, 6: 144000}, price_note: "공식 테마 페이지와 공개 인원별 총액표", price_source_url: "https://decoder.kr/book-rubato/", price_verified_at: "2026-06-15"}
+
+  - store_id: masterkey_prime_sinchon_public
+    store_name: 마스터키 프라임 신촌퍼블릭점
+    region: 서울 신촌
+    booking_url: https://www.master-key.co.kr/booking/bk_detail?bid=32
+    adapter_type: limited
+    avg_people: 2.7
+    collection_note: 공식 예약 URL이 현재 통합 첫 화면으로 이동해 가격 카탈로그만 등록; 통계 분모 제외
+    themes:
+      - {theme_name: "인투 더 와일드", genre: "어드벤처", price: 0, duration_minutes: 60, min_people: 2, max_people: 6, party_prices: {2: 44000, 3: 60000, 4: 72000, 5: 90000, 6: 108000}, price_note: "공개 인원별 총액표", price_source_url: "https://web.zamfit.kr/escapes/5190", price_verified_at: "2026-06-15"}
+      - {theme_name: "그도... 그럴 것이다", genre: "미스터리", price: 0, duration_minutes: 60, min_people: 2, max_people: 6, party_prices: {2: 44000, 3: 60000, 4: 72000, 5: 90000, 6: 108000}, price_note: "공개 인원별 총액표", price_source_url: "https://web.zamfit.kr/escapes/5191", price_verified_at: "2026-06-15"}
+      - {theme_name: "SCENE - 404 NOT FOUND", genre: "스릴러", price: 0, duration_minutes: 70, min_people: 2, max_people: 6, party_prices: {2: 44000, 3: 60000, 4: 72000, 5: 90000, 6: 108000}, price_note: "공개 인원별 총액표", price_source_url: "https://web.zamfit.kr/escapes/5189/SCENE---404-NOT-FOUND", price_verified_at: "2026-06-15"}
+
+  - store_id: episode_gangnam
+    store_name: 에피소드 강남점
+    region: 서울 강남
+    booking_url: https://m.booking.naver.com/booking/12/bizes/704325
+    adapter_type: naver_booking
+    avg_people: 2.7
+    collection_note: 로그인 없이 공개된 네이버 예약 상품·날짜·시간 상태만 수집
+    themes:
+      - {theme_name: "귀문기담", genre: "공포", price: 25000, duration_minutes: 75, min_people: 2, max_people: 4, party_prices: {2: 50000, 3: 75000, 4: 100000}, price_note: "공식 네이버 예약 공개 가격 범위 50,000~100,000원", price_source_url: "https://m.booking.naver.com/booking/12/bizes/704325", price_verified_at: "2026-06-15"}
+      - {theme_name: "메아리", genre: "스릴러", price: 25000, duration_minutes: 75, min_people: 2, max_people: 4, party_prices: {2: 50000, 3: 75000, 4: 100000}, price_note: "공식 네이버 예약 공개 가격 범위 50,000~100,000원", price_source_url: "https://m.booking.naver.com/booking/12/bizes/704325", price_verified_at: "2026-06-15"}
+      - {theme_name: "그래서 님 몇방?", genre: "문제풀이", price: 22000, duration_minutes: 60, min_people: 1, max_people: 2, party_prices: {1: 22000, 2: 44000}, price_note: "공식 네이버 예약 공개 가격 범위 22,000~44,000원", price_source_url: "https://m.booking.naver.com/booking/12/bizes/704325", price_verified_at: "2026-06-15"}

@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.venv/
+.streamlit/
+data/*.db-*
+data/*.bak
+build/
+dist/
+work/
+logs/
+artifacts/
+.pytest_cache/
+*.exe

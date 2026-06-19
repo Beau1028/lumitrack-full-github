@@ -1,0 +1,16 @@
+stores:
+  - store_id: sample_store
+    store_name: 샘플 방탈출 강남점
+    region: 서울 강남
+    booking_url: sample_booking.html
+    adapter_type: generic
+    avg_people: 2.7
+    themes:
+      - theme_name: 사라진 연구원
+        genre: 미스터리
+        price: 35000
+        duration_minutes: 70
+      - theme_name: 마지막 열차
+        genre: 스릴러
+        price: 32000
+        duration_minutes: 60

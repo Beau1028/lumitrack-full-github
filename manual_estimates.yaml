@@ -1,0 +1,113 @@
+catalog_version: 2026-06-17.1
+observed_at: "2026-06-15"
+source_type: user_provided_manual_observation
+source_label: "사용자 제공 수동 관측·계산"
+note: "자동 수집값이 아닙니다. 사용자가 공개 예약표를 수동 확인해 계산한 예약률·평균 일매출·월 예상매출 범위입니다."
+
+stores:
+  - store_id: keyescape_station
+    store_name: 키이스케이프 강남 스테이션점
+    region: 서울 강남
+    booking_rate_min: 75.6
+    booking_rate_max: 81.6
+    daily_revenue_min: 2888614
+    daily_revenue_max: 3122357
+    monthly_revenue_min: 86658429
+    monthly_revenue_max: 93670714
+    themes:
+      - {theme_name: "내 방", display_name: "내방", booking_rate_min: 60.5, booking_rate_max: 68.9, daily_revenue_min: 833143, daily_revenue_max: 948857, monthly_revenue_min: 24994286, monthly_revenue_max: 28465714}
+      - {theme_name: "머니머니부동산", display_name: "머니머니 부동산", booking_rate_min: 67.0, booking_rate_max: 76.9, daily_revenue_min: 799971, daily_revenue_max: 918000, monthly_revenue_min: 23999143, monthly_revenue_max: 27540000}
+      - {theme_name: "NOSTALGIA VISTA", display_name: "Nostalgia Vista", booking_rate_min: 100.0, booking_rate_max: 100.0, daily_revenue_min: 1255500, daily_revenue_max: 1255500, monthly_revenue_min: 37665000, monthly_revenue_max: 37665000}
+
+  - store_id: keyescape_login1
+    store_name: 키이스케이프 로그인1
+    region: 서울 강남
+    booking_rate_min: 78.6
+    booking_rate_max: 85.1
+    daily_revenue_min: 1445657
+    daily_revenue_max: 1566000
+    monthly_revenue_min: 43369714
+    monthly_revenue_max: 46980000
+    themes:
+      - {theme_name: "FOR FREE", display_name: "For Free", booking_rate_min: 76.6, booking_rate_max: 84.4, daily_revenue_min: 728229, daily_revenue_max: 802286, monthly_revenue_min: 21846857, monthly_revenue_max: 24068571}
+      - {theme_name: "머니머니패키지", display_name: "머니머니 패키지", booking_rate_min: 80.5, booking_rate_max: 85.7, daily_revenue_min: 717429, daily_revenue_max: 763714, monthly_revenue_min: 21522857, monthly_revenue_max: 22911429}
+
+  - store_id: keyescape_whosthere
+    store_name: 키이스케이프 후즈데어
+    region: 서울 강남
+    booking_rate_min: 100.0
+    booking_rate_max: 100.0
+    daily_revenue_min: 3969000
+    daily_revenue_max: 3969000
+    monthly_revenue_min: 119070000
+    monthly_revenue_max: 119070000
+    themes:
+      - {theme_name: "AYAKO", display_name: "아야코", booking_rate_min: 100.0, booking_rate_max: 100.0, daily_revenue_min: 1323000, daily_revenue_max: 1323000, monthly_revenue_min: 39690000, monthly_revenue_max: 39690000}
+      - {theme_name: "괴록", display_name: "괴록", booking_rate_min: 100.0, booking_rate_max: 100.0, daily_revenue_min: 1323000, daily_revenue_max: 1323000, monthly_revenue_min: 39690000, monthly_revenue_max: 39690000}
+      - {theme_name: "투투 어드벤쳐", display_name: "투투 어드벤처", booking_rate_min: 100.0, booking_rate_max: 100.0, daily_revenue_min: 1323000, daily_revenue_max: 1323000, monthly_revenue_min: 39690000, monthly_revenue_max: 39690000}
+
+  - store_id: keyescape_memorycompany
+    store_name: 키이스케이프 메모리 컴퍼니
+    region: 서울 홍대
+    booking_rate_min: 100.0
+    booking_rate_max: 100.0
+    daily_revenue_min: 2853900
+    daily_revenue_max: 2853900
+    monthly_revenue_min: 85617000
+    monthly_revenue_max: 85617000
+    themes:
+      - {theme_name: "FILM BY EDDY", display_name: "FILM BY EDDY", booking_rate_min: 100.0, booking_rate_max: 100.0, daily_revenue_min: 777600, daily_revenue_max: 777600, monthly_revenue_min: 23328000, monthly_revenue_max: 23328000}
+      - {theme_name: "FILM BY BOB", display_name: "FILM BY BOB", booking_rate_min: 100.0, booking_rate_max: 100.0, daily_revenue_min: 918000, daily_revenue_max: 918000, monthly_revenue_min: 27540000, monthly_revenue_max: 27540000}
+      - {theme_name: "FILM BY STEVE", display_name: "FILM BY STEVE", booking_rate_min: 100.0, booking_rate_max: 100.0, daily_revenue_min: 1158300, daily_revenue_max: 1158300, monthly_revenue_min: 34749000, monthly_revenue_max: 34749000}
+
+  - store_id: keyescape_woozoolike
+    store_name: 키이스케이프 우주라이크점
+    region: 서울 홍대
+    booking_rate_min: 53.4
+    booking_rate_max: 64.7
+    daily_revenue_min: 782614
+    daily_revenue_max: 946157
+    monthly_revenue_min: 23478429
+    monthly_revenue_max: 28384714
+    themes:
+      - {theme_name: "US", display_name: "US", booking_rate_min: 42.9, booking_rate_max: 58.6, daily_revenue_min: 324000, daily_revenue_max: 442800, monthly_revenue_min: 9720000, monthly_revenue_max: 13284000}
+      - {theme_name: "WANNA GO HOME", display_name: "WANNA GO HOME", booking_rate_min: 65.1, booking_rate_max: 71.4, daily_revenue_min: 458614, daily_revenue_max: 503357, monthly_revenue_min: 13758429, monthly_revenue_max: 15100714}
+
+  - store_id: keyescape_theoreum
+    store_name: 키이스케이프 더오름점
+    region: 서울 강남
+    booking_rate_min: 46.0
+    booking_rate_max: 54.8
+    daily_revenue_min: 618300
+    daily_revenue_max: 735171
+    monthly_revenue_min: 18549000
+    monthly_revenue_max: 22055143
+    themes:
+      - {theme_name: "네드", display_name: "네드", booking_rate_min: 58.7, booking_rate_max: 68.3, daily_revenue_min: 399600, daily_revenue_max: 464400, monthly_revenue_min: 11988000, monthly_revenue_max: 13932000}
+      - {theme_name: "엔제리오", display_name: "엔제리오", booking_rate_min: 33.3, booking_rate_max: 41.3, daily_revenue_min: 218700, daily_revenue_max: 270771, monthly_revenue_min: 6561000, monthly_revenue_max: 8123143}
+
+  - store_id: keyescape_login2
+    store_name: 키이스케이프 로그인2
+    region: 서울 강남
+    booking_rate_min: 55.4
+    booking_rate_max: 61.3
+    daily_revenue_min: 1092343
+    daily_revenue_max: 1211914
+    monthly_revenue_min: 32770286
+    monthly_revenue_max: 36357429
+    themes:
+      - {theme_name: "A GENTLE MONDAY", display_name: "A GENTLE MONDAY", booking_rate_min: 54.3, booking_rate_max: 61.4, daily_revenue_min: 498343, daily_revenue_max: 563914, monthly_revenue_min: 14950286, monthly_revenue_max: 16917429}
+      - {theme_name: "BACK TO THE SCENE+", display_name: "BACK TO THE SCENE+", booking_rate_min: 56.1, booking_rate_max: 61.2, daily_revenue_min: 594000, daily_revenue_max: 648000, monthly_revenue_min: 17820000, monthly_revenue_max: 19440000}
+
+  - store_id: shortstories_gangnam
+    store_name: 단편선 강남점
+    region: 서울 강남
+    booking_rate_min: 93.7
+    booking_rate_max: 95.2
+    daily_revenue_min: 1250100
+    daily_revenue_max: 1271700
+    monthly_revenue_min: 37503000
+    monthly_revenue_max: 38151000
+    themes:
+      - {theme_name: "그림자 없는 상자", display_name: "그림자 없는 상자", booking_rate_min: 100.0, booking_rate_max: 100.0, daily_revenue_min: 656100, daily_revenue_max: 656100, monthly_revenue_min: 19683000, monthly_revenue_max: 19683000}
+      - {theme_name: "사람들은 그것을 행복이라 부르기로 했다", display_name: "사람들은 그것을 행복이라 부르기로 했다", booking_rate_min: 87.3, booking_rate_max: 90.5, daily_revenue_min: 594000, daily_revenue_max: 615600, monthly_revenue_min: 17820000, monthly_revenue_max: 18468000}
