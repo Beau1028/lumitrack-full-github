@@ -12,6 +12,7 @@ from typing import Any
 from zoneinfo import ZoneInfo
 
 import pandas as pd
+from apscheduler.schedulers.background import BackgroundScheduler
 from fastapi import FastAPI, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
@@ -61,6 +62,7 @@ templates = Jinja2Templates(directory=PROJECT_DIR / "templates")
 
 _catalog_synced = False
 _startup_error = ""
+_scheduler: BackgroundScheduler | None = None
 
 
 def format_won(value: object) -> str:
@@ -116,6 +118,21 @@ def today_kst() -> date:
     return datetime.now(KST).date()
 
 
+def crawl_runtime_settings() -> dict[str, int]:
+    delay_min = max(5, int(os.getenv("LUMITRACK_DELAY_MIN_SECONDS", "5")))
+    delay_max = max(delay_min, int(os.getenv("LUMITRACK_DELAY_MAX_SECONDS", "8")))
+    return {
+        "delay_min_seconds": delay_min,
+        "delay_max_seconds": delay_max,
+        "max_parallel_origins": max(
+            1, int(os.getenv("LUMITRACK_MAX_PARALLEL_ORIGINS", "6"))
+        ),
+        "max_navigation_timeout_ms": max(
+            5_000, int(os.getenv("LUMITRACK_NAVIGATION_TIMEOUT_MS", "12000"))
+        ),
+    }
+
+
 def seed_database() -> None:
     target = DB_PATH
     source = PROJECT_DIR / "data" / "escape_room.db"
@@ -144,6 +161,118 @@ def ensure_catalog_synced() -> None:
 @app.on_event("startup")
 def on_startup() -> None:
     ensure_catalog_synced()
+    maybe_start_auto_prepare_job()
+    start_auto_refresh_scheduler()
+
+
+@app.on_event("shutdown")
+def on_shutdown() -> None:
+    global _scheduler
+    if _scheduler:
+        _scheduler.shutdown(wait=False)
+        _scheduler = None
+
+
+def seven_day_readiness(slots: pd.DataFrame) -> dict[str, Any]:
+    today = today_kst()
+    target_dates = {today + timedelta(days=offset) for offset in range(7)}
+    if slots.empty:
+        return {
+            "ready": False,
+            "reason": "아직 저장된 예약 슬롯이 없습니다.",
+            "date_count": 0,
+            "target_count": 7,
+            "measured_slots": 0,
+            "reserved_slots": 0,
+            "store_count": 0,
+            "latest_crawled_at": "",
+        }
+
+    source = slots.copy()
+    source["date"] = pd.to_datetime(source["date"]).dt.date
+    scoped = source[source["date"].isin(target_dates)].copy()
+    measurable = scoped[scoped["status"].isin(MEASURABLE_STATUSES)].copy()
+    date_count = int(measurable["date"].nunique()) if not measurable.empty else 0
+    measured_slots = int(len(measurable))
+    reserved_slots = (
+        int(measurable["status"].eq("reserved").sum()) if not measurable.empty else 0
+    )
+    store_count = int(measurable["store_id"].nunique()) if not measurable.empty else 0
+    latest_crawled_at = ""
+    latest_date_is_today = False
+    if "crawled_at" in scoped.columns and not scoped.empty:
+        latest = pd.to_datetime(scoped["crawled_at"], utc=True, errors="coerce").max()
+        if pd.notna(latest):
+            latest_kst = latest.tz_convert(KST)
+            latest_crawled_at = latest_kst.strftime("%Y-%m-%d %H:%M")
+            latest_date_is_today = latest_kst.date() >= today
+
+    ready = date_count >= 7 and measured_slots > 0 and latest_date_is_today
+    reason = (
+        "오늘 기준 7일 데이터가 준비되었습니다."
+        if ready
+        else "오늘 기준 7일 예약 데이터를 먼저 준비해야 합니다."
+    )
+    return {
+        "ready": ready,
+        "reason": reason,
+        "date_count": date_count,
+        "target_count": 7,
+        "measured_slots": measured_slots,
+        "reserved_slots": reserved_slots,
+        "store_count": store_count,
+        "latest_crawled_at": latest_crawled_at,
+    }
+
+
+def start_prepare_job(label: str = "7일 예약 데이터 준비") -> dict[str, Any] | None:
+    try:
+        return start_crawl_job(
+            app_home=APP_HOME,
+            project_dir=PROJECT_DIR,
+            label=label,
+            days=7,
+            config_path=CONFIG_PATH,
+            db_path=DB_PATH,
+            store_ids=None,
+            **crawl_runtime_settings(),
+        )
+    except CrawlJobAlreadyRunning:
+        return read_job_status(APP_HOME)
+
+
+def maybe_start_auto_prepare_job() -> None:
+    if os.getenv("LUMITRACK_AUTOSTART_7DAY", "1") != "1":
+        return
+    job = read_job_status(APP_HOME)
+    if job_is_running(job):
+        return
+    try:
+        slots = load_slots(DB_PATH)
+        readiness = seven_day_readiness(slots)
+    except Exception:
+        return
+    if not readiness["ready"]:
+        start_prepare_job("서버 시작 시 7일 데이터 자동 준비")
+
+
+def start_auto_refresh_scheduler() -> None:
+    global _scheduler
+    if _scheduler is not None:
+        return
+    refresh_hours = float(os.getenv("LUMITRACK_AUTO_REFRESH_HOURS", "2"))
+    if refresh_hours <= 0:
+        return
+    _scheduler = BackgroundScheduler(timezone=KST)
+    _scheduler.add_job(
+        maybe_start_auto_prepare_job,
+        "interval",
+        hours=refresh_hours,
+        id="prepare_7day_data",
+        replace_existing=True,
+        max_instances=1,
+    )
+    _scheduler.start()
 
 
 def clean_value(value: Any) -> Any:
@@ -265,6 +394,7 @@ def load_market_data() -> dict[str, Any]:
 
     job = read_job_status(APP_HOME)
     job_log = tail_job_log(job, max_lines=40)
+    readiness = seven_day_readiness(slots)
 
     return {
         "today": today,
@@ -296,6 +426,7 @@ def load_market_data() -> dict[str, Any]:
         "job": job,
         "job_running": job_is_running(job),
         "job_log": job_log,
+        "readiness": readiness,
         "startup_error": _startup_error,
     }
 
@@ -392,9 +523,7 @@ def map_table(data: dict[str, Any]) -> pd.DataFrame:
     return mapped
 
 
-@app.get("/", response_class=HTMLResponse)
-def dashboard(request: Request) -> HTMLResponse:
-    context = base_context(request, "home")
+def add_dashboard_context(context: dict[str, Any]) -> dict[str, Any]:
     visible_7 = context["visible_7"]
     revenue = revenue_table(context)
     genre = genre_monthly_summary(
@@ -418,6 +547,27 @@ def dashboard(request: Request) -> HTMLResponse:
             ),
         }
     )
+    return context
+
+
+@app.get("/", response_class=HTMLResponse)
+def home(request: Request) -> HTMLResponse:
+    context = base_context(request, "prepare")
+    if not context["readiness"]["ready"] and request.query_params.get("open") != "1":
+        return templates.TemplateResponse(
+            request=request, name="prepare.html", context=context
+        )
+    context["active"] = "home"
+    add_dashboard_context(context)
+    return templates.TemplateResponse(
+        request=request, name="dashboard.html", context=context
+    )
+
+
+@app.get("/dashboard", response_class=HTMLResponse)
+def dashboard(request: Request) -> HTMLResponse:
+    context = base_context(request, "home")
+    add_dashboard_context(context)
     return templates.TemplateResponse(
         request=request, name="dashboard.html", context=context
     )
@@ -526,6 +676,20 @@ def report(request: Request) -> HTMLResponse:
     )
 
 
+@app.get("/prepare", response_class=HTMLResponse)
+def prepare(request: Request) -> HTMLResponse:
+    context = base_context(request, "prepare")
+    return templates.TemplateResponse(
+        request=request, name="prepare.html", context=context
+    )
+
+
+@app.post("/prepare/start")
+def prepare_start() -> RedirectResponse:
+    start_prepare_job("7일 예약 데이터 준비")
+    return RedirectResponse(url="/prepare", status_code=303)
+
+
 @app.post("/crawl/start")
 def crawl_start(days: int = Form(...)) -> RedirectResponse:
     if days not in {1, 7}:
@@ -542,7 +706,7 @@ def crawl_start(days: int = Form(...)) -> RedirectResponse:
             store_ids=None,
             delay_min_seconds=int(os.getenv("LUMITRACK_DELAY_MIN_SECONDS", "5")),
             delay_max_seconds=int(os.getenv("LUMITRACK_DELAY_MAX_SECONDS", "8")),
-            max_parallel_origins=int(os.getenv("LUMITRACK_MAX_PARALLEL_ORIGINS", "4")),
+            max_parallel_origins=int(os.getenv("LUMITRACK_MAX_PARALLEL_ORIGINS", "6")),
             max_navigation_timeout_ms=int(
                 os.getenv("LUMITRACK_NAVIGATION_TIMEOUT_MS", "12000")
             ),

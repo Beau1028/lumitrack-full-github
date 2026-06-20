@@ -257,6 +257,10 @@ h2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.grid.three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .panel {
   padding: 24px;
   overflow: hidden;
@@ -573,6 +577,114 @@ th.num {
   padding: 20px;
 }
 
+.prepare-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(360px, 0.75fr);
+  gap: 18px;
+  align-items: stretch;
+  margin-bottom: 16px;
+}
+
+.prepare-copy,
+.prepare-card {
+  border-radius: 36px;
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.78);
+  box-shadow: var(--shadow);
+}
+
+.prepare-copy {
+  padding: clamp(30px, 6vw, 64px);
+  background:
+    radial-gradient(circle at 15% 10%, rgba(49, 130, 246, 0.16), transparent 26rem),
+    linear-gradient(135deg, rgba(255,255,255,0.98), rgba(255,255,255,0.76));
+}
+
+.prepare-copy h1 {
+  max-width: 760px;
+}
+
+.prepare-copy p {
+  max-width: 760px;
+  color: var(--muted);
+  line-height: 1.72;
+}
+
+.prepare-card {
+  padding: 30px;
+}
+
+.prepare-label {
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.prepare-card > strong {
+  display: block;
+  margin-top: 14px;
+  font-size: 34px;
+  letter-spacing: -0.04em;
+}
+
+.prepare-card > p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.prepare-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 22px 0;
+}
+
+.prepare-stats div {
+  padding: 15px;
+  border-radius: 18px;
+  background: #f7f9fc;
+}
+
+.prepare-stats span,
+.prepare-stats b {
+  display: block;
+}
+
+.prepare-stats span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.prepare-stats b {
+  margin-top: 8px;
+  font-size: 18px;
+}
+
+.prepare-now {
+  font-weight: 800;
+}
+
+.btn.wide {
+  width: 100%;
+}
+
+.prepare-link {
+  display: block;
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.prepare-notes .panel p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
 .loading-overlay {
   position: fixed;
   inset: 0;
@@ -640,6 +752,8 @@ th.num {
 
   .kpi-grid,
   .grid.two,
+  .grid.three,
+  .prepare-hero,
   .map-layout {
     grid-template-columns: 1fr;
   }

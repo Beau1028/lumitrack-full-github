@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% set progress = (job.progress if job else {}) or {} %}
+{% set completed = progress.get('completed', 0) %}
+{% set total = progress.get('total', 1) %}
+{% set pct = (completed / total * 100) if total else 0 %}
+
+<section class="prepare-hero">
+  <div class="prepare-copy">
+    <p class="eyebrow">Data First</p>
+    <h1>일주일 예약 데이터를 먼저 준비합니다.</h1>
+    <p>
+      LumiTrack은 화면을 먼저 띄운 뒤 기다리게 하지 않고,
+      최근 7일 예약 슬롯을 DB에 준비한 다음 대시보드를 보여주는 방식으로 동작합니다.
+    </p>
+    <p class="muted">
+      공개 사이트 요청은 같은 사이트에 최소 5초 간격을 지켜야 해서 무제한 가속은 하지 않습니다.
+      대신 서로 다른 예약 사이트를 병렬로 수집하고, 준비된 데이터는 바로 읽어서 보여줍니다.
+    </p>
+  </div>
+
+  <div class="prepare-card">
+    <span class="prepare-label">준비 상태</span>
+    <strong>{{ '준비 완료' if readiness.ready else '준비 필요' }}</strong>
+    <p>{{ readiness.reason }}</p>
+
+    <div class="prepare-stats">
+      <div><span>확인 날짜</span><b>{{ readiness.date_count|num }} / {{ readiness.target_count|num }}</b></div>
+      <div><span>슬롯</span><b>{{ readiness.measured_slots|num }}</b></div>
+      <div><span>매장</span><b>{{ readiness.store_count|num }}</b></div>
+      <div><span>최근 수집</span><b>{{ readiness.latest_crawled_at or '-' }}</b></div>
+    </div>
+
+    {% if job and job.status in ['running', 'starting'] %}
+      <div class="progress big"><span style="width: {{ pct }}%"></span></div>
+      <p class="prepare-now">
+        {{ progress.get('current_store', '수집 중') }}
+        {{ progress.get('current_date', '') }}
+        · {{ completed|num }} / {{ total|num }}
+      </p>
+      <a class="btn" href="/status">자세히 보기</a>
+    {% elif readiness.ready %}
+      <a class="btn primary wide" href="/dashboard">대시보드 열기</a>
+    {% else %}
+      <form method="post" action="/prepare/start" data-loading>
+        <button class="btn primary wide" type="submit">예, 7일 데이터 준비 시작</button>
+      </form>
+      <a class="prepare-link" href="/dashboard">기존 데이터로 먼저 보기</a>
+    {% endif %}
+  </div>
+</section>
+
+<section class="grid three prepare-notes">
+  <article class="panel">
+    <h2>1. 자동 준비</h2>
+    <p>서버가 켜질 때 7일 데이터가 없으면 자동으로 수집을 시작합니다.</p>
+  </article>
+  <article class="panel">
+    <h2>2. 병렬 수집</h2>
+    <p>같은 사이트 간격은 지키고, 서로 다른 사이트는 동시에 수집해 시간을 줄입니다.</p>
+  </article>
+  <article class="panel">
+    <h2>3. 바로 보기</h2>
+    <p>준비가 끝난 뒤에는 방문자가 기다리지 않고 저장된 DB를 바로 봅니다.</p>
+  </article>
+</section>
+{% endblock %}
+
+{% block scripts %}
+{% if job and job.status in ['running', 'starting'] %}
+<script>
+  setTimeout(() => window.location.reload(), 3000);
+</script>
+{% elif readiness.ready %}
+<script>
+  setTimeout(() => window.location.href = "/dashboard", 900);
+</script>
+{% endif %}
+{% endblock %}

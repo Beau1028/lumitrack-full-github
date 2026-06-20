@@ -55,6 +55,8 @@ for key in [
     "LUMITRACK_NAVIGATION_TIMEOUT_MS",
     "LUMITRACK_DELAY_MIN_SECONDS",
     "LUMITRACK_DELAY_MAX_SECONDS",
+    "LUMITRACK_AUTOSTART_7DAY",
+    "LUMITRACK_AUTO_REFRESH_HOURS",
 ]:
     print(f"{key}={os.environ.get(key, '')}")
 
