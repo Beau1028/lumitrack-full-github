@@ -1392,20 +1392,23 @@ def render_app_menu(active_view: str) -> None:
         """,
         unsafe_allow_html=True,
     )
-    with st.container(key="app_menu_grid"):
-        for row_start in range(0, len(APP_VIEWS), 5):
-            columns = st.columns(5, gap="small")
-            for column, item in zip(columns, APP_VIEWS[row_start:row_start + 5]):
-                label = f"{item['icon']}  {item['label']}\n{item['desc']}"
-                with column:
-                    st.button(
-                        label,
-                        key=f"app_nav_{item['id']}",
-                        type="primary" if item["id"] == active_view else "secondary",
-                        use_container_width=True,
-                        on_click=select_app_view,
-                        args=(item["id"],),
-                    )
+    cards = []
+    for item in APP_VIEWS:
+        active_class = " active" if item["id"] == active_view else ""
+        href = f"?view={quote(str(item['id']))}"
+        cards.append(
+            f"""
+            <a class="app-menu-card{active_class}" href="{href}">
+              <span class="app-menu-icon">{escape(str(item["icon"]))}</span>
+              <b>{escape(str(item["label"]))}</b>
+              <small>{escape(str(item["desc"]))}</small>
+            </a>
+            """
+        )
+    st.markdown(
+        '<div class="app-menu-board">' + "\n".join(cards) + "</div>",
+        unsafe_allow_html=True,
+    )
 
 
 def install_loading_overlay(active_view: str) -> None:
@@ -2930,7 +2933,6 @@ else:
         unsafe_allow_html=True,
     )
 render_app_menu(active_view)
-install_loading_overlay(active_view)
 
 db_mtime = DB_PATH.stat().st_mtime if DB_PATH.exists() else None
 config_mtime = config_file().stat().st_mtime if config_file().exists() else None
