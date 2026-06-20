@@ -3510,6 +3510,18 @@ if active_view == "revenue":
             store_revenue_table["booking_rate_min"]
             + store_revenue_table["booking_rate_max"]
         ) / 2
+        for column in [
+            "booking_rate_mid",
+            "monthly_revenue_mid",
+            "monthly_revenue_min",
+            "monthly_revenue_max",
+            "observed_days",
+        ]:
+            if column in store_revenue_table.columns:
+                store_revenue_table[column] = (
+                    pd.to_numeric(store_revenue_table[column], errors="coerce")
+                    .fillna(0)
+                )
 
         st.markdown(
             f"""
@@ -3525,146 +3537,162 @@ if active_view == "revenue":
             unsafe_allow_html=True,
         )
 
-        left, right = st.columns([1.25, 1])
-        with left:
-            st.markdown("#### 월 예상매출 상위 매장")
-            st.altair_chart(
-                modern_bar_chart(
-                    store_revenue_table.head(20),
-                    "store_name",
-                    "monthly_revenue_mid",
-                    value_title="월 예상매출(원)",
-                ),
-                width="stretch",
-            )
-        with right:
-            st.markdown("#### 매장별 요약")
-            st.dataframe(
-                store_revenue_table[
-                    [
+        revenue_view = st.radio(
+            "매장 매출 보기",
+            ["매장 순위", "지역 평균", "장르 평균"],
+            horizontal=True,
+        )
+
+        if revenue_view == "매장 순위":
+            left, right = st.columns([1.25, 1])
+            with left:
+                st.markdown("#### 월 예상매출 상위 매장")
+                st.altair_chart(
+                    modern_bar_chart(
+                        store_revenue_table.head(15),
                         "store_name",
-                        "region",
-                        "estimate_source",
-                        "booking_rate_mid",
                         "monthly_revenue_mid",
-                        "monthly_revenue_min",
-                        "monthly_revenue_max",
-                        "observed_days",
-                        "confidence",
-                    ]
-                ].head(50),
-                hide_index=True,
-                width="stretch",
-                column_config={
-                    "store_name": "매장",
-                    "region": "지역",
-                    "estimate_source": "출처",
-                    "booking_rate_mid": st.column_config.ProgressColumn(
-                        "예약률", min_value=0, max_value=100, format="%.1f%%"
-                    ),
-                    "monthly_revenue_mid": st.column_config.NumberColumn(
-                        "월 예상", format="%,d원"
-                    ),
-                    "monthly_revenue_min": st.column_config.NumberColumn(
-                        "하한", format="%,d원"
-                    ),
-                    "monthly_revenue_max": st.column_config.NumberColumn(
-                        "상한", format="%,d원"
-                    ),
-                    "observed_days": "관측일",
-                    "confidence": "신뢰도",
-                },
-            )
-
-        st.subheader("지역별 매장당 평균 월 예상매출")
-        region_monthly = (
-            store_revenue_table
-            .groupby("region", as_index=False)
-            .agg(
-                store_count=("store_id", "nunique"),
-                average_monthly_revenue=("monthly_revenue_mid", "mean"),
-            )
-            .sort_values("average_monthly_revenue", ascending=False)
-            .head(15)
-        )
-        if region_monthly.empty:
-            st.info("지역별 월 예상매출 데이터가 없습니다.")
-        else:
-            region_left, region_right = st.columns([1.1, 1])
-            with region_left:
-                st.altair_chart(
-                    modern_bar_chart(
-                        region_monthly,
-                        "region",
-                        "average_monthly_revenue",
-                        value_title="매장당 월평균(원)",
-                        color="#6557c8",
+                        value_title="월 예상매출(원)",
+                        height=420,
                     ),
                     width="stretch",
                 )
-            with region_right:
+            with right:
+                st.markdown("#### 매장별 요약")
+                display_table = store_revenue_table.head(40).copy()
+                display_table["예약률"] = display_table["booking_rate_mid"].map(
+                    lambda value: f"{float(value):.1f}%"
+                )
+                display_table["월 예상"] = display_table["monthly_revenue_mid"].map(won)
+                display_table["하한"] = display_table["monthly_revenue_min"].map(won)
+                display_table["상한"] = display_table["monthly_revenue_max"].map(won)
                 st.dataframe(
-                    region_monthly,
-                    hide_index=True,
-                    width="stretch",
-                    column_config={
-                        "region": "지역",
-                        "store_count": "매장 수",
-                        "average_monthly_revenue": st.column_config.NumberColumn(
-                            "매장당 월평균", format="%,d원"
-                        ),
-                    },
-                )
-
-        st.subheader("장르별 평균 예상매출")
-        st.caption(
-            "장르별 매장 월 예상매출의 평균입니다. 장르가 확인되지 않은 테마는 "
-            "미분류로 따로 표시하며, 모든 금액은 공개 예약표 기반 추정치입니다."
-        )
-        if genre_revenue.empty:
-            st.info("장르별 매출을 계산할 데이터가 없습니다.")
-        else:
-            genre_left, genre_right = st.columns([1, 1.35])
-            with genre_left:
-                st.altair_chart(
-                    modern_bar_chart(
-                        genre_revenue.head(15),
-                        "genre",
-                        "average_monthly_revenue",
-                        value_title="매장당 월평균(원)",
-                        color="#f06b4f",
-                    ),
-                    width="stretch",
-                )
-            with genre_right:
-                st.dataframe(
-                    genre_revenue[
+                    display_table[
                         [
-                            "genre",
-                            "store_count",
-                            "theme_count",
-                            "booking_rate",
-                            "average_daily_revenue",
-                            "average_monthly_revenue",
+                            "store_name",
+                            "region",
+                            "estimate_source",
+                            "예약률",
+                            "월 예상",
+                            "하한",
+                            "상한",
+                            "observed_days",
+                            "confidence",
                         ]
-                    ].head(50),
+                    ],
                     hide_index=True,
                     width="stretch",
                     column_config={
-                        "genre": "장르",
-                        "store_count": "관측 매장",
-                        "theme_count": "테마 수",
-                        "booking_rate": st.column_config.ProgressColumn(
-                            "예약률", min_value=0, max_value=100, format="%.1f%%"
-                        ),
-                        "average_daily_revenue": st.column_config.NumberColumn(
-                            "매장당 일평균", format="%,d원"
-                        ),
-                        "average_monthly_revenue": st.column_config.NumberColumn(
-                            "매장당 월평균", format="%,d원"
-                        ),
+                        "store_name": "매장",
+                        "region": "지역",
+                        "estimate_source": "출처",
+                        "observed_days": "관측일",
+                        "confidence": "신뢰도",
                     },
                 )
+
+        if revenue_view == "지역 평균":
+            st.subheader("지역별 매장당 평균 월 예상매출")
+            region_monthly = (
+                store_revenue_table
+                .groupby("region", as_index=False)
+                .agg(
+                    store_count=("store_id", "nunique"),
+                    average_monthly_revenue=("monthly_revenue_mid", "mean"),
+                )
+                .sort_values("average_monthly_revenue", ascending=False)
+                .head(15)
+            )
+            if region_monthly.empty:
+                st.info("지역별 월 예상매출 데이터가 없습니다.")
+            else:
+                region_left, region_right = st.columns([1.1, 1])
+                with region_left:
+                    st.altair_chart(
+                        modern_bar_chart(
+                            region_monthly,
+                            "region",
+                            "average_monthly_revenue",
+                            value_title="매장당 월평균(원)",
+                            color="#6557c8",
+                            height=420,
+                        ),
+                        width="stretch",
+                    )
+                with region_right:
+                    region_table = region_monthly.copy()
+                    region_table["매장당 월평균"] = region_table[
+                        "average_monthly_revenue"
+                    ].map(won)
+                    st.dataframe(
+                        region_table[
+                            ["region", "store_count", "매장당 월평균"]
+                        ],
+                        hide_index=True,
+                        width="stretch",
+                        column_config={
+                            "region": "지역",
+                            "store_count": "매장 수",
+                        },
+                    )
+
+        if revenue_view == "장르 평균":
+            st.subheader("장르별 평균 예상매출")
+            st.caption(
+                "장르별 매장 월 예상매출의 평균입니다. 장르가 확인되지 않은 테마는 "
+                "미분류로 따로 표시하며, 모든 금액은 공개 예약표 기반 추정치입니다."
+            )
+            if genre_revenue.empty:
+                st.info("장르별 매출을 계산할 데이터가 없습니다.")
+            else:
+                genre_left, genre_right = st.columns([1, 1.35])
+                with genre_left:
+                    chart_genre = genre_revenue.head(15).copy()
+                    chart_genre["average_monthly_revenue"] = pd.to_numeric(
+                        chart_genre["average_monthly_revenue"],
+                        errors="coerce",
+                    ).fillna(0)
+                    st.altair_chart(
+                        modern_bar_chart(
+                            chart_genre,
+                            "genre",
+                            "average_monthly_revenue",
+                            value_title="매장당 월평균(원)",
+                            color="#f06b4f",
+                            height=420,
+                        ),
+                        width="stretch",
+                    )
+                with genre_right:
+                    genre_table = genre_revenue.head(40).copy()
+                    genre_table["예약률"] = genre_table["booking_rate"].map(
+                        lambda value: f"{float(value):.1f}%"
+                    )
+                    genre_table["매장당 일평균"] = genre_table[
+                        "average_daily_revenue"
+                    ].map(won)
+                    genre_table["매장당 월평균"] = genre_table[
+                        "average_monthly_revenue"
+                    ].map(won)
+                    st.dataframe(
+                        genre_table[
+                            [
+                                "genre",
+                                "store_count",
+                                "theme_count",
+                                "예약률",
+                                "매장당 일평균",
+                                "매장당 월평균",
+                            ]
+                        ],
+                        hide_index=True,
+                        width="stretch",
+                        column_config={
+                            "genre": "장르",
+                            "store_count": "관측 매장",
+                            "theme_count": "테마 수",
+                        },
+                    )
 
 if active_view == "investor":
     st.subheader("투자자용 시장 인사이트")
