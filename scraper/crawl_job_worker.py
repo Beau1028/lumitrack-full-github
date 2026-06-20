@@ -39,6 +39,21 @@ def main() -> int:
         update_job_file(job_file, **updates)
 
     try:
+        set_status(
+            status="running",
+            progress={
+                "phase": "loading",
+                "completed": 0,
+                "total": 1,
+                "stores_completed": 0,
+                "stores_total": 0,
+                "current_store": "매장 설정을 읽는 중",
+                "current_date": "",
+                "success": 0,
+                "failed": 0,
+                "slots": 0,
+            },
+        )
         stores = [
             store
             for store in load_stores(args.config)
@@ -59,6 +74,18 @@ def main() -> int:
                 "updated_at": utc_now(),
                 "store_count": len(stores),
                 "target_dates": [target_date.isoformat() for target_date in target_dates],
+                "progress": {
+                    "phase": "prepared",
+                    "completed": 0,
+                    "total": max(len(stores) * len(target_dates), 1),
+                    "stores_completed": 0,
+                    "stores_total": len(stores),
+                    "current_store": "수집 준비 완료",
+                    "current_date": f"{args.days}일",
+                    "success": 0,
+                    "failed": 0,
+                    "slots": 0,
+                },
             }
         )
         update_job_file(job_file, **current)

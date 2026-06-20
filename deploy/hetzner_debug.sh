@@ -31,7 +31,7 @@ print()
 print("== Code markers ==")
 for marker in [
     "LUMITRACK_STREAMLIT_ENTRYPOINT",
-    "server_app.py",
+    "streamlit_app.py",
     "escapeRoomShowLoading = () => {}",
     "멈춘 수집 상태 정리",
     "start_crawl_job(",

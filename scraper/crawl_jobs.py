@@ -164,10 +164,10 @@ def start_crawl_job(
         "progress": {
             "phase": "starting",
             "completed": 0,
-            "total": 0,
+            "total": 1,
             "stores_completed": 0,
             "stores_total": 0,
-            "current_store": "",
+            "current_store": "수집 프로세스 시작 중",
             "current_date": "",
             "success": 0,
             "failed": 0,
