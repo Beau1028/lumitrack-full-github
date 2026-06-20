@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-head">
+  <div>
+    <p class="eyebrow">Store Revenue</p>
+    <h1>매장별 추정 월매출</h1>
+    <p>자동 수집 매출과 수동 관측 매출을 같은 표에서 비교합니다.</p>
+  </div>
+  <a class="btn" href="/download/store_revenue.csv">CSV 다운로드</a>
+</section>
+
+<section class="grid two">
+  <article class="panel">
+    <div class="panel-title">
+      <h2>매장 월매출 순위</h2>
+      <span>상위 18개</span>
+    </div>
+    <canvas id="storeRevenueChart" height="210"></canvas>
+  </article>
+  <article class="panel">
+    <div class="panel-title">
+      <h2>장르별 평균 월매출</h2>
+      <span>{{ month_label }}</span>
+    </div>
+    <canvas id="genreRevenueChart" height="210"></canvas>
+  </article>
+</section>
+
+<section class="panel">
+  <div class="panel-title">
+    <h2>전체 매장 매출표</h2>
+    <span>{{ rows|length|num }}개</span>
+  </div>
+  <div class="table-wrap tall">
+    <table>
+      <thead>
+        <tr>
+          <th>매장</th>
+          <th>지역</th>
+          <th>추정 방식</th>
+          <th>예약률</th>
+          <th>일평균 매출</th>
+          <th>월예상매출</th>
+          <th>관측일</th>
+          <th>신뢰도</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+          <tr>
+            <td>{{ row.store_name }}</td>
+            <td>{{ row.region }}</td>
+            <td><span class="pill">{{ row.estimate_source }}</span></td>
+            <td class="num">{{ (((row.booking_rate_min or 0) + (row.booking_rate_max or 0)) / 2)|pct }}</td>
+            <td class="num">{{ row.daily_revenue_mid|won }}</td>
+            <td class="num strong">{{ row.monthly_revenue_mid|won }}</td>
+            <td class="num">{{ row.observed_days|num }}</td>
+            <td>{{ row.confidence }}</td>
+          </tr>
+        {% else %}
+          <tr><td colspan="8" class="empty">표시할 매출 데이터가 없습니다.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-title">
+    <h2>장르별 매출 요약</h2>
+    <span>평균과 합계를 분리해서 표시</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>장르</th>
+          <th>매장 수</th>
+          <th>테마 수</th>
+          <th>예약률</th>
+          <th>평균 월매출</th>
+          <th>합산 월매출</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in genre_rows %}
+          <tr>
+            <td>{{ row.genre }}</td>
+            <td class="num">{{ row.store_count|num }}</td>
+            <td class="num">{{ row.theme_count|num }}</td>
+            <td class="num">{{ row.booking_rate|pct }}</td>
+            <td class="num">{{ row.average_monthly_revenue|won }}</td>
+            <td class="num strong">{{ row.total_monthly_revenue|won }}</td>
+          </tr>
+        {% else %}
+          <tr><td colspan="6" class="empty">장르별 데이터가 없습니다.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  LumiTrack.renderBar("storeRevenueChart", {{ store_chart_json|safe }}, "월매출", "원", "#3182f6");
+  LumiTrack.renderBar("genreRevenueChart", {{ genre_chart_json|safe }}, "평균 월매출", "원", "#10b981");
+</script>
+{% endblock %}

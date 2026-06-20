@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="report-hero">
+  <p class="eyebrow">Investor Snapshot</p>
+  <h1>LumiTrack 투자자 리포트</h1>
+  <p>
+    공개 예약 현황 기반 추정치입니다. 실제 매출이 아니라 예약 완료 슬롯,
+    평균 이용 인원, 공개 가격을 조합한 분석용 지표입니다.
+  </p>
+  {% if not download_mode %}
+    <div class="hero-actions">
+      <a class="btn primary" href="/download/report.html">HTML 다운로드</a>
+      <a class="btn" href="/download/store_revenue.csv">매출 CSV</a>
+    </div>
+  {% endif %}
+</section>
+
+<section class="kpi-grid">
+  <article class="kpi-card accent">
+    <span>업계 추정 월매출</span>
+    <strong>{{ metrics.projected_monthly_total|won }}</strong>
+    <small>수동 관측 포함</small>
+  </article>
+  <article class="kpi-card">
+    <span>매장당 월 평균</span>
+    <strong>{{ metrics.average_store_monthly|won }}</strong>
+    <small>{{ metrics.store_count_with_revenue|num }}개 매장 기준</small>
+  </article>
+  <article class="kpi-card">
+    <span>7일 예약률</span>
+    <strong>{{ metrics.booking_rate|pct }}</strong>
+    <small>{{ metrics.reserved_slots|num }} / {{ metrics.measured_slots|num }}</small>
+  </article>
+  <article class="kpi-card">
+    <span>등록 테마</span>
+    <strong>{{ metrics.theme_count|num }}개</strong>
+    <small>가격 미반영 {{ metrics.price_missing|num }}개</small>
+  </article>
+</section>
+
+<section class="panel">
+  <div class="panel-title">
+    <h2>핵심 매장 매출</h2>
+    <span>월예상매출 상위 80개</span>
+  </div>
+  <div class="table-wrap tall">
+    <table>
+      <thead>
+        <tr><th>매장</th><th>지역</th><th>추정 방식</th><th>예약률</th><th>월예상매출</th></tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+          <tr>
+            <td>{{ row.store_name }}</td>
+            <td>{{ row.region }}</td>
+            <td>{{ row.estimate_source }}</td>
+            <td class="num">{{ (((row.booking_rate_min or 0) + (row.booking_rate_max or 0)) / 2)|pct }}</td>
+            <td class="num strong">{{ row.monthly_revenue_mid|won }}</td>
+          </tr>
+        {% else %}
+          <tr><td colspan="5" class="empty">리포트 데이터가 없습니다.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="notice">
+  <strong>주의</strong>
+  <span>이 리포트는 공개 예약 페이지 기반 개인 분석 자료입니다. 로그인, 결제, 실제 예약 자동화는 포함하지 않습니다.</span>
+</section>
+{% endblock %}

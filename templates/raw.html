@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-head">
+  <div>
+    <p class="eyebrow">Raw Slots</p>
+    <h1>원본 예약 슬롯</h1>
+    <p>최근 저장된 슬롯을 그대로 보여줍니다. 상태는 available, reserved, closed, unknown 중 하나입니다.</p>
+  </div>
+  <a class="btn" href="/status">수집 상태 보기</a>
+</section>
+
+<section class="panel">
+  <div class="panel-title">
+    <h2>슬롯 테이블</h2>
+    <span>최대 800개</span>
+  </div>
+  <div class="table-wrap tall">
+    <table>
+      <thead>
+        <tr>
+          <th>날짜</th>
+          <th>시간</th>
+          <th>매장</th>
+          <th>테마</th>
+          <th>상태</th>
+          <th>가격</th>
+          <th>평균 인원</th>
+          <th>추정 매출</th>
+          <th>수집 시각</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in slot_rows %}
+          <tr>
+            <td>{{ row.date }}</td>
+            <td>{{ row.time }}</td>
+            <td>{{ row.store_name }}</td>
+            <td>{{ row.theme_name }}</td>
+            <td><span class="status {{ row.status }}">{{ row.status }}</span></td>
+            <td class="num">{{ row.price|won }}</td>
+            <td class="num">{{ row.avg_people }}</td>
+            <td class="num strong">{{ row.expected_revenue|won }}</td>
+            <td>{{ row.crawled_at|datefmt }}</td>
+          </tr>
+        {% else %}
+          <tr><td colspan="9" class="empty">저장된 슬롯이 없습니다.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

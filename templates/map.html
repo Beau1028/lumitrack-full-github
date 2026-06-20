@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div>
+    <p class="eyebrow">Revenue Map</p>
+    <h1>매출 지도</h1>
+    <p>주소/좌표가 등록된 매장을 핀으로 표시합니다. 핀을 누르면 월예상매출과 예약률이 나옵니다.</p>
+  </div>
+  <div class="mini-stat">
+    <span>지도 표시 매장</span>
+    <strong>{{ mapped_count|num }}개</strong>
+  </div>
+</section>
+
+<section class="map-layout">
+  <article class="panel map-panel">
+    <div id="revenueMap"></div>
+  </article>
+  <article class="panel">
+    <div class="panel-title">
+      <h2>지도 매장 목록</h2>
+      <span>월매출 높은 순</span>
+    </div>
+    <div class="store-list">
+      {% for row in map_rows|sort(attribute='monthly_revenue_mid', reverse=True) %}
+        <div class="store-item">
+          <div>
+            <strong>{{ row.store_name }}</strong>
+            <span>{{ row.region }} · {{ row.address or '주소 확인 필요' }}</span>
+          </div>
+          <b>{{ row.monthly_revenue_mid|won }}</b>
+        </div>
+      {% else %}
+        <p class="empty">지도에 표시할 좌표가 없습니다.</p>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const markers = {{ markers_json|safe }};
+  const map = L.map("revenueMap", { zoomControl: true }).setView([{{ center_lat }}, {{ center_lon }}], 12);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution: "&copy; OpenStreetMap"
+  }).addTo(map);
+
+  const bounds = [];
+  markers.forEach((item) => {
+    const lat = Number(item.latitude);
+    const lon = Number(item.longitude);
+    if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
+    const revenue = LumiTrack.money(item.monthly_revenue_mid || 0);
+    const rate = LumiTrack.percent(((item.booking_rate_min || 0) + (item.booking_rate_max || 0)) / 2);
+    const logo = item.brand_logo_url ? `<img src="${item.brand_logo_url}" class="popup-logo" alt="">` : "";
+    const html = `
+      <div class="popup">
+        ${logo}
+        <strong>${item.store_name || "-"}</strong>
+        <span>${item.region || "-"} · ${item.address || "주소 확인 필요"}</span>
+        <dl>
+          <dt>월예상매출</dt><dd>${revenue}</dd>
+          <dt>예약률</dt><dd>${rate}</dd>
+          <dt>추정 방식</dt><dd>${item.estimate_source || "-"}</dd>
+        </dl>
+      </div>`;
+    L.marker([lat, lon]).addTo(map).bindPopup(html);
+    bounds.push([lat, lon]);
+  });
+  if (bounds.length) {
+    map.fitBounds(bounds, { padding: [36, 36], maxZoom: 14 });
+  }
+</script>
+{% endblock %}

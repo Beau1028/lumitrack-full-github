@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-head">
+  <div>
+    <p class="eyebrow">Theme Demand</p>
+    <h1>테마별 예약률과 객단가</h1>
+    <p>최근 7일 공개 예약 슬롯 기준입니다. 가격이 0원인 테마는 가격 검증이 필요합니다.</p>
+  </div>
+  <div class="mini-stat">
+    <span>가격 미반영</span>
+    <strong>{{ metrics.price_missing|num }}개</strong>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-title">
+    <h2>예약률 TOP 테마</h2>
+    <span>상위 80개</span>
+  </div>
+  <canvas id="themeChart" height="190"></canvas>
+</section>
+
+<section class="panel">
+  <div class="panel-title">
+    <h2>테마 상세표</h2>
+    <span>예약률 · 객단가 · 7일 추정 매출</span>
+  </div>
+  <div class="table-wrap tall">
+    <table>
+      <thead>
+        <tr>
+          <th>테마</th>
+          <th>매장</th>
+          <th>장르</th>
+          <th>예약률</th>
+          <th>예약/전체</th>
+          <th>1타임 추정 객단가</th>
+          <th>인당 추정가</th>
+          <th>7일 추정 매출</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in top_rows %}
+          <tr>
+            <td>{{ row.theme_name }}</td>
+            <td>{{ row.store_name }}</td>
+            <td>{{ row.genre }}</td>
+            <td class="num strong">{{ row.booking_rate|pct }}</td>
+            <td class="num">{{ row.reserved_slots|num }} / {{ row.total_slots|num }}</td>
+            <td class="num">{{ row.booking_value_estimate|won }}</td>
+            <td class="num">{{ row.per_person_estimate|won }}</td>
+            <td class="num">{{ row.estimated_revenue|won }}</td>
+          </tr>
+        {% else %}
+          <tr><td colspan="8" class="empty">테마 데이터가 없습니다.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-title">
+    <h2>예약률 낮은 테마</h2>
+    <span>개선/검증 후보</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>테마</th><th>매장</th><th>예약률</th><th>예약/전체</th><th>객단가</th></tr>
+      </thead>
+      <tbody>
+        {% for row in low_rows %}
+          <tr>
+            <td>{{ row.theme_name }}</td>
+            <td>{{ row.store_name }}</td>
+            <td class="num">{{ row.booking_rate|pct }}</td>
+            <td class="num">{{ row.reserved_slots|num }} / {{ row.total_slots|num }}</td>
+            <td class="num">{{ row.booking_value_estimate|won }}</td>
+          </tr>
+        {% else %}
+          <tr><td colspan="5" class="empty">표시할 데이터가 없습니다.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  LumiTrack.renderBar("themeChart", {{ theme_chart_json|safe }}, "예약률", "%", "#7c3aed");
+</script>
+{% endblock %}

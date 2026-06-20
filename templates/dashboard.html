@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+  <div>
+    <p class="eyebrow">{{ month_label }} 기준</p>
+    <h1>예약률과 추정 매출을 한 화면에서 봅니다.</h1>
+    <p>공개 예약 페이지에서 수집한 상태와 수동 관측치를 합산한 개인용 시장 모니터입니다.</p>
+  </div>
+  <div class="hero-actions">
+    <form method="post" action="/crawl/start" data-loading>
+      <input type="hidden" name="days" value="1">
+      <button class="btn primary" type="submit">오늘 현황 업데이트</button>
+    </form>
+    <form method="post" action="/crawl/start" data-loading>
+      <input type="hidden" name="days" value="7">
+      <button class="btn" type="submit">7일 예약/매출 업데이트</button>
+    </form>
+  </div>
+</section>
+
+<section class="kpi-grid">
+  <article class="kpi-card accent">
+    <span>7일 예약률</span>
+    <strong>{{ metrics.booking_rate|pct }}</strong>
+    <small>{{ metrics.reserved_slots|num }} / {{ metrics.measured_slots|num }} 슬롯</small>
+  </article>
+  <article class="kpi-card">
+    <span>업계 추정 월매출</span>
+    <strong>{{ metrics.projected_monthly_total|won }}</strong>
+    <small>자동 수집 + 수동 관측 합산</small>
+  </article>
+  <article class="kpi-card">
+    <span>매장당 월 평균</span>
+    <strong>{{ metrics.average_store_monthly|won }}</strong>
+    <small>{{ metrics.store_count_with_revenue|num }}개 매장 기준</small>
+  </article>
+  <article class="kpi-card">
+    <span>오늘 확인 매출</span>
+    <strong>{{ metrics.today_revenue|won }}</strong>
+    <small>예약 완료 슬롯만 반영</small>
+  </article>
+</section>
+
+<section class="grid two">
+  <article class="panel">
+    <div class="panel-title">
+      <h2>지역별 예약률</h2>
+      <span>최근 7일</span>
+    </div>
+    <canvas id="regionChart" height="180"></canvas>
+  </article>
+  <article class="panel">
+    <div class="panel-title">
+      <h2>매장별 월매출</h2>
+      <span>상위 10개</span>
+    </div>
+    <canvas id="storeChart" height="180"></canvas>
+  </article>
+  <article class="panel">
+    <div class="panel-title">
+      <h2>시간대별 예약률</h2>
+      <span>최근 7일</span>
+    </div>
+    <canvas id="hourChart" height="180"></canvas>
+  </article>
+  <article class="panel">
+    <div class="panel-title">
+      <h2>요일별 예약률</h2>
+      <span>최근 7일</span>
+    </div>
+    <canvas id="weekdayChart" height="180"></canvas>
+  </article>
+</section>
+
+<section class="grid two">
+  <article class="panel">
+    <div class="panel-title">
+      <h2>매장 매출 TOP</h2>
+      <a href="/revenue">전체 보기</a>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>매장</th><th>지역</th><th>월예상매출</th><th>예약률</th></tr>
+        </thead>
+        <tbody>
+          {% for row in top_revenue %}
+            <tr>
+              <td>{{ row.store_name }}</td>
+              <td>{{ row.region }}</td>
+              <td class="num">{{ row.monthly_revenue_mid|won }}</td>
+              <td class="num">{{ (((row.booking_rate_min or 0) + (row.booking_rate_max or 0)) / 2)|pct }}</td>
+            </tr>
+          {% else %}
+            <tr><td colspan="4" class="empty">아직 매출 데이터가 없습니다.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </article>
+
+  <article class="panel">
+    <div class="panel-title">
+      <h2>장르별 평균 월매출</h2>
+      <a href="/revenue">자세히</a>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>장르</th><th>매장</th><th>예약률</th><th>평균 월매출</th></tr>
+        </thead>
+        <tbody>
+          {% for row in genre_rows %}
+            <tr>
+              <td>{{ row.genre }}</td>
+              <td class="num">{{ row.store_count|num }}</td>
+              <td class="num">{{ row.booking_rate|pct }}</td>
+              <td class="num">{{ row.average_monthly_revenue|won }}</td>
+            </tr>
+          {% else %}
+            <tr><td colspan="4" class="empty">장르별 데이터가 없습니다.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </article>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  LumiTrack.renderBar("regionChart", {{ region_chart_json|safe }}, "예약률", "%", "#3182f6");
+  LumiTrack.renderBar("storeChart", {{ store_chart_json|safe }}, "월매출", "원", "#7c3aed");
+  LumiTrack.renderBar("hourChart", {{ hour_chart_json|safe }}, "예약률", "%", "#10b981");
+  LumiTrack.renderBar("weekdayChart", {{ weekday_chart_json|safe }}, "예약률", "%", "#f59e0b");
+</script>
+{% endblock %}

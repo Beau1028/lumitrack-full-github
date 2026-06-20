@@ -25,6 +25,22 @@ def seed_database() -> None:
 def main() -> int:
     seed_database()
     port = os.getenv("PORT", "8501")
+    runtime = os.getenv("LUMITRACK_RUNTIME", "web").strip().lower()
+    if runtime == "web":
+        print(f"Starting LumiTrack web app on port {port}", flush=True)
+        command = [
+            sys.executable,
+            "-m",
+            "uvicorn",
+            "web_app:app",
+            "--host",
+            "0.0.0.0",
+            "--port",
+            port,
+            "--proxy-headers",
+        ]
+        return subprocess.call(command)
+
     entrypoint = os.getenv("LUMITRACK_STREAMLIT_ENTRYPOINT", "streamlit_app.py")
     print(f"Starting LumiTrack with {entrypoint} on port {port}", flush=True)
     command = [

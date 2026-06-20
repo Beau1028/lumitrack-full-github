@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-head">
+  <div>
+    <p class="eyebrow">Crawler Status</p>
+    <h1>수집 상태</h1>
+    <p>수집은 백그라운드로 돌고, 화면은 진행률만 가볍게 보여줍니다.</p>
+  </div>
+  <div class="hero-actions">
+    <form method="post" action="/crawl/start" data-loading>
+      <input type="hidden" name="days" value="1">
+      <button class="btn primary" type="submit">오늘 업데이트</button>
+    </form>
+    <form method="post" action="/crawl/start" data-loading>
+      <input type="hidden" name="days" value="7">
+      <button class="btn" type="submit">7일 업데이트</button>
+    </form>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-title">
+    <h2>현재 작업</h2>
+    {% if job %}
+      <span>{{ job.status }}</span>
+    {% else %}
+      <span>대기 중</span>
+    {% endif %}
+  </div>
+
+  {% if job %}
+    {% set progress = job.progress or {} %}
+    {% set completed = progress.get('completed', 0) %}
+    {% set total = progress.get('total', 1) %}
+    {% set pct = (completed / total * 100) if total else 0 %}
+    <div class="status-card">
+      <div class="status-main">
+        <strong>{{ job.label }}</strong>
+        <span>{{ progress.get('current_store', '-') }} {{ progress.get('current_date', '') }}</span>
+      </div>
+      <div class="progress big"><span style="width: {{ pct }}%"></span></div>
+      <div class="status-grid">
+        <div><span>진행률</span><strong>{{ pct|pct }}</strong></div>
+        <div><span>완료</span><strong>{{ completed|num }} / {{ total|num }}</strong></div>
+        <div><span>성공</span><strong>{{ progress.get('success', 0)|num }}</strong></div>
+        <div><span>실패</span><strong>{{ progress.get('failed', 0)|num }}</strong></div>
+        <div><span>슬롯</span><strong>{{ progress.get('slots', 0)|num }}</strong></div>
+      </div>
+      {% if job.error %}
+        <p class="notice danger">{{ job.error }}</p>
+      {% endif %}
+      <form method="post" action="/crawl/clear">
+        <button class="btn subtle" type="submit">상태 초기화</button>
+      </form>
+    </div>
+  {% else %}
+    <p class="empty">현재 실행 중인 수집 작업이 없습니다.</p>
+  {% endif %}
+</section>
+
+<section class="panel">
+  <div class="panel-title">
+    <h2>최근 수집 로그</h2>
+    <span>마지막 40줄</span>
+  </div>
+  <pre class="log-box">{{ job_log or '아직 로그가 없습니다.' }}</pre>
+</section>
+
+<section class="panel">
+  <div class="panel-title">
+    <h2>매장별 최신 상태</h2>
+    <span>{{ store_status_rows|length|num }}개 매장</span>
+  </div>
+  <div class="table-wrap tall">
+    <table>
+      <thead>
+        <tr>
+          <th>매장</th>
+          <th>지역</th>
+          <th>어댑터</th>
+          <th>최신 상태</th>
+          <th>최신 수집</th>
+          <th>메모/오류</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in store_status_rows %}
+          <tr>
+            <td>{{ row.store_name }}</td>
+            <td>{{ row.region }}</td>
+            <td>{{ row.adapter_type }}</td>
+            <td><span class="pill">{{ row.latest_crawl_status or '-' }}</span></td>
+            <td>{{ row.latest_crawl_at or '-' }}</td>
+            <td class="muted">{{ row.latest_error or row.collection_note or '-' }}</td>
+          </tr>
+        {% else %}
+          <tr><td colspan="6" class="empty">매장 상태 데이터가 없습니다.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+{% if job and job.status in ['running', 'starting'] %}
+<script>
+  setTimeout(() => window.location.reload(), 5000);
+</script>
+{% endif %}
+{% endblock %}
