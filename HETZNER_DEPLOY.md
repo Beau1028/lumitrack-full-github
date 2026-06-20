@@ -94,6 +94,20 @@ bash deploy/hetzner_logs.sh
 7일 예약 업데이트는 앱 화면 안에서 끝까지 기다리지 않고 서버 백그라운드 작업으로 실행됩니다.
 버튼을 누른 뒤에는 화면 상단의 수집 상태 카드에서 진행률을 확인합니다.
 
+앱 버튼이 불안정하면 서버에서 직접 7일 수집을 시작할 수 있습니다.
+
+```bash
+cd lumitrack
+bash deploy/hetzner_crawl_7days.sh
+```
+
+진행 상태는 아래 명령으로 봅니다.
+
+```bash
+cd lumitrack
+bash deploy/hetzner_crawl_status.sh
+```
+
 수집 로그는 앱 안의 `수집 로그 보기`에서 확인하거나, 서버에서 아래 명령으로 볼 수 있습니다.
 
 ```bash

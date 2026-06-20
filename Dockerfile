@@ -15,6 +15,7 @@ RUN apt-get update \
         ca-certificates \
         chromium \
         fonts-noto-cjk \
+        procps \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .

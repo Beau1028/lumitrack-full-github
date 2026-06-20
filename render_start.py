@@ -25,12 +25,14 @@ def seed_database() -> None:
 def main() -> int:
     seed_database()
     port = os.getenv("PORT", "8501")
+    entrypoint = os.getenv("LUMITRACK_STREAMLIT_ENTRYPOINT", "streamlit_app.py")
+    print(f"Starting LumiTrack with {entrypoint} on port {port}", flush=True)
     command = [
         sys.executable,
         "-m",
         "streamlit",
         "run",
-        "streamlit_app.py",
+        entrypoint,
         "--server.address",
         "0.0.0.0",
         "--server.port",

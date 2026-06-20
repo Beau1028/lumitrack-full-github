@@ -30,15 +30,32 @@ else:
 print()
 print("== Code markers ==")
 for marker in [
+    "LUMITRACK_STREAMLIT_ENTRYPOINT",
+    "server_app.py",
     "escapeRoomShowLoading = () => {}",
     "멈춘 수집 상태 정리",
     "start_crawl_job(",
 ]:
     found = False
-    for path in [Path("/app/app.py"), Path("/app/scraper/crawl_jobs.py")]:
+    for path in [
+        Path("/app/docker-compose.yml"),
+        Path("/app/render_start.py"),
+        Path("/app/server_app.py"),
+        Path("/app/app.py"),
+        Path("/app/scraper/crawl_jobs.py"),
+    ]:
         if path.exists() and marker in path.read_text(encoding="utf-8", errors="replace"):
             found = True
     print(f"{marker}: {'yes' if found else 'no'}")
+
+print()
+print("== Runtime env ==")
+for key in [
+    "LUMITRACK_STREAMLIT_ENTRYPOINT",
+    "LUMITRACK_MAX_PARALLEL_ORIGINS",
+    "LUMITRACK_NAVIGATION_TIMEOUT_MS",
+]:
+    print(f"{key}={os.environ.get(key, '')}")
 PY
 
 echo

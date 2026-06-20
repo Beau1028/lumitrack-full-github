@@ -9,6 +9,7 @@ services:
       - "80:8501"
     environment:
       ESCAPE_ROOM_MONITOR_HOME: /var/data
+      LUMITRACK_STREAMLIT_ENTRYPOINT: server_app.py
       PLAYWRIGHT_CHROMIUM_EXECUTABLE: /usr/bin/chromium
       LUMITRACK_CLOUD_SAFE: "0"
       LUMITRACK_MAX_PARALLEL_ORIGINS: "${LUMITRACK_MAX_PARALLEL_ORIGINS:-4}"
