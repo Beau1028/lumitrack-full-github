@@ -54,6 +54,7 @@ from scraper.analytics import (
 from scraper.config import load_stores
 from scraper.crawl_jobs import (
     CrawlJobAlreadyRunning,
+    clear_job_status,
     job_is_running,
     read_job_status,
     start_crawl_job,
@@ -1413,115 +1414,14 @@ def install_loading_overlay(active_view: str) -> None:
         <script>
         (() => {
           const win = window.parent;
-          const doc = win.document;
           const currentView = __CURRENT_VIEW__;
-          const styleId = "escape-room-loading-overlay-style";
-          if (!doc.getElementById(styleId)) {
-            const style = doc.createElement("style");
-            style.id = styleId;
-            style.textContent = `
-              @keyframes escapeRoomOverlaySpin {
-                to { transform: rotate(360deg); }
-              }
-              @keyframes escapeRoomOverlayPulse {
-                0%, 100% { opacity: .52; transform: scale(.92); }
-                50% { opacity: .96; transform: scale(1.05); }
-              }
-              #escape-room-loading-overlay {
-                position: fixed;
-                top: 18px;
-                right: 24px;
-                z-index: 999998;
-                width: min(292px, calc(100vw - 32px));
-                min-height: 58px;
-                display: flex;
-                align-items: center;
-                background: rgba(25,31,40,.94);
-                border: 1px solid rgba(255,255,255,.12);
-                border-radius: 20px;
-                box-shadow: 0 18px 48px rgba(15,23,42,.22);
-                backdrop-filter: blur(18px) saturate(1.2);
-                opacity: 0;
-                transform: translateY(-8px) scale(.985);
-                pointer-events: none;
-                transition: opacity .12s ease, transform .12s ease;
-              }
-              #escape-room-loading-overlay.is-visible {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-              }
-              #escape-room-loading-overlay .escape-loading-card {
-                position: relative;
-                width: 100%;
-                display: grid;
-                grid-template-columns: 32px 1fr;
-                column-gap: 11px;
-                align-items: center;
-                padding: 12px 15px;
-                overflow: hidden;
-              }
-              #escape-room-loading-overlay .escape-loading-ring {
-                position: relative;
-                grid-row: span 2;
-                width: 30px;
-                height: 30px;
-                margin: 0;
-                border-radius: 999px;
-                background: conic-gradient(from 80deg, #ffffff, #8bc0ff, #00c2a8, #ffffff);
-                -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 6px), #000 calc(100% - 5px));
-                mask: radial-gradient(farthest-side, transparent calc(100% - 6px), #000 calc(100% - 5px));
-                animation: escapeRoomOverlaySpin .72s linear infinite;
-              }
-              #escape-room-loading-overlay .escape-loading-title {
-                position: relative;
-                color: #ffffff;
-                font-size: .92rem;
-                font-weight: 900;
-                letter-spacing: -.04em;
-                line-height: 1.2;
-              }
-              #escape-room-loading-overlay .escape-loading-note {
-                position: relative;
-                margin-top: 3px;
-                color: rgba(255,255,255,.70);
-                font-size: .76rem;
-                font-weight: 750;
-                line-height: 1.25;
-                letter-spacing: -.035em;
-              }
-            `;
-            doc.head.appendChild(style);
-          }
-
-          let overlay = doc.getElementById("escape-room-loading-overlay");
-          if (!overlay) {
-            overlay = doc.createElement("div");
-            overlay.id = "escape-room-loading-overlay";
-            overlay.innerHTML = `
-              <div class="escape-loading-card" role="status" aria-live="polite">
-                <div class="escape-loading-ring"></div>
-                <div class="escape-loading-title">지표 불러오는 중</div>
-                <div class="escape-loading-note">예약률·매출 데이터를 정리합니다</div>
-              </div>
-            `;
-            doc.body.appendChild(overlay);
-          }
-
-          const show = (note) => {
-            const noteEl = overlay.querySelector(".escape-loading-note");
-            if (noteEl && note) noteEl.textContent = note;
-            overlay.classList.add("is-visible");
-            win.clearTimeout(win.escapeRoomLoadingTimer);
-            win.escapeRoomLoadingTimer = win.setTimeout(() => {
-              overlay.classList.remove("is-visible");
-            }, 780);
-          };
           const hide = () => {
-            overlay.classList.remove("is-visible");
             win.clearTimeout(win.escapeRoomLoadingTimer);
+            const overlay = win.document.getElementById("escape-room-loading-overlay");
+            if (overlay) overlay.remove();
           };
 
-          win.escapeRoomShowLoading = show;
+          win.escapeRoomShowLoading = () => {};
           win.escapeRoomHideLoading = hide;
           hide();
 
@@ -1534,23 +1434,6 @@ def install_loading_overlay(active_view: str) -> None:
             });
           }
           win.escapeRoomLastRenderedView = currentView;
-
-          if (!win.escapeRoomLoadingListenerInstalled) {
-            const navLabels = [
-              "홈", "매장 매출", "투자 리포트", "매출 지도", "매장 분석", "테마 분석",
-              "패턴 분석", "수동 자료", "수집 상태", "원본 슬롯"
-            ];
-            doc.addEventListener("click", (event) => {
-              const target = event.target.closest("button, a.app-menu-card");
-              if (!target) return;
-              const text = target.innerText || "";
-              if (target.matches("a.app-menu-card") || navLabels.some((label) => text.includes(label))) {
-                win.scrollTo({top: 0, left: 0, behavior: "instant"});
-                show("새 화면 지표를 계산하고 있습니다");
-              }
-            }, true);
-            win.escapeRoomLoadingListenerInstalled = true;
-          }
         })();
         </script>
         """.replace("__CURRENT_VIEW__", json.dumps(active_view)),
@@ -2838,6 +2721,7 @@ def render_crawl_job_status() -> None:
         display_status = "running"
     if raw_status == "running" and not job_is_running(status):
         display_status = "stopped"
+        status["status"] = "stopped"
 
     progress = status.get("progress") or {}
     completed = int(progress.get("completed", 0) or 0)
@@ -2899,10 +2783,16 @@ def render_crawl_job_status() -> None:
             st.rerun()
     elif display_status == "stopped":
         st.error(
-            f"{label}가 중간에 멈췄습니다. 서버 자원 또는 특정 예약 페이지 응답 문제일 수 있습니다."
+            f"{label}가 중간에 멈췄습니다. 아래 로그를 보고 다시 업데이트를 눌러 주세요."
         )
+        if st.button("멈춘 수집 상태 정리", width="stretch"):
+            clear_job_status(APP_HOME)
+            st.rerun()
     elif display_status == "failed":
         st.error(f"{label} 실패. 아래 로그를 확인해 주세요.")
+        if st.button("실패 상태 정리", width="stretch"):
+            clear_job_status(APP_HOME)
+            st.rerun()
 
     log_text = tail_job_log(status, max_lines=60)
     if log_text and display_status in {"running", "partial_success", "failed", "stopped"}:

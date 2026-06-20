@@ -64,6 +64,14 @@ def read_job_status(app_home: str | Path) -> dict[str, Any] | None:
     return read_job_file(job_status_path(app_home))
 
 
+def clear_job_status(app_home: str | Path) -> None:
+    status_path = job_status_path(app_home)
+    try:
+        status_path.unlink()
+    except FileNotFoundError:
+        return
+
+
 def process_is_running(pid: int | None) -> bool:
     if not pid or pid <= 0:
         return False
