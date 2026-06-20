@@ -118,6 +118,30 @@ Streamlit Cloud에서는 `requirements.txt`로 Python 패키지를 설치하고,
 단, 무료 Streamlit Cloud는 장시간 Playwright 수집이나 상시 스케줄러 실행에는 안정적이지 않을 수 있습니다.
 특히 전체 매장 7일 수집은 서버 자원 때문에 한 번에 실행하지 않고 지역/매장 필터로 나누는 것을 권장합니다.
 
+## 유료 서버 배포
+
+실제 Playwright 수집까지 안정적으로 돌리려면 Render 같은 유료 서버를 권장합니다.
+Render 배포용 파일은 이미 포함되어 있습니다.
+
+```text
+Dockerfile
+render.yaml
+render_start.py
+DEPLOY_RENDER.md
+```
+
+자세한 순서는 `DEPLOY_RENDER.md`를 확인하세요.
+
+더 저렴한 VPS로 운영하려면 Hetzner CX33을 권장합니다.
+
+```text
+docker-compose.yml
+deploy/
+HETZNER_DEPLOY.md
+```
+
+자세한 순서는 `HETZNER_DEPLOY.md`를 확인하세요.
+
 투자자에게 링크로 보여주는 읽기 전용 데모만 필요하면 main file path를 아래처럼 둡니다.
 
 ```text

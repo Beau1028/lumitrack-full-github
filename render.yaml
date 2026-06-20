@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: lumitrack
+    runtime: docker
+    plan: standard
+    autoDeploy: true
+    disk:
+      name: lumitrack-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: ESCAPE_ROOM_MONITOR_HOME
+        value: /var/data
+      - key: PLAYWRIGHT_CHROMIUM_EXECUTABLE
+        value: /usr/bin/chromium
+      - key: LUMITRACK_CLOUD_SAFE
+        value: "1"
+      - key: LUMITRACK_MAX_PARALLEL_ORIGINS
+        value: "2"
+      - key: LUMITRACK_NAVIGATION_TIMEOUT_MS
+        value: "15000"
