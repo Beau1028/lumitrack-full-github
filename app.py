@@ -1391,7 +1391,7 @@ def render_app_menu(active_view: str) -> None:
         """,
         unsafe_allow_html=True,
     )
-    with st.container(key="app_menu_grid"):
+    with st.container():
         for row_start in range(0, len(APP_VIEWS), 5):
             columns = st.columns(5, gap="small")
             for column, item in zip(columns, APP_VIEWS[row_start:row_start + 5]):
