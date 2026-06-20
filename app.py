@@ -1353,11 +1353,11 @@ APP_VIEWS = [
 
 def current_app_view() -> str:
     valid_views = {item["id"] for item in APP_VIEWS}
-    raw_value = st.query_params.get("view")
+    stored_view = str(st.session_state.get("active_view", "") or "")
+    raw_value = st.query_params.get("view") if not stored_view else None
     if isinstance(raw_value, list):
         raw_value = raw_value[0] if raw_value else None
-    stored_view = str(st.session_state.get("active_view", "") or "")
-    view = str(raw_value or stored_view or "home")
+    view = str(stored_view or raw_value or "home")
     if view not in valid_views:
         view = "home"
     st.session_state["active_view"] = view
@@ -1367,7 +1367,6 @@ def current_app_view() -> str:
 def select_app_view(view: str) -> None:
     if view in {item["id"] for item in APP_VIEWS}:
         st.session_state["active_view"] = view
-        st.query_params["view"] = view
 
 
 def render_app_menu(active_view: str) -> None:
@@ -1392,23 +1391,20 @@ def render_app_menu(active_view: str) -> None:
         """,
         unsafe_allow_html=True,
     )
-    cards = []
-    for item in APP_VIEWS:
-        active_class = " active" if item["id"] == active_view else ""
-        href = f"?view={quote(str(item['id']))}"
-        cards.append(
-            f"""
-            <a class="app-menu-card{active_class}" href="{href}">
-              <span class="app-menu-icon">{escape(str(item["icon"]))}</span>
-              <b>{escape(str(item["label"]))}</b>
-              <small>{escape(str(item["desc"]))}</small>
-            </a>
-            """
-        )
-    st.markdown(
-        '<div class="app-menu-board">' + "\n".join(cards) + "</div>",
-        unsafe_allow_html=True,
-    )
+    with st.container(key="app_menu_grid"):
+        for row_start in range(0, len(APP_VIEWS), 5):
+            columns = st.columns(5, gap="small")
+            for column, item in zip(columns, APP_VIEWS[row_start:row_start + 5]):
+                label = f"{item['icon']}  {item['label']}\n{item['desc']}"
+                with column:
+                    st.button(
+                        label,
+                        key=f"app_nav_{item['id']}",
+                        type="primary" if item["id"] == active_view else "secondary",
+                        use_container_width=True,
+                        on_click=select_app_view,
+                        args=(item["id"],),
+                    )
 
 
 def install_loading_overlay(active_view: str) -> None:
@@ -2759,7 +2755,7 @@ def render_crawl_job_status() -> None:
         )
         status_cols = st.columns([1, 1, 2.2])
         with status_cols[0]:
-            if st.button("수집 상태 새로고침", width="stretch"):
+            if st.button("수집 상태 새로고침", use_container_width=True):
                 st.rerun()
         with status_cols[1]:
             st.caption(f"시작 {format_job_timestamp(status.get('started_at'))}")
@@ -2771,7 +2767,7 @@ def render_crawl_job_status() -> None:
             f"{label} 완료 · 성공 {int(summary.get('success', 0) or 0):,}건 · "
             f"슬롯 {int(summary.get('slots', 0) or 0):,}개"
         )
-        if st.button("완료된 데이터 다시 불러오기", width="stretch"):
+        if st.button("완료된 데이터 다시 불러오기", use_container_width=True):
             read_data.clear()
             st.rerun()
     elif display_status == "partial_success":
@@ -2781,19 +2777,19 @@ def render_crawl_job_status() -> None:
             f"실패 {int(summary.get('failed', 0) or 0):,}건 · "
             f"슬롯 {int(summary.get('slots', 0) or 0):,}개"
         )
-        if st.button("수집된 데이터 다시 불러오기", width="stretch"):
+        if st.button("수집된 데이터 다시 불러오기", use_container_width=True):
             read_data.clear()
             st.rerun()
     elif display_status == "stopped":
         st.error(
             f"{label}가 중간에 멈췄습니다. 아래 로그를 보고 다시 업데이트를 눌러 주세요."
         )
-        if st.button("멈춘 수집 상태 정리", width="stretch"):
+        if st.button("멈춘 수집 상태 정리", use_container_width=True):
             clear_job_status(APP_HOME)
             st.rerun()
     elif display_status == "failed":
         st.error(f"{label} 실패. 아래 로그를 확인해 주세요.")
-        if st.button("실패 상태 정리", width="stretch"):
+        if st.button("실패 상태 정리", use_container_width=True):
             clear_job_status(APP_HOME)
             st.rerun()
 
@@ -3141,14 +3137,14 @@ with refresh_col:
         st.button(
             "데모 데이터 보기",
             type="primary",
-            width="stretch",
+            use_container_width=True,
             disabled=True,
             help="Streamlit Cloud 데모에서는 온라인 수집을 실행하지 않고 저장된 데모 DB만 읽습니다.",
         )
     elif st.button(
         refresh_label,
         type="primary",
-        width="stretch",
+        use_container_width=True,
         help=(
             f"같은 사이트의 매장은 {CRAWL_DELAY_MIN_SECONDS}~{CRAWL_DELAY_MAX_SECONDS}초 간격으로 "
             f"순차 확인하고, 서로 다른 사이트는 최대 {CRAWL_MAX_PARALLEL_ORIGINS}개까지 병렬 확인합니다."
@@ -3165,13 +3161,13 @@ with week_col:
     if DEMO_MODE:
         st.button(
             "온라인 수집 꺼짐",
-            width="stretch",
+            use_container_width=True,
             disabled=True,
             help="데모 링크에서는 Playwright와 자동 수집을 실행하지 않습니다.",
         )
     elif st.button(
         week_label,
-        width="stretch",
+        use_container_width=True,
         help=(
             "매장당 브라우저를 한 번만 열어 오늘부터 7일을 연속 확인합니다. "
             f"느린 사이트는 {CRAWL_NAVIGATION_TIMEOUT_MS // 1000}초 안에 다음 작업으로 넘기고 "
@@ -3557,7 +3553,7 @@ if active_view == "revenue":
                         value_title="월 예상매출(원)",
                         height=420,
                     ),
-                    width="stretch",
+                    use_container_width=True,
                 )
             with right:
                 st.markdown("#### 매장별 요약")
@@ -3583,7 +3579,7 @@ if active_view == "revenue":
                         ]
                     ],
                     hide_index=True,
-                    width="stretch",
+                    use_container_width=True,
                     column_config={
                         "store_name": "매장",
                         "region": "지역",
@@ -3619,7 +3615,7 @@ if active_view == "revenue":
                             color="#6557c8",
                             height=420,
                         ),
-                        width="stretch",
+                        use_container_width=True,
                     )
                 with region_right:
                     region_table = region_monthly.copy()
@@ -3631,7 +3627,7 @@ if active_view == "revenue":
                             ["region", "store_count", "매장당 월평균"]
                         ],
                         hide_index=True,
-                        width="stretch",
+                        use_container_width=True,
                         column_config={
                             "region": "지역",
                             "store_count": "매장 수",
@@ -3663,7 +3659,7 @@ if active_view == "revenue":
                             color="#f06b4f",
                             height=420,
                         ),
-                        width="stretch",
+                        use_container_width=True,
                     )
                 with genre_right:
                     genre_table = genre_revenue.head(40).copy()
@@ -3688,7 +3684,7 @@ if active_view == "revenue":
                             ]
                         ],
                         hide_index=True,
-                        width="stretch",
+                        use_container_width=True,
                         column_config={
                             "genre": "장르",
                             "store_count": "관측 매장",
@@ -3746,7 +3742,7 @@ if active_view == "investor":
             data=report_html,
             file_name=f"lumitrack-investor-report-{TODAY}.html",
             mime="text/html",
-            width="stretch",
+            use_container_width=True,
         )
     with download_cols[1]:
         if report_pdf:
@@ -3755,24 +3751,24 @@ if active_view == "investor":
                 data=report_pdf,
                 file_name=f"lumitrack-investor-report-{TODAY}.pdf",
                 mime="application/pdf",
-                width="stretch",
+                use_container_width=True,
             )
         else:
             st.button(
                 "PDF 엔진 없음",
                 disabled=True,
-                width="stretch",
+                use_container_width=True,
                 help="reportlab 설치 시 앱에서 바로 PDF를 생성합니다. 현재는 HTML을 브라우저에서 PDF로 저장할 수 있습니다.",
             )
     with download_cols[2]:
         if DEMO_MODE:
             st.button(
                 "데모는 읽기 전용",
-                width="stretch",
+                use_container_width=True,
                 disabled=True,
                 help="Streamlit Cloud 데모에서는 SQLite 파일을 수정하지 않습니다.",
             )
-        elif st.button("현재 필터 스냅샷 저장", width="stretch"):
+        elif st.button("현재 필터 스냅샷 저장", use_container_width=True):
             snapshot_database.save_metric_snapshot(
                 snapshot_date=TODAY,
                 scope_label=snapshot_scope_label,
@@ -3806,7 +3802,7 @@ if active_view == "investor":
                     value_title="최근 7일 매출 증감(원)",
                     color="#3182f6",
                 ),
-                width="stretch",
+                use_container_width=True,
             )
     with growth_right:
         if not growth_trends.empty:
@@ -3822,7 +3818,7 @@ if active_view == "investor":
                     ]
                 ].head(20),
                 hide_index=True,
-                width="stretch",
+                use_container_width=True,
                 height=390,
                 column_config={
                     "store_name": "매장",
@@ -3866,7 +3862,7 @@ if active_view == "investor":
                     value_title="테마 수",
                     color="#6557c8",
                 ),
-                width="stretch",
+                use_container_width=True,
             )
             st.caption(
                 "고가격/저가격은 현재 관측 테마의 추정 인당가 중앙값, "
@@ -3888,7 +3884,7 @@ if active_view == "investor":
                     ]
                 ].head(80),
                 hide_index=True,
-                width="stretch",
+                use_container_width=True,
                 height=430,
                 column_config={
                     "strategy": "전략",
@@ -3932,7 +3928,7 @@ if active_view == "investor":
                     ]
                 ].head(80),
                 hide_index=True,
-                width="stretch",
+                use_container_width=True,
                 height=430,
                 column_config={
                     "store_name": "매장",
@@ -3966,7 +3962,7 @@ if active_view == "investor":
                     value_title="운영시간당 추정매출(원)",
                     color="#147d72",
                 ),
-                width="stretch",
+                use_container_width=True,
             )
 
     st.divider()
@@ -3996,7 +3992,7 @@ if active_view == "investor":
                     value_title=f"반경 {radius_meters:,}m 월매출 합계(원)",
                     color="#f06b4f",
                 ),
-                width="stretch",
+                use_container_width=True,
             )
         with radius_right:
             st.dataframe(
@@ -4013,7 +4009,7 @@ if active_view == "investor":
                     ]
                 ].head(80),
                 hide_index=True,
-                width="stretch",
+                use_container_width=True,
                 height=430,
                 column_config={
                     "anchor_store_name": "중심 매장",
@@ -4056,7 +4052,7 @@ if active_view == "investor":
                 ]
             ],
             hide_index=True,
-            width="stretch",
+            use_container_width=True,
             height=360,
             column_config={
                 "snapshot_date": "기준일",
@@ -4198,7 +4194,7 @@ if active_view == "map":
         st.dataframe(
             map_table,
             hide_index=True,
-            width="stretch",
+            use_container_width=True,
             column_config={
                 "store_name": "매장",
                 "region": "지역",
@@ -4229,7 +4225,7 @@ if active_view == "map":
                 st.dataframe(
                     missing_table,
                     hide_index=True,
-                    width="stretch",
+                    use_container_width=True,
                     column_config={
                         "store_name": "매장",
                         "region": "지역",
@@ -4260,7 +4256,7 @@ if active_view == "map":
             st.dataframe(
                 detail_table,
                 hide_index=True,
-                width="stretch",
+                use_container_width=True,
                 column_config={
                     "store_name": "매장",
                     "region": "지역",
@@ -4406,7 +4402,7 @@ if active_view == "store":
                         value_title="추정매출(원)",
                         extra_tooltips=["reserved_slots", "total_slots"],
                     ),
-                    width="stretch",
+                    use_container_width=True,
                 )
                 st.dataframe(
                     daily_detail[
@@ -4421,7 +4417,7 @@ if active_view == "store":
                         ]
                     ],
                     hide_index=True,
-                    width="stretch",
+                    use_container_width=True,
                     column_config={
                         "date": "날짜",
                         "weekday": "요일",
@@ -4450,7 +4446,7 @@ if active_view == "store":
                         horizontal=False,
                         color="#6557c8",
                     ),
-                    width="stretch",
+                    use_container_width=True,
                 )
                 st.dataframe(
                     weekday_detail[
@@ -4463,7 +4459,7 @@ if active_view == "store":
                         ]
                     ],
                     hide_index=True,
-                    width="stretch",
+                    use_container_width=True,
                     column_config={
                         "weekday": "요일",
                         "total_slots": "총 타임",
@@ -4498,7 +4494,7 @@ if active_view == "store":
                         ]
                     ],
                     hide_index=True,
-                    width="stretch",
+                    use_container_width=True,
                     height=390,
                     column_config={
                         "theme_name": "테마",
@@ -4526,7 +4522,7 @@ if active_view == "store":
                         horizontal=False,
                         color="#f06b4f",
                     ),
-                    width="stretch",
+                    use_container_width=True,
                 )
                 st.dataframe(
                     hour_detail[
@@ -4538,7 +4534,7 @@ if active_view == "store":
                         ]
                     ],
                     hide_index=True,
-                    width="stretch",
+                    use_container_width=True,
                     height=260,
                     column_config={
                         "time_band": "시간대",
@@ -4583,7 +4579,7 @@ if active_view == "store":
                 ]
             ],
             hide_index=True,
-            width="stretch",
+            use_container_width=True,
             height=650,
             column_config={
                 "region": "지역",
@@ -4632,7 +4628,7 @@ if active_view == "store":
                 ]
             ],
             hide_index=True,
-            width="stretch",
+            use_container_width=True,
             height=620,
             column_config={
                 "region": "지역",
@@ -4675,7 +4671,7 @@ if active_view == "store":
                 ]
             ],
             hide_index=True,
-            width="stretch",
+            use_container_width=True,
             height=620,
             column_config={
                 "region": "지역",
@@ -4770,7 +4766,7 @@ if active_view == "theme":
                 ]
             ].head(200),
             hide_index=True,
-            width="stretch",
+            use_container_width=True,
             height=650,
             column_config={
                 "store_name": "매장",
@@ -4823,7 +4819,7 @@ if active_view == "trend":
                     value_title="예약률(%)",
                     horizontal=False,
                 ),
-                width="stretch",
+                use_container_width=True,
             )
     with right:
         st.subheader("시간대별 예약률")
@@ -4840,7 +4836,7 @@ if active_view == "trend":
                     horizontal=False,
                     color="#f06b4f",
                 ),
-                width="stretch",
+                use_container_width=True,
             )
 
     left, right = st.columns(2)
@@ -4858,7 +4854,7 @@ if active_view == "trend":
                     value_title="예약률(%)",
                     color="#6557c8",
                 ),
-                width="stretch",
+                use_container_width=True,
             )
     with right:
         st.subheader("평일과 주말")
@@ -4875,7 +4871,7 @@ if active_view == "trend":
                     horizontal=False,
                     color="#147d72",
                 ),
-                width="stretch",
+                use_container_width=True,
             )
 
 if active_view == "manual":
@@ -4915,7 +4911,7 @@ if active_view == "manual":
                 ]
             ].sort_values("monthly_revenue_max", ascending=False),
             hide_index=True,
-            width="stretch",
+            use_container_width=True,
             column_config={
                 "region": "지역",
                 "store_name": "매장",
@@ -4963,7 +4959,7 @@ if active_view == "manual":
                 ascending=[True, False],
             ),
             hide_index=True,
-            width="stretch",
+            use_container_width=True,
             height=620,
             column_config={
                 "store_name": "매장",
@@ -5068,7 +5064,7 @@ if active_view == "status":
             ]
         ],
         hide_index=True,
-        width="stretch",
+        use_container_width=True,
         height=680,
         column_config={
             "region": "지역",
@@ -5109,7 +5105,7 @@ if active_view == "raw":
                 ]
             ].sort_values(["date", "store_name", "theme_name", "time"]),
             hide_index=True,
-            width="stretch",
+            use_container_width=True,
             height=360,
             column_config={
                 "region": "지역",
@@ -5166,7 +5162,7 @@ if active_view == "raw":
                 ]
             ].sort_values(["date", "store_name", "theme_name", "time"]),
             hide_index=True,
-            width="stretch",
+            use_container_width=True,
             height=700,
             column_config={
                 "region": "지역",
@@ -5190,4 +5186,5 @@ if active_view == "raw":
                 "crawled_at": "온라인 확인 시각",
             },
         )
+
 

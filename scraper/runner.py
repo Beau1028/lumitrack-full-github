@@ -33,6 +33,18 @@ RETIRED_STORE_IDS = {
     "murderparker_policy",
     "tickettoescape_hongdae",
 }
+CRAWL_SKIP_STORE_IDS = {
+    # These public pages repeatedly time out from the Hetzner server. Keep them
+    # registered for catalog/revenue context, but do not let them stall 7-day
+    # collection jobs.
+    "imaginary_door_daehangno",
+    "imaginary_door_seohyeon",
+    "imaginary_door_gwangju",
+    "imaginary_door_suwon",
+    "imaginary_door_bupyeong",
+    "imaginary_door_suwon2",
+    "frank_gangnam",
+}
 KST = ZoneInfo("Asia/Seoul")
 MAX_PARALLEL_ORIGINS = 8
 ProgressCallback = Callable[[dict[str, object]], None]
@@ -226,6 +238,7 @@ def run_crawl(
     active_stores = [
         store for store in managed_stores
         if store.adapter_type not in NON_CRAWLING_ADAPTERS
+        and store.store_id not in CRAWL_SKIP_STORE_IDS
     ]
     summary["skipped"] = (
         len(stores) - len(active_stores)

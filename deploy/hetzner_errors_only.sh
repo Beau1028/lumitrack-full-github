@@ -8,7 +8,8 @@ docker compose exec -T lumitrack sh -lc '
     exit 0
   fi
   echo "== Last errors only =="
-  grep -n -i -E "traceback|exception|error|failed|killed|memory|sqlite|runtimeerror|valueerror|typeerror" "$log" \
+  tail -n 500 "$log" \
+    | grep -n -i -E "traceback|exception|error|failed|killed|memory|sqlite|runtimeerror|valueerror|typeerror" \
     | tail -n 120 || true
 '
 
