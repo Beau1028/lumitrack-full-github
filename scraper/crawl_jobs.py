@@ -102,7 +102,12 @@ def tail_job_log(status: dict[str, Any] | None, max_lines: int = 80) -> str:
     if not log_path.exists():
         return ""
     try:
-        lines = log_path.read_text(encoding="utf-8", errors="replace").splitlines()
+        with log_path.open("rb") as file:
+            file.seek(0, os.SEEK_END)
+            file_size = file.tell()
+            file.seek(max(0, file_size - 64_000))
+            chunk = file.read().decode("utf-8", errors="replace")
+        lines = chunk.splitlines()
     except OSError:
         return ""
     return "\n".join(lines[-max_lines:])
