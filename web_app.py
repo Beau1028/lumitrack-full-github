@@ -540,8 +540,8 @@ def crawl_start(days: int = Form(...)) -> RedirectResponse:
             config_path=CONFIG_PATH,
             db_path=DB_PATH,
             store_ids=None,
-            delay_min_seconds=int(os.getenv("LUMITRACK_DELAY_MIN_SECONDS", "2")),
-            delay_max_seconds=int(os.getenv("LUMITRACK_DELAY_MAX_SECONDS", "4")),
+            delay_min_seconds=int(os.getenv("LUMITRACK_DELAY_MIN_SECONDS", "5")),
+            delay_max_seconds=int(os.getenv("LUMITRACK_DELAY_MAX_SECONDS", "8")),
             max_parallel_origins=int(os.getenv("LUMITRACK_MAX_PARALLEL_ORIGINS", "4")),
             max_navigation_timeout_ms=int(
                 os.getenv("LUMITRACK_NAVIGATION_TIMEOUT_MS", "12000")

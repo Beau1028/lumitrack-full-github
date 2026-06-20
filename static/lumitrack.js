@@ -12,13 +12,16 @@ window.LumiTrack = {
   renderBar(canvasId, payload, label, suffix, color) {
     const element = document.getElementById(canvasId);
     if (!element || !window.Chart) return;
+    if (element._lumitrackChart) {
+      element._lumitrackChart.destroy();
+    }
 
     const data = payload || { labels: [], values: [] };
     const gradient = element.getContext("2d").createLinearGradient(0, 0, 0, 260);
     gradient.addColorStop(0, color);
     gradient.addColorStop(1, "rgba(49, 130, 246, 0.20)");
 
-    new Chart(element, {
+    element._lumitrackChart = new Chart(element, {
       type: "bar",
       data: {
         labels: data.labels,
@@ -33,6 +36,7 @@ window.LumiTrack = {
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        resizeDelay: 120,
         animation: {
           duration: 700,
           easing: "easeOutQuart"

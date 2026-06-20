@@ -262,6 +262,13 @@ h2 {
   overflow: hidden;
 }
 
+.panel canvas {
+  display: block;
+  width: 100% !important;
+  height: 260px !important;
+  max-height: 260px;
+}
+
 .panel-title {
   display: flex;
   align-items: center;
@@ -671,5 +678,10 @@ th.num {
 
   #revenueMap {
     height: 62vh;
+  }
+
+  .panel canvas {
+    height: 220px !important;
+    max-height: 220px;
   }
 }
