@@ -8,6 +8,7 @@ build/
 dist/
 work/
 logs/
+jobs/
 artifacts/
 .pytest_cache/
 *.exe

@@ -89,7 +89,19 @@ bash deploy/hetzner_logs.sh
 
 여기 나오는 마지막 에러를 Codex에게 보내면 됩니다.
 
-## 8. 비용 감각
+## 8. 7일 수집이 멈춘 것처럼 보일 때
+
+7일 예약 업데이트는 앱 화면 안에서 끝까지 기다리지 않고 서버 백그라운드 작업으로 실행됩니다.
+버튼을 누른 뒤에는 화면 상단의 수집 상태 카드에서 진행률을 확인합니다.
+
+수집 로그는 앱 안의 `수집 로그 보기`에서 확인하거나, 서버에서 아래 명령으로 볼 수 있습니다.
+
+```bash
+cd lumitrack
+docker compose exec lumitrack tail -n 120 /var/data/jobs/crawl_*.log
+```
+
+## 9. 비용 감각
 
 CX33은 Render Standard보다 훨씬 싸고 RAM이 넉넉해서 LumiTrack에 잘 맞습니다.
 다만 Render보다 직접 관리할 것이 조금 더 있습니다.

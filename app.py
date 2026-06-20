@@ -52,6 +52,13 @@ from scraper.analytics import (
     weekday_weekend_rates,
 )
 from scraper.config import load_stores
+from scraper.crawl_jobs import (
+    CrawlJobAlreadyRunning,
+    job_is_running,
+    read_job_status,
+    start_crawl_job,
+    tail_job_log,
+)
 from scraper.database import Database
 from scraper.logging_utils import configure_logging
 
@@ -2808,6 +2815,104 @@ def render_refresh_notice() -> None:
             st.code(detail, language="text")
 
 
+def format_job_timestamp(value: object) -> str:
+    if not value:
+        return "-"
+    try:
+        parsed = datetime.fromisoformat(str(value))
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=KST)
+        return parsed.astimezone(KST).strftime("%Y-%m-%d %H:%M:%S")
+    except ValueError:
+        return str(value)
+
+
+def render_crawl_job_status() -> None:
+    status = read_job_status(APP_HOME)
+    if not status:
+        return
+
+    raw_status = str(status.get("status", ""))
+    display_status = raw_status
+    if raw_status == "starting":
+        display_status = "running"
+    if raw_status == "running" and not job_is_running(status):
+        display_status = "stopped"
+
+    progress = status.get("progress") or {}
+    completed = int(progress.get("completed", 0) or 0)
+    total = int(progress.get("total", 0) or 0)
+    percent = int(completed / total * 100) if total else 0
+    label = str(status.get("label", "예약 현황 업데이트"))
+    current_store = str(progress.get("current_store", "") or "")
+    current_date = str(progress.get("current_date", "") or "")
+    success_count = int(progress.get("success", 0) or 0)
+    failed_count = int(progress.get("failed", 0) or 0)
+    slots_count = int(progress.get("slots", 0) or 0)
+
+    if display_status == "running":
+        st.markdown(
+            f"""
+            <div class="refresh-loader">
+              <div class="refresh-spinner"></div>
+              <div class="refresh-copy">
+                <b>{escape(label)} 진행 중 · {percent}%</b>
+                <span>{escape(current_store or "공개 예약표 연결 중")} {escape(current_date)} · 화면을 닫아도 서버에서 계속 수집합니다</span>
+              </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        st.progress(
+            min(percent, 100),
+            text=(
+                f"{completed:,}/{total:,}건 · 성공 {success_count:,} · "
+                f"실패 {failed_count:,} · 슬롯 {slots_count:,}개"
+            ),
+        )
+        status_cols = st.columns([1, 1, 2.2])
+        with status_cols[0]:
+            if st.button("수집 상태 새로고침", width="stretch"):
+                st.rerun()
+        with status_cols[1]:
+            st.caption(f"시작 {format_job_timestamp(status.get('started_at'))}")
+        with status_cols[2]:
+            st.caption("수집 중에도 다른 메뉴는 볼 수 있습니다. 데이터는 완료 후 다시 불러오면 반영됩니다.")
+    elif display_status == "success":
+        summary = status.get("summary") or {}
+        st.success(
+            f"{label} 완료 · 성공 {int(summary.get('success', 0) or 0):,}건 · "
+            f"슬롯 {int(summary.get('slots', 0) or 0):,}개"
+        )
+        if st.button("완료된 데이터 다시 불러오기", width="stretch"):
+            read_data.clear()
+            st.rerun()
+    elif display_status == "partial_success":
+        summary = status.get("summary") or {}
+        st.warning(
+            f"{label} 완료 · 성공 {int(summary.get('success', 0) or 0):,}건 · "
+            f"실패 {int(summary.get('failed', 0) or 0):,}건 · "
+            f"슬롯 {int(summary.get('slots', 0) or 0):,}개"
+        )
+        if st.button("수집된 데이터 다시 불러오기", width="stretch"):
+            read_data.clear()
+            st.rerun()
+    elif display_status == "stopped":
+        st.error(
+            f"{label}가 중간에 멈췄습니다. 서버 자원 또는 특정 예약 페이지 응답 문제일 수 있습니다."
+        )
+    elif display_status == "failed":
+        st.error(f"{label} 실패. 아래 로그를 확인해 주세요.")
+
+    log_text = tail_job_log(status, max_lines=60)
+    if log_text and display_status in {"running", "partial_success", "failed", "stopped"}:
+        with st.expander("수집 로그 보기", expanded=False):
+            st.code(log_text, language="text")
+    if display_status == "failed" and status.get("error"):
+        with st.expander("오류 상세 보기", expanded=False):
+            st.code(str(status["error"]), language="text")
+
+
 def run_refresh_action(
     label: str,
     target_ids: set[str] | None,
@@ -2830,47 +2935,55 @@ def run_refresh_action(
         st.warning(message)
         return
 
-    LOGGER.info("Refresh action requested label=%s days=%s selected=%s", label, days, bool(target_ids))
-    update_progress = progress_ui(label)
+    LOGGER.info(
+        "Refresh action requested label=%s days=%s selected=%s",
+        label,
+        days,
+        bool(target_ids),
+    )
     try:
-        result = run_online_refresh(
-            target_ids,
+        job = start_crawl_job(
+            app_home=APP_HOME,
+            project_dir=PROJECT_DIR,
+            label=label,
             days=days,
-            progress_callback=update_progress,
+            config_path=config_file(),
+            db_path=DB_PATH,
+            store_ids=target_ids,
+            delay_min_seconds=CRAWL_DELAY_MIN_SECONDS,
+            delay_max_seconds=CRAWL_DELAY_MAX_SECONDS,
+            max_parallel_origins=CRAWL_MAX_PARALLEL_ORIGINS,
+            max_navigation_timeout_ms=CRAWL_NAVIGATION_TIMEOUT_MS,
         )
+    except CrawlJobAlreadyRunning:
+        LOGGER.warning("Refresh action ignored because another crawl is running.")
+        st.session_state["refresh_notice"] = {
+            "level": "warning",
+            "message": "이미 예약 수집이 실행 중입니다. 수집 상태 카드에서 진행률을 확인해 주세요.",
+        }
+        st.rerun()
     except Exception as exc:
-        LOGGER.exception("Refresh action failed label=%s days=%s", label, days)
-        read_data.clear()
+        LOGGER.exception("Refresh job start failed label=%s days=%s", label, days)
         st.session_state["refresh_notice"] = {
             "level": "error",
             "message": (
-                f"{label}가 중단됐습니다. 서버 자원 또는 브라우저 실행 문제일 수 있습니다. "
-                "아래 오류를 확인하고 GitHub 반영 후 Streamlit 앱을 Reboot 해주세요."
+                f"{label}를 시작하지 못했습니다. 서버의 Python/Docker 실행 상태를 확인해야 합니다."
             ),
             "detail": "".join(
                 traceback.format_exception(type(exc), exc, exc.__traceback__)
             ),
         }
-        render_refresh_notice()
+        st.rerun()
         return
 
-    LOGGER.info("Refresh action finished label=%s days=%s result=%s", label, days, result)
-    read_data.clear()
-    if result["failed"]:
-        st.session_state["refresh_notice"] = {
-            "level": "warning",
-            "message": (
-                f"{label} 완료: 성공 {result['success']}건, 실패 {result['failed']}건, "
-                f"슬롯 {result['slots']:,}개. 일부 사이트는 느리거나 접근이 제한되어 실패할 수 있습니다."
-            ),
-        }
-    else:
-        st.session_state["refresh_notice"] = {
-            "level": "success",
-            "message": (
-                f"{label} 완료: 성공 {result['success']}건, 슬롯 {result['slots']:,}개"
-            ),
-        }
+    LOGGER.info("Refresh job started label=%s days=%s job_id=%s", label, days, job["job_id"])
+    st.session_state["refresh_notice"] = {
+        "level": "info",
+        "message": (
+            f"{label}를 서버 백그라운드에서 시작했습니다. "
+            "화면을 닫거나 다른 메뉴로 이동해도 계속 진행됩니다."
+        ),
+    }
     st.rerun()
 
 
@@ -3064,6 +3177,7 @@ if filter_summary:
         unsafe_allow_html=True,
     )
 render_refresh_notice()
+render_crawl_job_status()
 
 filtered = filter_slots(
     data,
