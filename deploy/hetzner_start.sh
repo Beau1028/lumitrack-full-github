@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-docker compose up -d --build
+docker compose up -d --build --force-recreate
 docker compose ps

@@ -26,8 +26,29 @@ if status.exists():
         print(f"job_status_read_error={type(exc).__name__}: {exc}")
 else:
     print("job_status=none")
+
+print()
+print("== Code markers ==")
+for marker in [
+    "escapeRoomShowLoading = () => {}",
+    "멈춘 수집 상태 정리",
+    "start_crawl_job(",
+]:
+    found = False
+    for path in [Path("/app/app.py"), Path("/app/scraper/crawl_jobs.py")]:
+        if path.exists() and marker in path.read_text(encoding="utf-8", errors="replace"):
+            found = True
+    print(f"{marker}: {'yes' if found else 'no'}")
 PY
 
 echo
 echo "== Recent app logs =="
 docker compose logs --tail=180 lumitrack
+
+echo
+echo "== Recent LumiTrack file logs =="
+docker compose exec -T lumitrack sh -lc 'tail -n 180 /var/data/logs/escape_room_monitor.log 2>/dev/null || true'
+
+echo
+echo "== Crawl job files =="
+docker compose exec -T lumitrack sh -lc 'ls -la /var/data/jobs 2>/dev/null || true'
