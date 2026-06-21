@@ -171,7 +171,7 @@ def crawl_runtime_settings() -> dict[str, int]:
         "delay_min_seconds": delay_min,
         "delay_max_seconds": delay_max,
         "max_parallel_origins": max(
-            1, int(os.getenv("LUMITRACK_MAX_PARALLEL_ORIGINS", "8"))
+            1, int(os.getenv("LUMITRACK_MAX_PARALLEL_ORIGINS", "4"))
         ),
         "max_navigation_timeout_ms": max(
             5_000, int(os.getenv("LUMITRACK_NAVIGATION_TIMEOUT_MS", "10000"))
@@ -482,7 +482,7 @@ def load_market_data() -> dict[str, Any]:
     is_running = bool(runtime["job_running"])
     now = monotonic()
     ttl_seconds = (
-        env_int("LUMITRACK_RUNNING_CACHE_SECONDS", 20, minimum=1)
+        env_int("LUMITRACK_RUNNING_CACHE_SECONDS", 3600, minimum=1)
         if is_running
         else env_int("LUMITRACK_IDLE_CACHE_SECONDS", 5, minimum=1)
     )
@@ -521,6 +521,7 @@ def base_context(request: Request, active: str) -> dict[str, Any]:
 def revenue_table(data: dict[str, Any]) -> pd.DataFrame:
     industry = data["industry"]
     catalog = data.get("catalog", pd.DataFrame())
+    automatic = data.get("auto_projection", pd.DataFrame())
     columns = [
         "store_id",
         "store_name",
@@ -618,6 +619,59 @@ def revenue_table(data: dict[str, Any]) -> pd.DataFrame:
     for column in columns:
         if column not in table.columns:
             table[column] = 0 if column.endswith(("_min", "_mid", "_max")) else ""
+
+    if not automatic.empty and "store_id" in automatic.columns:
+        auto_columns = [
+            "store_id",
+            "booking_rate",
+            "monthly_revenue",
+            "observed_days",
+            "observed_weekday_names",
+            "confidence",
+            "total_slots",
+            "reserved_slots",
+        ]
+        available_auto_columns = [
+            column for column in auto_columns if column in automatic.columns
+        ]
+        auto = automatic[available_auto_columns].drop_duplicates("store_id").copy()
+        auto = auto.rename(
+            columns={
+                "booking_rate": "auto_booking_rate",
+                "monthly_revenue": "auto_monthly_revenue",
+                "observed_days": "auto_observed_days",
+                "observed_weekday_names": "auto_observed_weekday_names",
+                "confidence": "auto_confidence",
+                "total_slots": "auto_total_slots",
+                "reserved_slots": "auto_reserved_slots",
+            }
+        )
+        table = table.merge(auto, on="store_id", how="left")
+        auto_observed = pd.to_numeric(
+            table.get("auto_observed_days", 0),
+            errors="coerce",
+        ).fillna(0)
+        has_auto = auto_observed.gt(0)
+        manual_mask = table["estimate_source"].fillna("").astype(str).str.contains(
+            "수동", na=False
+        )
+        table.loc[manual_mask & has_auto, "estimate_source"] = (
+            "수동 관측 + 자동 수집"
+        )
+        table.loc[manual_mask & has_auto, "observed_days"] = auto_observed[
+            manual_mask & has_auto
+        ].astype(int)
+        if "auto_observed_weekday_names" in table.columns:
+            table.loc[manual_mask & has_auto, "observed_weekday_names"] = table.loc[
+                manual_mask & has_auto,
+                "auto_observed_weekday_names",
+            ].fillna("-")
+        table.loc[manual_mask & has_auto, "confidence"] = (
+            table.loc[manual_mask & has_auto, "confidence"].fillna("수동 범위").astype(str)
+            + " · 자동 "
+            + auto_observed[manual_mask & has_auto].astype(int).astype(str)
+            + "일 수집 확인"
+        )
     table["booking_rate_mid"] = (
         table["booking_rate_min"].fillna(0) + table["booking_rate_max"].fillna(0)
     ) / 2
@@ -874,7 +928,7 @@ def crawl_start(days: int = Form(...)) -> RedirectResponse:
             store_ids=None,
             delay_min_seconds=int(os.getenv("LUMITRACK_DELAY_MIN_SECONDS", "5")),
             delay_max_seconds=int(os.getenv("LUMITRACK_DELAY_MAX_SECONDS", "6")),
-            max_parallel_origins=int(os.getenv("LUMITRACK_MAX_PARALLEL_ORIGINS", "8")),
+            max_parallel_origins=int(os.getenv("LUMITRACK_MAX_PARALLEL_ORIGINS", "4")),
             max_navigation_timeout_ms=int(
                 os.getenv("LUMITRACK_NAVIGATION_TIMEOUT_MS", "10000")
             ),
@@ -895,13 +949,15 @@ def crawl_clear() -> RedirectResponse:
 
 
 @app.get("/api/crawl/status")
-def crawl_status_api() -> dict[str, Any]:
+def crawl_status_api(log: int = 0) -> dict[str, Any]:
     job = read_job_status(APP_HOME)
-    return {
+    payload = {
         "job": job,
         "running": job_is_running(job),
-        "log": tail_job_log(job, max_lines=80),
     }
+    if log:
+        payload["log"] = tail_job_log(job, max_lines=80)
+    return payload
 
 
 @app.get("/download/store_revenue.csv")

@@ -24,7 +24,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--store-id", action="append", default=[])
     parser.add_argument("--delay-min", type=float, default=5.0)
     parser.add_argument("--delay-max", type=float, default=6.0)
-    parser.add_argument("--parallel-origins", type=int, default=8)
+    parser.add_argument("--parallel-origins", type=int, default=4)
     parser.add_argument("--max-navigation-timeout-ms", type=int, default=10_000)
     parser.add_argument("--minimum-recrawl-minutes", type=int, default=0)
     return parser.parse_args()

@@ -498,8 +498,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--parallel-origins",
         type=int,
-        default=8,
-        help="Parallel public-site origins (1-8, default: 8).",
+        default=4,
+        help="Parallel public-site origins (1-8, default: 4).",
     )
     parser.add_argument(
         "--max-navigation-timeout-ms",

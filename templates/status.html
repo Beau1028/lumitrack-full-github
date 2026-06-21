@@ -23,9 +23,9 @@
   <div class="panel-title">
     <h2>현재 작업</h2>
     {% if job %}
-      <span>{{ job.status }}</span>
+      <span id="statusLiveState">{{ job.status }}</span>
     {% else %}
-      <span>대기 중</span>
+      <span id="statusLiveState">대기 중</span>
     {% endif %}
   </div>
 
@@ -36,19 +36,19 @@
     {% set pct = (completed / total * 100) if total else 0 %}
     <div class="status-card">
       <div class="status-main">
-        <strong>{{ job.label }}</strong>
-        <span>{{ progress.get('current_store', '-') }} {{ progress.get('current_date', '') }}</span>
+        <strong id="statusLiveTitle">{{ job.label }}</strong>
+        <span id="statusLiveDetail">{{ progress.get('current_store', '-') }} {{ progress.get('current_date', '') }}</span>
       </div>
-      <div class="progress big"><span style="width: {{ pct }}%"></span></div>
+      <div class="progress big"><span id="statusLiveProgress" style="width: {{ pct }}%"></span></div>
       <div class="status-grid">
-        <div><span>진행률</span><strong>{{ pct|pct }}</strong></div>
-        <div><span>완료</span><strong>{{ completed|num }} / {{ total|num }}</strong></div>
-        <div><span>성공</span><strong>{{ progress.get('success', 0)|num }}</strong></div>
-        <div><span>실패</span><strong>{{ progress.get('failed', 0)|num }}</strong></div>
-        <div><span>슬롯</span><strong>{{ progress.get('slots', 0)|num }}</strong></div>
+        <div><span>진행률</span><strong id="statusLivePct">{{ pct|pct }}</strong></div>
+        <div><span>완료</span><strong id="statusLiveCompleted">{{ completed|num }} / {{ total|num }}</strong></div>
+        <div><span>성공</span><strong id="statusLiveSuccess">{{ progress.get('success', 0)|num }}</strong></div>
+        <div><span>실패</span><strong id="statusLiveFailed">{{ progress.get('failed', 0)|num }}</strong></div>
+        <div><span>슬롯</span><strong id="statusLiveSlots">{{ progress.get('slots', 0)|num }}</strong></div>
       </div>
       {% if job.error %}
-        <p class="notice danger">{{ job.error }}</p>
+        <p id="statusLiveError" class="notice danger">{{ job.error }}</p>
       {% endif %}
       <form method="post" action="/crawl/clear">
         <button class="btn subtle" type="submit">상태 초기화</button>
@@ -64,7 +64,7 @@
     <h2>최근 수집 로그</h2>
     <span>마지막 40줄</span>
   </div>
-  <pre class="log-box">{{ job_log or '아직 로그가 없습니다.' }}</pre>
+  <pre id="liveLogBox" class="log-box">{{ job_log or '아직 로그가 없습니다.' }}</pre>
 </section>
 
 <section class="panel">
@@ -101,12 +101,4 @@
     </table>
   </div>
 </section>
-{% endblock %}
-
-{% block scripts %}
-{% if job and job.status in ['running', 'starting'] %}
-<script>
-  setTimeout(() => window.location.reload(), 5000);
-</script>
-{% endif %}
 {% endblock %}

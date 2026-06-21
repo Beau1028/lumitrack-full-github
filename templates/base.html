@@ -27,7 +27,7 @@
       </span>
     </a>
     <nav class="nav">
-      <a class="{{ 'active' if active == 'home' else '' }}" href="/">홈</a>
+      <a class="{{ 'active' if active == 'home' else '' }}" href="/dashboard">홈</a>
       <a class="{{ 'active' if active == 'revenue' else '' }}" href="/revenue">매장 매출</a>
       <a class="{{ 'active' if active == 'themes' else '' }}" href="/themes">테마</a>
       <a class="{{ 'active' if active == 'map' else '' }}" href="/map">지도</a>
@@ -45,20 +45,22 @@
       </section>
     {% endif %}
 
-    {% if job and job.status in ['running', 'starting'] %}
-      {% set progress = job.progress or {} %}
-      {% set completed = progress.get('completed', 0) %}
-      {% set total = progress.get('total', 1) %}
-      {% set pct = (completed / total * 100) if total else 0 %}
-      <section class="job-strip">
-        <div>
-          <strong>{{ job.label or '수집 작업' }}</strong>
-          <span>{{ progress.get('current_store', '진행 중') }} · {{ completed|num }} / {{ total|num }}</span>
-        </div>
-        <div class="progress"><span style="width: {{ pct }}%"></span></div>
-        <a href="/status">자세히 보기</a>
-      </section>
-    {% endif %}
+    {% set progress = (job.progress if job else {}) or {} %}
+    {% set completed = progress.get('completed', 0) %}
+    {% set total = progress.get('total', 1) %}
+    {% set pct = (completed / total * 100) if total else 0 %}
+    <section
+      id="globalJobStrip"
+      class="job-strip global-job-strip {{ '' if job and job.status in ['running', 'starting'] else 'hidden' }}"
+      aria-live="polite"
+    >
+      <div>
+        <strong id="globalJobTitle">{{ job.label if job else '수집 작업' }}</strong>
+        <span id="globalJobDetail">{{ progress.get('current_store', '진행 중') }} · {{ completed|num }} / {{ total|num }}</span>
+      </div>
+      <div class="progress"><span id="globalJobProgress" style="width: {{ pct }}%"></span></div>
+      <a id="globalJobAction" href="/status">상태 보기</a>
+    </section>
 
     {% block content %}{% endblock %}
   </main>

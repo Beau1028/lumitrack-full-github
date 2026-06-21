@@ -32,6 +32,10 @@ a {
   text-decoration: none;
 }
 
+.hidden {
+  display: none !important;
+}
+
 .topbar {
   position: sticky;
   top: 0;
@@ -396,6 +400,15 @@ th.num {
   gap: 16px;
   margin-bottom: 16px;
   padding: 16px 18px;
+}
+
+.global-job-strip {
+  position: sticky;
+  top: 86px;
+  z-index: 14;
+  border-color: rgba(49, 130, 246, 0.20);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(16px);
 }
 
 .job-strip strong,
@@ -807,6 +820,10 @@ button:disabled {
   .job-strip {
     grid-template-columns: 1fr;
   }
+
+  .global-job-strip {
+    top: 128px;
+  }
 }
 
 @media (max-width: 640px) {
@@ -817,6 +834,10 @@ button:disabled {
 
   .topbar {
     padding: 14px 12px;
+  }
+
+  .global-job-strip {
+    top: 116px;
   }
 
   .hero,

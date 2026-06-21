@@ -66,15 +66,3 @@
   </article>
 </section>
 {% endblock %}
-
-{% block scripts %}
-{% if job and job.status in ['running', 'starting'] %}
-<script>
-  setTimeout(() => window.location.reload(), 3000);
-</script>
-{% elif readiness.ready %}
-<script>
-  setTimeout(() => window.location.href = "/dashboard", 900);
-</script>
-{% endif %}
-{% endblock %}

@@ -12,7 +12,7 @@ docker compose exec -T lumitrack sh -lc '
     --delay-min 5 \
     --delay-max 6 \
     --minimum-recrawl-minutes 30 \
-    --parallel-origins 8 \
+    --parallel-origins 4 \
     --max-navigation-timeout-ms 10000 \
     > "$log" 2>&1 &
   echo "Started PID $!"
