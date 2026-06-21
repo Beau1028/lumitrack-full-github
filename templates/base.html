@@ -26,6 +26,9 @@
         <small>{{ tagline }}</small>
       </span>
     </a>
+    <button class="refresh-button" type="button" data-refresh-market>
+      최신 데이터 적용
+    </button>
     <nav class="nav">
       <a class="{{ 'active' if active == 'home' else '' }}" href="/dashboard" data-icon="⌂" data-short="홈">홈</a>
       <a class="{{ 'active' if active == 'revenue' else '' }}" href="/revenue" data-icon="₩" data-short="매출">매장 매출</a>

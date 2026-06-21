@@ -82,6 +82,20 @@ a {
   font-size: 12px;
 }
 
+.refresh-button {
+  min-width: max-content;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--blue);
+  box-shadow: 0 10px 24px rgba(25, 32, 56, 0.08);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 900;
+}
+
 .nav {
   display: flex;
   align-items: center;
@@ -758,6 +772,11 @@ button:disabled {
   opacity: 0.68;
 }
 
+.refresh-button:disabled {
+  cursor: wait;
+  opacity: 0.62;
+}
+
 .loader-card {
   display: grid;
   place-items: center;
@@ -848,7 +867,8 @@ button:disabled {
   }
 
   .brand {
-    width: 100%;
+    flex: 1;
+    min-width: 0;
     justify-content: flex-start;
   }
 
@@ -864,6 +884,12 @@ button:disabled {
 
   .brand small {
     display: none;
+  }
+
+  .refresh-button {
+    min-height: 36px;
+    padding: 0 12px;
+    font-size: 12px;
   }
 
   .nav {

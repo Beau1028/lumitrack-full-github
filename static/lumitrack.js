@@ -2,6 +2,7 @@ window.LumiTrack = {
   _pollTimer: null,
   _polling: false,
   _lastRunning: false,
+  _refreshingMarket: false,
 
   money(value) {
     const amount = Math.round(Number(value || 0));
@@ -140,7 +141,7 @@ window.LumiTrack = {
       strip.classList.add("hidden");
       if (this._lastRunning && job && job.status !== "running") {
         const label = job.status === "success" || job.status === "partial_success"
-          ? "수집이 완료됐어. 곧 최신 매출 데이터로 반영할게."
+          ? "수집이 완료됐어. 최신 데이터로 바로 적용할게."
           : "수집 작업이 끝났어. 상태 화면에서 결과를 확인해줘.";
         this.toast(label, job.status === "failed" ? "danger" : "success");
         this.reloadOnceAfterFinishedJob(job);
@@ -180,8 +181,40 @@ window.LumiTrack = {
     sessionStorage.setItem(reloadKey, "1");
     sessionStorage.removeItem("lumitrackActiveJobId");
     window.setTimeout(() => {
-      window.location.reload();
-    }, 900);
+      this.refreshMarketData({ reload: true, quiet: true });
+    }, 300);
+  },
+
+  async refreshMarketData({ reload = true, quiet = false } = {}) {
+    if (this._refreshingMarket) return;
+    this._refreshingMarket = true;
+    document.querySelectorAll("[data-refresh-market]").forEach((button) => {
+      button.disabled = true;
+      button.dataset.originalText = button.textContent;
+      button.textContent = "적용 중";
+    });
+
+    try {
+      const response = await fetch(`/api/market/refresh?_=${Date.now()}`, {
+        method: "POST",
+        cache: "no-store",
+        credentials: "same-origin"
+      });
+      if (!response.ok) throw new Error(`refresh ${response.status}`);
+      if (!quiet) this.toast("최신 수집 데이터를 적용했어.", "success");
+      if (reload) {
+        window.setTimeout(() => window.location.reload(), quiet ? 150 : 450);
+      }
+    } catch (error) {
+      console.error(error);
+      this.toast("최신 데이터 적용에 실패했어.", "danger");
+    } finally {
+      this._refreshingMarket = false;
+      document.querySelectorAll("[data-refresh-market]").forEach((button) => {
+        button.disabled = false;
+        button.textContent = button.dataset.originalText || "최신 데이터 적용";
+      });
+    }
   },
 
   updateStatusPage(payload) {
@@ -236,6 +269,9 @@ window.LumiTrack = {
       const payload = await response.json();
       this.updateGlobalJob(payload);
       this.updateStatusPage(payload);
+      if (payload.market_refreshed && !this.jobIsRunning(payload.job, payload.running)) {
+        this.toast("수집 완료 데이터가 적용됐어.", "success");
+      }
       const running = this.jobIsRunning(payload.job, payload.running);
       this.schedulePoll(running ? 1800 : 8000);
     } catch (error) {
@@ -287,6 +323,12 @@ document.addEventListener("DOMContentLoaded", () => {
           button.textContent = originalText;
         }
       }
+    });
+  });
+
+  document.querySelectorAll("[data-refresh-market]").forEach((button) => {
+    button.addEventListener("click", () => {
+      LumiTrack.refreshMarketData({ reload: true });
     });
   });
 

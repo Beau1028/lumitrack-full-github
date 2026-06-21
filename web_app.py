@@ -67,6 +67,8 @@ _scheduler: BackgroundScheduler | None = None
 _market_cache: dict[str, Any] | None = None
 _market_cache_fingerprint: tuple[tuple[float, int], ...] | None = None
 _market_cache_loaded_at = 0.0
+_market_cache_invalidated_job_id = ""
+FINAL_JOB_STATUSES = {"success", "partial_success", "failed", "stopped"}
 
 
 def env_int(name: str, default: int, minimum: int = 0) -> int:
@@ -109,6 +111,18 @@ def invalidate_market_cache() -> None:
     _market_cache = None
     _market_cache_fingerprint = None
     _market_cache_loaded_at = 0.0
+
+
+def invalidate_market_cache_for_finished_job(job: dict[str, Any] | None) -> bool:
+    global _market_cache_invalidated_job_id
+    if not job or str(job.get("status", "")) not in FINAL_JOB_STATUSES:
+        return False
+    job_id = str(job.get("job_id", ""))
+    if not job_id or job_id == _market_cache_invalidated_job_id:
+        return False
+    invalidate_market_cache()
+    _market_cache_invalidated_job_id = job_id
+    return True
 
 
 def format_won(value: object) -> str:
@@ -486,6 +500,7 @@ def load_market_data() -> dict[str, Any]:
     global _market_cache, _market_cache_fingerprint, _market_cache_loaded_at
 
     runtime = runtime_context_fields()
+    invalidate_market_cache_for_finished_job(runtime["job"])
     is_running = bool(runtime["job_running"])
     now = monotonic()
     ttl_seconds = (
@@ -959,13 +974,26 @@ def crawl_clear() -> RedirectResponse:
 @app.get("/api/crawl/status")
 def crawl_status_api(log: int = 0) -> dict[str, Any]:
     job = read_job_status(APP_HOME)
+    market_refreshed = invalidate_market_cache_for_finished_job(job)
     payload = {
         "job": job,
         "running": job_is_running(job),
+        "market_refreshed": market_refreshed,
     }
     if log:
         payload["log"] = tail_job_log(job, max_lines=80)
     return payload
+
+
+@app.post("/api/market/refresh")
+def market_refresh_api() -> dict[str, Any]:
+    invalidate_market_cache()
+    runtime = runtime_context_fields()
+    return {
+        "ok": True,
+        "running": runtime["job_running"],
+        "job_status": runtime["job"].get("status") if runtime["job"] else "idle",
+    }
 
 
 @app.get("/download/store_revenue.csv")
