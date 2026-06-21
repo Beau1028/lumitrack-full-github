@@ -444,25 +444,113 @@ def base_context(request: Request, active: str) -> dict[str, Any]:
 
 def revenue_table(data: dict[str, Any]) -> pd.DataFrame:
     industry = data["industry"]
+    catalog = data.get("catalog", pd.DataFrame())
+    columns = [
+        "store_id",
+        "store_name",
+        "region",
+        "estimate_source",
+        "booking_rate_min",
+        "booking_rate_max",
+        "daily_revenue_min",
+        "daily_revenue_mid",
+        "daily_revenue_max",
+        "monthly_revenue_min",
+        "monthly_revenue_mid",
+        "monthly_revenue_max",
+        "observed_days",
+        "observed_weekdays",
+        "observed_weekday_names",
+        "confidence",
+    ]
     if industry.empty:
-        return pd.DataFrame(
-            columns=[
-                "store_id",
-                "store_name",
-                "region",
-                "estimate_source",
-                "booking_rate_mid",
-                "monthly_revenue_mid",
-                "daily_revenue_mid",
-                "observed_days",
-                "confidence",
-            ]
-        )
-    table = industry.copy()
+        table = pd.DataFrame(columns=columns)
+    else:
+        table = industry.copy()
+
+    existing_ids = (
+        set(table["store_id"].dropna().astype(str))
+        if "store_id" in table.columns
+        else set()
+    )
+    if not catalog.empty and "store_id" in catalog.columns:
+        catalog_source = catalog.copy()
+        catalog_source["store_id"] = catalog_source["store_id"].fillna("").astype(str)
+        catalog_source = catalog_source[
+            catalog_source["store_id"].ne("")
+            & ~catalog_source["store_id"].isin(existing_ids)
+        ]
+        if not catalog_source.empty:
+            value_column = (
+                "booking_value_estimate"
+                if "booking_value_estimate" in catalog_source.columns
+                else "price"
+            )
+            placeholders = (
+                catalog_source.assign(
+                    price_ready=pd.to_numeric(
+                        catalog_source.get(value_column, 0),
+                        errors="coerce",
+                    ).fillna(0).gt(0)
+                )
+                .groupby("store_id", as_index=False)
+                .agg(
+                    store_name=("store_name", "first"),
+                    region=("region", "first"),
+                    theme_count=("theme_name", "nunique"),
+                    price_ready_count=("price_ready", "sum"),
+                )
+            )
+            placeholder_rows = []
+            for _, row in placeholders.iterrows():
+                theme_count = int(row.get("theme_count", 0) or 0)
+                price_ready_count = int(row.get("price_ready_count", 0) or 0)
+                confidence = (
+                    "가격 등록 · 예약 수집 대기"
+                    if price_ready_count
+                    else "가격/예약 수집 대기"
+                )
+                placeholder_rows.append(
+                    {
+                        "store_id": row["store_id"],
+                        "store_name": row.get("store_name", ""),
+                        "region": row.get("region", ""),
+                        "estimate_source": "수집 대기",
+                        "booking_rate_min": 0.0,
+                        "booking_rate_max": 0.0,
+                        "daily_revenue_min": 0.0,
+                        "daily_revenue_mid": 0.0,
+                        "daily_revenue_max": 0.0,
+                        "monthly_revenue_min": 0.0,
+                        "monthly_revenue_mid": 0.0,
+                        "monthly_revenue_max": 0.0,
+                        "observed_days": 0,
+                        "observed_weekdays": 0,
+                        "observed_weekday_names": "-",
+                        "confidence": f"{confidence} · 테마 {theme_count:,}개",
+                    }
+                )
+            if placeholder_rows:
+                table = pd.concat(
+                    [table, pd.DataFrame(placeholder_rows)],
+                    ignore_index=True,
+                )
+
+    if table.empty:
+        return pd.DataFrame(columns=[*columns, "booking_rate_mid"])
+
+    for column in columns:
+        if column not in table.columns:
+            table[column] = 0 if column.endswith(("_min", "_mid", "_max")) else ""
     table["booking_rate_mid"] = (
         table["booking_rate_min"].fillna(0) + table["booking_rate_max"].fillna(0)
     ) / 2
-    return table.sort_values("monthly_revenue_mid", ascending=False)
+    table["_has_revenue"] = table["monthly_revenue_mid"].fillna(0).gt(0).astype(int)
+    result = table.sort_values(
+        ["_has_revenue", "monthly_revenue_mid", "store_name"],
+        ascending=[False, False, True],
+    ).drop(columns=["_has_revenue"])
+    return result
 
 
 def theme_table(data: dict[str, Any]) -> pd.DataFrame:
@@ -497,7 +585,7 @@ def theme_table(data: dict[str, Any]) -> pd.DataFrame:
 
 def map_table(data: dict[str, Any]) -> pd.DataFrame:
     status = data["status"]
-    industry = data["industry"]
+    revenue = revenue_table(data)
     if status.empty:
         return pd.DataFrame()
     revenue_columns = [
@@ -508,9 +596,13 @@ def map_table(data: dict[str, Any]) -> pd.DataFrame:
         "booking_rate_max",
         "confidence",
     ]
-    available_columns = [column for column in revenue_columns if column in industry.columns]
+    available_columns = [column for column in revenue_columns if column in revenue.columns]
     if available_columns:
-        mapped = status.merge(industry[available_columns], on="store_id", how="left")
+        mapped = status.merge(
+            revenue[available_columns].drop_duplicates("store_id"),
+            on="store_id",
+            how="left",
+        )
     else:
         mapped = status.copy()
     mapped["monthly_revenue_mid"] = mapped.get("monthly_revenue_mid", 0).fillna(0)
@@ -582,7 +674,7 @@ def revenue(request: Request) -> HTMLResponse:
     )
     context.update(
         {
-            "rows": records(table, 250),
+            "rows": records(table, 1000),
             "genre_rows": records(genre, 100),
             "store_chart_json": chart_payload(
                 table, "store_name", "monthly_revenue_mid", limit=18
