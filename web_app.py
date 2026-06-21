@@ -224,6 +224,20 @@ def short_text(value: object, limit: int = 90) -> str:
     return f"{text[: limit - 3]}..."
 
 
+def int_value(value: object) -> int:
+    if value is None:
+        return 0
+    try:
+        if pd.isna(value):
+            return 0
+    except (TypeError, ValueError):
+        pass
+    try:
+        return int(round(float(value or 0)))
+    except (TypeError, ValueError, OverflowError):
+        return 0
+
+
 def placeholder_collection_state(
     row: pd.Series,
     theme_count: int,
@@ -235,10 +249,9 @@ def placeholder_collection_state(
     latest_error = short_text(row.get("latest_error"))
     collection_note = short_text(row.get("collection_note"))
     latest_at = format_date(row.get("latest_crawl_at"))
-    total_slots = int(float(row.get("total_slots", 0) or 0))
-    measured_slots = int(float(row.get("measured_slots", 0) or 0))
-    reserved_slots = int(float(row.get("reserved_slots", 0) or 0))
-    revenue_slots = int(float(row.get("revenue_slots", 0) or 0))
+    total_slots = int_value(row.get("total_slots"))
+    reserved_slots = int_value(row.get("reserved_slots"))
+    revenue_slots = int_value(row.get("revenue_slots"))
 
     facts = [f"테마 {theme_count:,}개", f"가격 {price_ready_count:,}개"]
     if total_slots:
