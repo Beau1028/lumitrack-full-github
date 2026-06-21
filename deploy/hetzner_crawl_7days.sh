@@ -11,7 +11,7 @@ docker compose exec -T lumitrack sh -lc '
     --days 7 \
     --delay-min 5 \
     --delay-max 6 \
-    --minimum-recrawl-minutes 30 \
+    --minimum-recrawl-minutes 0 \
     --parallel-origins 4 \
     --max-navigation-timeout-ms 10000 \
     > "$log" 2>&1 &

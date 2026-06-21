@@ -274,7 +274,14 @@ def seven_day_readiness(slots: pd.DataFrame) -> dict[str, Any]:
     }
 
 
-def start_prepare_job(label: str = "7일 예약 데이터 준비") -> dict[str, Any] | None:
+def start_prepare_job(
+    label: str = "7일 예약 데이터 준비",
+    *,
+    force_refresh: bool = False,
+) -> dict[str, Any] | None:
+    settings = crawl_runtime_settings()
+    if force_refresh:
+        settings["minimum_recrawl_minutes"] = 0
     try:
         return start_crawl_job(
             app_home=APP_HOME,
@@ -284,7 +291,7 @@ def start_prepare_job(label: str = "7일 예약 데이터 준비") -> dict[str, 
             config_path=CONFIG_PATH,
             db_path=DB_PATH,
             store_ids=None,
-            **crawl_runtime_settings(),
+            **settings,
         )
     except CrawlJobAlreadyRunning:
         return read_job_status(APP_HOME)
@@ -908,7 +915,7 @@ def prepare(request: Request) -> HTMLResponse:
 
 @app.post("/prepare/start")
 def prepare_start() -> RedirectResponse:
-    start_prepare_job("7일 예약 데이터 준비")
+    start_prepare_job("7일 예약 데이터 준비", force_refresh=True)
     return RedirectResponse(url="/prepare", status_code=303)
 
 
@@ -932,9 +939,10 @@ def crawl_start(days: int = Form(...)) -> RedirectResponse:
             max_navigation_timeout_ms=int(
                 os.getenv("LUMITRACK_NAVIGATION_TIMEOUT_MS", "10000")
             ),
-            minimum_recrawl_minutes=int(
-                os.getenv("LUMITRACK_MINIMUM_RECRAWL_MINUTES", "30")
-            ),
+            # Manual button clicks should refresh the market data even if a
+            # previous attempt saved zero slots. The 30-minute skip remains only
+            # for automatic background refresh jobs.
+            minimum_recrawl_minutes=0,
         )
     except CrawlJobAlreadyRunning:
         pass
