@@ -69,6 +69,35 @@ _market_cache_fingerprint: tuple[tuple[float, int], ...] | None = None
 _market_cache_loaded_at = 0.0
 _market_cache_invalidated_job_id = ""
 FINAL_JOB_STATUSES = {"success", "partial_success", "failed", "stopped"}
+NON_CRAWLING_ADAPTER_LABELS = {
+    "blocked": "수집 제외",
+    "catalog": "카탈로그",
+    "limited": "수집 제한",
+    "permission_required": "공개 수집 제한",
+}
+NON_CRAWLING_ADAPTER_DETAILS = {
+    "blocked": "사이트 정책/접근 제한으로 자동 수집 제외",
+    "catalog": "카탈로그 정보만 등록",
+    "limited": "예약 구조 확인 필요 · 자동 수집 제한",
+    "permission_required": "로그인/권한/차단 구조라 공개 자동 수집 제외",
+}
+SERVER_CRAWL_PAUSED_STORE_IDS = {
+    "imaginary_door_daehangno",
+    "imaginary_door_seohyeon",
+    "imaginary_door_gwangju",
+    "imaginary_door_suwon",
+    "imaginary_door_bupyeong",
+    "imaginary_door_suwon2",
+    "frank_gangnam",
+}
+CRAWL_STATUS_LABELS = {
+    "success": "최근 수집 성공",
+    "failed": "최근 수집 실패",
+    "partial_success": "부분 수집 성공",
+    "running": "수집 중",
+    "queued": "수집 대기열",
+    "stopped": "중단됨",
+}
 
 
 def env_int(name: str, default: int, minimum: int = 0) -> int:
@@ -175,6 +204,80 @@ def format_date(value: object) -> str:
     if isinstance(value, date):
         return value.strftime("%Y-%m-%d")
     return str(value)
+
+
+def text_value(value: object) -> str:
+    if value is None:
+        return ""
+    try:
+        if pd.isna(value):
+            return ""
+    except (TypeError, ValueError):
+        pass
+    return str(value).strip()
+
+
+def short_text(value: object, limit: int = 90) -> str:
+    text = text_value(value).replace("\n", " ")
+    if len(text) <= limit:
+        return text
+    return f"{text[: limit - 3]}..."
+
+
+def placeholder_collection_state(
+    row: pd.Series,
+    theme_count: int,
+    price_ready_count: int,
+) -> tuple[str, str]:
+    store_id = text_value(row.get("store_id"))
+    adapter_type = text_value(row.get("adapter_type"))
+    latest_status = text_value(row.get("latest_crawl_status"))
+    latest_error = short_text(row.get("latest_error"))
+    collection_note = short_text(row.get("collection_note"))
+    latest_at = format_date(row.get("latest_crawl_at"))
+
+    facts = [f"테마 {theme_count:,}개", f"가격 {price_ready_count:,}개"]
+    if adapter_type:
+        facts.append(f"어댑터 {adapter_type}")
+    if latest_status:
+        label = CRAWL_STATUS_LABELS.get(latest_status, latest_status)
+        facts.append(label)
+    if latest_at != "-":
+        facts.append(f"마지막 {latest_at}")
+    if latest_error:
+        facts.append(f"오류 {latest_error}")
+    elif collection_note:
+        facts.append(collection_note)
+
+    if store_id in SERVER_CRAWL_PAUSED_STORE_IDS:
+        return "서버 수집 보류", " · ".join(
+            ["Hetzner 서버에서 반복 타임아웃으로 자동 수집 보류", *facts]
+        )
+
+    if adapter_type in NON_CRAWLING_ADAPTER_LABELS:
+        return NON_CRAWLING_ADAPTER_LABELS[adapter_type], " · ".join(
+            [NON_CRAWLING_ADAPTER_DETAILS[adapter_type], *facts]
+        )
+
+    if theme_count <= 0:
+        return "테마 미등록", " · ".join(["테마 정보가 없어 매출 계산 불가", *facts])
+
+    if latest_status == "failed":
+        return "수집 실패", " · ".join(["마지막 자동 수집 실패", *facts])
+
+    if latest_status == "success":
+        return "수집 완료 · 슬롯 0개", " · ".join(
+            ["최근 수집은 성공했지만 매출 계산 가능한 예약 슬롯이 없음", *facts]
+        )
+
+    if latest_status:
+        return CRAWL_STATUS_LABELS.get(latest_status, "수집 상태 확인"), " · ".join(
+            ["예약 슬롯 반영 대기", *facts]
+        )
+
+    return "수집 전", " · ".join(
+        ["자동 수집 대상이지만 아직 성공 로그가 없음", *facts]
+    )
 
 
 templates.env.filters["won"] = format_won
@@ -555,6 +658,7 @@ def base_context(request: Request, active: str) -> dict[str, Any]:
 def revenue_table(data: dict[str, Any]) -> pd.DataFrame:
     industry = data["industry"]
     catalog = data.get("catalog", pd.DataFrame())
+    status = data.get("status", pd.DataFrame())
     automatic = data.get("auto_projection", pd.DataFrame())
     columns = [
         "store_id",
@@ -591,12 +695,49 @@ def revenue_table(data: dict[str, Any]) -> pd.DataFrame:
             catalog_source["store_id"].ne("")
             & ~catalog_source["store_id"].isin(existing_ids)
         ]
+        if not catalog_source.empty and not status.empty and "store_id" in status:
+            status_columns = [
+                "store_id",
+                "adapter_type",
+                "collection_note",
+                "latest_crawl_status",
+                "latest_crawl_at",
+                "latest_error",
+            ]
+            available_status_columns = [
+                column for column in status_columns if column in status.columns
+            ]
+            status_lookup = status[available_status_columns].copy()
+            status_lookup["store_id"] = (
+                status_lookup["store_id"].fillna("").astype(str)
+            )
+            status_lookup = status_lookup.drop_duplicates("store_id")
+            catalog_source = catalog_source.merge(
+                status_lookup,
+                on="store_id",
+                how="left",
+            )
         if not catalog_source.empty:
             value_column = (
                 "booking_value_estimate"
                 if "booking_value_estimate" in catalog_source.columns
                 else "price"
             )
+            aggregation: dict[str, tuple[str, str]] = {
+                "store_name": ("store_name", "first"),
+                "region": ("region", "first"),
+                "theme_count": ("theme_name", "nunique"),
+                "price_ready_count": ("price_ready", "sum"),
+            }
+            for column in [
+                "adapter_type",
+                "collection_note",
+                "latest_crawl_status",
+                "latest_crawl_at",
+                "latest_error",
+            ]:
+                if column in catalog_source.columns:
+                    aggregation[column] = (column, "first")
             placeholders = (
                 catalog_source.assign(
                     price_ready=pd.to_numeric(
@@ -605,28 +746,23 @@ def revenue_table(data: dict[str, Any]) -> pd.DataFrame:
                     ).fillna(0).gt(0)
                 )
                 .groupby("store_id", as_index=False)
-                .agg(
-                    store_name=("store_name", "first"),
-                    region=("region", "first"),
-                    theme_count=("theme_name", "nunique"),
-                    price_ready_count=("price_ready", "sum"),
-                )
+                .agg(**aggregation)
             )
             placeholder_rows = []
             for _, row in placeholders.iterrows():
                 theme_count = int(row.get("theme_count", 0) or 0)
                 price_ready_count = int(row.get("price_ready_count", 0) or 0)
-                confidence = (
-                    "가격 등록 · 예약 수집 대기"
-                    if price_ready_count
-                    else "가격/예약 수집 대기"
+                estimate_source, confidence = placeholder_collection_state(
+                    row,
+                    theme_count,
+                    price_ready_count,
                 )
                 placeholder_rows.append(
                     {
                         "store_id": row["store_id"],
                         "store_name": row.get("store_name", ""),
                         "region": row.get("region", ""),
-                        "estimate_source": "수집 대기",
+                        "estimate_source": estimate_source,
                         "booking_rate_min": 0.0,
                         "booking_rate_max": 0.0,
                         "daily_revenue_min": 0.0,
@@ -638,7 +774,7 @@ def revenue_table(data: dict[str, Any]) -> pd.DataFrame:
                         "observed_days": 0,
                         "observed_weekdays": 0,
                         "observed_weekday_names": "-",
-                        "confidence": f"{confidence} · 테마 {theme_count:,}개",
+                        "confidence": confidence,
                     }
                 )
             if placeholder_rows:
