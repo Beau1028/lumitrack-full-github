@@ -6,6 +6,7 @@ import io
 import json
 import os
 import shutil
+from time import monotonic
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any
@@ -63,6 +64,51 @@ templates = Jinja2Templates(directory=PROJECT_DIR / "templates")
 _catalog_synced = False
 _startup_error = ""
 _scheduler: BackgroundScheduler | None = None
+_market_cache: dict[str, Any] | None = None
+_market_cache_fingerprint: tuple[tuple[float, int], ...] | None = None
+_market_cache_loaded_at = 0.0
+
+
+def env_int(name: str, default: int, minimum: int = 0) -> int:
+    try:
+        value = int(os.getenv(name, str(default)))
+    except (TypeError, ValueError):
+        value = default
+    return max(minimum, value)
+
+
+def path_fingerprint(path: Path) -> tuple[float, int]:
+    try:
+        stat = path.stat()
+    except FileNotFoundError:
+        return (0.0, 0)
+    return (stat.st_mtime, stat.st_size)
+
+
+def data_fingerprint() -> tuple[tuple[float, int], ...]:
+    # SQLite WAL writes can live beside the main db file for a while, so include it.
+    return (
+        path_fingerprint(DB_PATH),
+        path_fingerprint(Path(f"{DB_PATH}-wal")),
+        path_fingerprint(CONFIG_PATH),
+        path_fingerprint(MANUAL_ESTIMATES_PATH),
+    )
+
+
+def runtime_context_fields() -> dict[str, Any]:
+    job = read_job_status(APP_HOME)
+    return {
+        "job": job,
+        "job_running": job_is_running(job),
+        "job_log": tail_job_log(job, max_lines=40),
+    }
+
+
+def invalidate_market_cache() -> None:
+    global _market_cache, _market_cache_fingerprint, _market_cache_loaded_at
+    _market_cache = None
+    _market_cache_fingerprint = None
+    _market_cache_loaded_at = 0.0
 
 
 def format_won(value: object) -> str:
@@ -331,7 +377,7 @@ def chart_payload(
     return json.dumps(payload, ensure_ascii=False)
 
 
-def load_market_data() -> dict[str, Any]:
+def build_market_data() -> dict[str, Any]:
     ensure_catalog_synced()
     today = today_kst()
     slots = load_slots(DB_PATH)
@@ -395,8 +441,6 @@ def load_market_data() -> dict[str, Any]:
     if not catalog.empty and "booking_value_estimate" in catalog.columns:
         price_missing = int(catalog["booking_value_estimate"].fillna(0).le(0).sum())
 
-    job = read_job_status(APP_HOME)
-    job_log = tail_job_log(job, max_lines=40)
     readiness = seven_day_readiness(slots)
 
     return {
@@ -426,12 +470,41 @@ def load_market_data() -> dict[str, Any]:
             if not manual_stores.empty
             else 0,
         },
-        "job": job,
-        "job_running": job_is_running(job),
-        "job_log": job_log,
         "readiness": readiness,
         "startup_error": _startup_error,
     }
+
+
+def load_market_data() -> dict[str, Any]:
+    global _market_cache, _market_cache_fingerprint, _market_cache_loaded_at
+
+    runtime = runtime_context_fields()
+    is_running = bool(runtime["job_running"])
+    now = monotonic()
+    ttl_seconds = (
+        env_int("LUMITRACK_RUNNING_CACHE_SECONDS", 20, minimum=1)
+        if is_running
+        else env_int("LUMITRACK_IDLE_CACHE_SECONDS", 5, minimum=1)
+    )
+    age_seconds = now - _market_cache_loaded_at
+
+    if _market_cache is not None:
+        if is_running and age_seconds < ttl_seconds:
+            return {**_market_cache, **runtime}
+
+        if not is_running:
+            current_fingerprint = data_fingerprint()
+            if (
+                _market_cache_fingerprint == current_fingerprint
+                and age_seconds < ttl_seconds
+            ):
+                return {**_market_cache, **runtime}
+
+    fresh = build_market_data()
+    _market_cache = fresh
+    _market_cache_fingerprint = data_fingerprint()
+    _market_cache_loaded_at = monotonic()
+    return {**fresh, **runtime_context_fields()}
 
 
 def base_context(request: Request, active: str) -> dict[str, Any]:
@@ -817,6 +890,7 @@ def crawl_start(days: int = Form(...)) -> RedirectResponse:
 @app.post("/crawl/clear")
 def crawl_clear() -> RedirectResponse:
     clear_job_status(APP_HOME)
+    invalidate_market_cache()
     return RedirectResponse(url="/status", status_code=303)
 
 
