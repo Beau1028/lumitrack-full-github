@@ -185,6 +185,12 @@ window.LumiTrack = {
     }, 300);
   },
 
+  hardReload() {
+    const url = new URL(window.location.href);
+    url.searchParams.set("fresh", Date.now().toString());
+    window.location.replace(url.toString());
+  },
+
   async refreshMarketData({ reload = true, quiet = false } = {}) {
     if (this._refreshingMarket) return;
     this._refreshingMarket = true;
@@ -201,9 +207,14 @@ window.LumiTrack = {
         credentials: "same-origin"
       });
       if (!response.ok) throw new Error(`refresh ${response.status}`);
-      if (!quiet) this.toast("최신 수집 데이터를 적용했어.", "success");
+      const payload = await response.json();
+      const summary = payload.summary || {};
+      const detail = summary.latest_crawled_at
+        ? `최신 ${summary.latest_crawled_at} · 7일 슬롯 ${this.number(summary.visible_7_slots || 0)}개`
+        : `7일 슬롯 ${this.number(summary.visible_7_slots || 0)}개`;
+      if (!quiet) this.toast(`최신 수집 데이터를 적용했어. ${detail}`, "success");
       if (reload) {
-        window.setTimeout(() => window.location.reload(), quiet ? 150 : 450);
+        window.setTimeout(() => this.hardReload(), quiet ? 150 : 650);
       }
     } catch (error) {
       console.error(error);

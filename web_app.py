@@ -125,6 +125,15 @@ def invalidate_market_cache_for_finished_job(job: dict[str, Any] | None) -> bool
     return True
 
 
+@app.middleware("http")
+async def no_store_dynamic_pages(request: Request, call_next: Any) -> Response:
+    response = await call_next(request)
+    if not request.url.path.startswith("/static/"):
+        response.headers["Cache-Control"] = "no-store, max-age=0"
+        response.headers["Pragma"] = "no-cache"
+    return response
+
+
 def format_won(value: object) -> str:
     try:
         amount = int(round(float(value or 0)))
@@ -496,8 +505,11 @@ def build_market_data() -> dict[str, Any]:
     }
 
 
-def load_market_data() -> dict[str, Any]:
+def load_market_data(*, force_refresh: bool = False) -> dict[str, Any]:
     global _market_cache, _market_cache_fingerprint, _market_cache_loaded_at
+
+    if force_refresh:
+        invalidate_market_cache()
 
     runtime = runtime_context_fields()
     invalidate_market_cache_for_finished_job(runtime["job"])
@@ -767,6 +779,37 @@ def map_table(data: dict[str, Any]) -> pd.DataFrame:
     return mapped
 
 
+def market_refresh_summary(data: dict[str, Any]) -> dict[str, Any]:
+    slots = data.get("slots", pd.DataFrame())
+    visible_7 = data.get("visible_7", pd.DataFrame())
+    revenue = revenue_table(data)
+    latest_crawled_at = ""
+    if not slots.empty and "crawled_at" in slots.columns:
+        latest = pd.to_datetime(slots["crawled_at"], utc=True, errors="coerce").max()
+        if pd.notna(latest):
+            latest_crawled_at = latest.tz_convert(KST).strftime("%Y-%m-%d %H:%M")
+
+    return {
+        "latest_crawled_at": latest_crawled_at,
+        "slot_count": int(len(slots)) if not slots.empty else 0,
+        "visible_7_slots": int(len(visible_7)) if not visible_7.empty else 0,
+        "visible_7_reserved": int(visible_7["status"].eq("reserved").sum())
+        if not visible_7.empty and "status" in visible_7.columns
+        else 0,
+        "stores_with_slots": int(slots["store_id"].nunique())
+        if not slots.empty and "store_id" in slots.columns
+        else 0,
+        "revenue_store_count": int(
+            revenue["monthly_revenue_mid"].fillna(0).gt(0).sum()
+        )
+        if not revenue.empty and "monthly_revenue_mid" in revenue.columns
+        else 0,
+        "projected_monthly_total": float(
+            data.get("metrics", {}).get("projected_monthly_total", 0) or 0
+        ),
+    }
+
+
 def add_dashboard_context(context: dict[str, Any]) -> dict[str, Any]:
     visible_7 = context["visible_7"]
     revenue = revenue_table(context)
@@ -987,12 +1030,13 @@ def crawl_status_api(log: int = 0) -> dict[str, Any]:
 
 @app.post("/api/market/refresh")
 def market_refresh_api() -> dict[str, Any]:
-    invalidate_market_cache()
+    data = load_market_data(force_refresh=True)
     runtime = runtime_context_fields()
     return {
         "ok": True,
         "running": runtime["job_running"],
         "job_status": runtime["job"].get("status") if runtime["job"] else "idle",
+        "summary": market_refresh_summary(data),
     }
 
 
