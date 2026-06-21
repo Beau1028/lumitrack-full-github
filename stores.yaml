@@ -710,7 +710,7 @@ stores:
     collection_note: 로그인 없이 공개된 네이버 예약 상품·날짜·시간 상태만 읽음
     themes:
       - {theme_name: "선택", genre: "스릴러", price: 31000, duration_minutes: 65, min_people: 2, max_people: 4, party_prices: {2: 62000, 3: 93000, 4: 124000}, public_schedule_url: "https://web.zamfit.kr/escapes/7138/%EC%84%A0%ED%83%9D-", price_note: "공개 상세 페이지의 1인 31,000원 및 2~4인 총액", price_source_url: "https://web.zamfit.kr/escapes/7138/%EC%84%A0%ED%83%9D-", price_verified_at: "2026-06-15"}
-      - {theme_name: "쿠키", genre: "일상/미스터리", price: 33000, duration_minutes: 70, min_people: 2, max_people: 6, party_prices: {2: 66000, 3: 93000, 4: 116000, 5: 145000, 6: 174000}, price_note: "공식 공개 안내: 2인 1인당 33,000원, 3인 31,000원, 4인 이상 29,000원", price_source_url: "https://www.instagram.com/thechapterescape/", price_verified_at: "2026-06-15"}
+      - {theme_name: "쿠키", genre: "일상/미스터리", price: 33000, duration_minutes: 70, min_people: 2, max_people: 6, party_prices: {2: 66000, 3: 93000, 4: 116000, 5: 145000, 6: 174000}, schedule_times: ["18:00", "19:20", "20:40", "22:00"], price_note: "공식 공개 안내: 2인 1인당 33,000원, 3인 31,000원, 4인 이상 29,000원 · 공개 타임테이블 18:00/19:20/20:40/22:00", price_source_url: "https://www.instagram.com/thechapterescape/", price_verified_at: "2026-06-21"}
 
   - store_id: livecinema_hongdae
     store_name: 라이브시네마 홍대
@@ -860,30 +860,30 @@ stores:
   - store_id: fantastrick_first
     store_name: 판타스트릭 1호점
     region: 서울 강남
-    booking_url: https://fantastrick.co.kr/booking/
-    adapter_type: limited
+    booking_url: http://fantastrick.co.kr/booking/
+    adapter_type: wordpress_booked
     avg_people: 2.7
-    collection_note: 자동 브라우저 접근이 차단되어 공식 테마 정보만 등록
+    collection_note: 공개 WordPress Booked 예약 달력에서 날짜별 공개 시간 상태를 읽음
     themes:
       - {theme_name: "태초의 신부", genre: "판타지", price: 0, duration_minutes: 100, min_people: 3, max_people: 5, party_prices: {3: 96000, 4: 120000, 5: 150000}, price_note: "공식 안내: 3인 1인 32,000원, 4인 이상 1인 30,000원", price_source_url: "https://fantastrick.co.kr/rooms/firstfoundbride/", price_verified_at: "2026-06-15"}
 
   - store_id: fantastrick_second
     store_name: 판타스트릭 2호점
     region: 서울 강남
-    booking_url: https://fantastrick.co.kr/booking/
-    adapter_type: limited
+    booking_url: http://fantastrick.co.kr/booking/
+    adapter_type: wordpress_booked
     avg_people: 2.7
-    collection_note: 자동 브라우저 접근이 차단되어 공식 테마 정보만 등록
+    collection_note: 공개 WordPress Booked 예약 달력에서 날짜별 공개 시간 상태를 읽음
     themes:
       - {theme_name: "사자의 서", genre: "판타지/어드벤처", price: 0, duration_minutes: 80, min_people: 2, max_people: 4, party_prices: {2: 58000, 3: 84000, 4: 108000}, price_note: "공식 안내: 2인 58,000원, 3인 84,000원, 4인 108,000원", price_source_url: "https://fantastrick.co.kr/rooms/bookofduat/", price_verified_at: "2026-06-15"}
 
   - store_id: fantastrick_third
     store_name: 판타스트릭 3호점
     region: 서울 강남
-    booking_url: https://fantastrick.co.kr/booking/
-    adapter_type: limited
+    booking_url: http://fantastrick.co.kr/booking/
+    adapter_type: wordpress_booked
     avg_people: 2.7
-    collection_note: 자동 브라우저 접근이 차단되어 공식 테마·회차 정액 가격만 등록
+    collection_note: 공개 WordPress Booked 예약 달력에서 날짜별 공개 시간 상태를 읽음
     themes:
       - {theme_name: "시간의 영속성", genre: "SF/미스터리", price: 0, duration_minutes: 80, min_people: 3, max_people: 3, party_prices: {3: 63000}, price_note: "공식 안내의 3인 전용 회차 총액 63,000원", price_source_url: "https://fantastrick.co.kr/rooms/time/", price_verified_at: "2026-06-15"}
       - {theme_name: "LOCKDOWN CITY", genre: "SF/액션", price: 0, duration_minutes: 100, min_people: 2, max_people: 4, party_prices: {2: 120000, 3: 120000, 4: 140000}, price_note: "공식 안내: 3인 이하 팀 120,000원, 4인 팀 140,000원", price_source_url: "https://fantastrick.co.kr/rooms/ldc/", price_verified_at: "2026-06-15"}
@@ -1084,14 +1084,14 @@ stores:
   - store_id: decoder_hongdae
     store_name: 디코더 홍대
     region: 서울 홍대
-    booking_url: https://decoder.kr/
-    adapter_type: limited
+    booking_url: http://decoder.kr/book-rubato/
+    adapter_type: bookly
     avg_people: 2.7
-    collection_note: 공식 사이트가 자동 접근에 406을 반환해 검증된 공개 가격 카탈로그만 등록
+    collection_note: 공개 WordPress Bookly 예약 위젯에서 테마별 가능한 시간 상태를 읽음
     themes:
-      - {theme_name: "Introverted Thief", genre: "잠입/미스터리", price: 0, duration_minutes: 60, min_people: 2, max_people: 5, party_prices: {2: 44000, 3: 60000, 4: 72000, 5: 85000}, price_note: "공개 인원별 총액표", price_source_url: "https://decoder.kr/", price_verified_at: "2026-06-15"}
-      - {theme_name: "Furious Revenge", genre: "액션/복수", price: 0, duration_minutes: 60, min_people: 2, max_people: 5, party_prices: {2: 44000, 3: 60000, 4: 72000, 5: 85000}, price_note: "공개 인원별 총액표", price_source_url: "https://decoder.kr/", price_verified_at: "2026-06-15"}
-      - {theme_name: "Tempo Rubato", genre: "음악/드라마", price: 0, duration_minutes: 75, min_people: 2, max_people: 6, party_prices: {2: 56000, 3: 81000, 4: 104000, 5: 125000, 6: 144000}, price_note: "공식 테마 페이지와 공개 인원별 총액표", price_source_url: "https://decoder.kr/book-rubato/", price_verified_at: "2026-06-15"}
+      - {theme_name: "Introverted Thief", genre: "잠입/미스터리", price: 0, duration_minutes: 60, min_people: 2, max_people: 5, party_prices: {2: 44000, 3: 60000, 4: 72000, 5: 85000}, public_schedule_url: "http://decoder.kr/book-room1/", price_note: "공개 인원별 총액표", price_source_url: "http://decoder.kr/book-room1/", price_verified_at: "2026-06-15"}
+      - {theme_name: "Furious Revenge", genre: "액션/복수", price: 0, duration_minutes: 60, min_people: 2, max_people: 5, party_prices: {2: 44000, 3: 60000, 4: 72000, 5: 85000}, public_schedule_url: "http://decoder.kr/book-room2/", price_note: "공개 인원별 총액표", price_source_url: "http://decoder.kr/book-room2/", price_verified_at: "2026-06-15"}
+      - {theme_name: "Tempo Rubato", genre: "음악/드라마", price: 0, duration_minutes: 75, min_people: 2, max_people: 6, party_prices: {2: 56000, 3: 81000, 4: 104000, 5: 125000, 6: 144000}, public_schedule_url: "http://decoder.kr/book-rubato/", price_note: "공식 테마 페이지와 공개 인원별 총액표", price_source_url: "http://decoder.kr/book-rubato/", price_verified_at: "2026-06-15"}
 
   - store_id: masterkey_prime_sinchon_public
     store_name: 마스터키 프라임 신촌퍼블릭점

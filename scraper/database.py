@@ -473,11 +473,9 @@ class Database:
             ).fetchall()
             updates: list[tuple[float, int, float, int]] = []
             for row in rows:
-                effective_price = (
-                    int(row["price"] or 0)
-                    if row["price"] is not None
-                    else int(row["slot_price"] or 0)
-                )
+                theme_price = int(row["price"] or 0)
+                slot_price = int(row["slot_price"] or 0)
+                effective_price = theme_price if theme_price > 0 else slot_price
                 booking_value = estimate_booking_value(
                     avg_people=float(row["avg_people"]),
                     target_date=date.fromisoformat(str(row["date"])),
@@ -757,7 +755,8 @@ class Database:
                     final_status = finalized_status
                 pricing = theme_pricing.get((slot.store_id, slot.theme_name))
                 theme_price = int(pricing["price"] or 0) if pricing else 0
-                effective_price = theme_price if pricing else slot.price
+                slot_price = int(slot.price or 0)
+                effective_price = theme_price if theme_price > 0 else slot_price
                 booking_value = estimate_booking_value(
                     avg_people=slot.avg_people,
                     target_date=slot.date,

@@ -235,8 +235,18 @@ def placeholder_collection_state(
     latest_error = short_text(row.get("latest_error"))
     collection_note = short_text(row.get("collection_note"))
     latest_at = format_date(row.get("latest_crawl_at"))
+    total_slots = int(float(row.get("total_slots", 0) or 0))
+    measured_slots = int(float(row.get("measured_slots", 0) or 0))
+    reserved_slots = int(float(row.get("reserved_slots", 0) or 0))
+    revenue_slots = int(float(row.get("revenue_slots", 0) or 0))
 
     facts = [f"테마 {theme_count:,}개", f"가격 {price_ready_count:,}개"]
+    if total_slots:
+        facts.append(
+            f"저장 슬롯 {total_slots:,}개"
+            f"/예약 {reserved_slots:,}개"
+            f"/매출반영 {revenue_slots:,}개"
+        )
     if adapter_type:
         facts.append(f"어댑터 {adapter_type}")
     if latest_status:
@@ -266,6 +276,18 @@ def placeholder_collection_state(
         return "수집 실패", " · ".join(["마지막 자동 수집 실패", *facts])
 
     if latest_status == "success":
+        if total_slots > 0 and revenue_slots == 0:
+            if reserved_slots > 0 and price_ready_count <= 0:
+                return "수집 완료 · 가격 미반영", " · ".join(
+                    ["예약 슬롯은 저장됐지만 가격이 0원이라 매출 계산 불가", *facts]
+                )
+            if reserved_slots > 0:
+                return "수집 완료 · 매출 재계산 필요", " · ".join(
+                    ["예약 슬롯은 저장됐지만 매출 재계산이 아직 반영되지 않음", *facts]
+                )
+            return "수집 완료 · 예약 0건", " · ".join(
+                ["예약 슬롯은 저장됐지만 예약 완료 슬롯이 없음", *facts]
+            )
         return "수집 완료 · 슬롯 0개", " · ".join(
             ["최근 수집은 성공했지만 매출 계산 가능한 예약 슬롯이 없음", *facts]
         )
@@ -316,9 +338,9 @@ def seed_database() -> None:
         shutil.copy2(source, target)
 
 
-def ensure_catalog_synced() -> None:
+def ensure_catalog_synced(*, force: bool = False) -> None:
     global _catalog_synced, _startup_error
-    if _catalog_synced:
+    if _catalog_synced and not force:
         return
     try:
         seed_database()
@@ -659,6 +681,7 @@ def revenue_table(data: dict[str, Any]) -> pd.DataFrame:
     industry = data["industry"]
     catalog = data.get("catalog", pd.DataFrame())
     status = data.get("status", pd.DataFrame())
+    slots = data.get("slots", pd.DataFrame())
     automatic = data.get("auto_projection", pd.DataFrame())
     columns = [
         "store_id",
@@ -717,6 +740,33 @@ def revenue_table(data: dict[str, Any]) -> pd.DataFrame:
                 on="store_id",
                 how="left",
             )
+        if not catalog_source.empty and not slots.empty and "store_id" in slots:
+            slot_source = slots.copy()
+            slot_source["store_id"] = slot_source["store_id"].fillna("").astype(str)
+            slot_source["expected_revenue"] = pd.to_numeric(
+                slot_source.get("expected_revenue", 0),
+                errors="coerce",
+            ).fillna(0)
+            slot_stats = (
+                slot_source.assign(
+                    measured=slot_source["status"].isin(MEASURABLE_STATUSES),
+                    reserved=slot_source["status"].eq("reserved"),
+                    revenue_ready=slot_source["expected_revenue"].gt(0),
+                )
+                .groupby("store_id", as_index=False)
+                .agg(
+                    total_slots=("status", "size"),
+                    measured_slots=("measured", "sum"),
+                    reserved_slots=("reserved", "sum"),
+                    revenue_slots=("revenue_ready", "sum"),
+                    stored_expected_revenue=("expected_revenue", "sum"),
+                )
+            )
+            catalog_source = catalog_source.merge(
+                slot_stats,
+                on="store_id",
+                how="left",
+            )
         if not catalog_source.empty:
             value_column = (
                 "booking_value_estimate"
@@ -735,6 +785,11 @@ def revenue_table(data: dict[str, Any]) -> pd.DataFrame:
                 "latest_crawl_status",
                 "latest_crawl_at",
                 "latest_error",
+                "total_slots",
+                "measured_slots",
+                "reserved_slots",
+                "revenue_slots",
+                "stored_expected_revenue",
             ]:
                 if column in catalog_source.columns:
                     aggregation[column] = (column, "first")
@@ -1118,6 +1173,8 @@ def crawl_start(days: int = Form(...)) -> RedirectResponse:
     if days not in {1, 7}:
         raise HTTPException(status_code=400, detail="days must be 1 or 7")
     label = "오늘 예약 현황 업데이트" if days == 1 else "7일 예약/매출 업데이트"
+    ensure_catalog_synced(force=True)
+    invalidate_market_cache()
     try:
         start_crawl_job(
             app_home=APP_HOME,
@@ -1166,6 +1223,7 @@ def crawl_status_api(log: int = 0) -> dict[str, Any]:
 
 @app.post("/api/market/refresh")
 def market_refresh_api() -> dict[str, Any]:
+    ensure_catalog_synced(force=True)
     data = load_market_data(force_refresh=True)
     runtime = runtime_context_fields()
     return {

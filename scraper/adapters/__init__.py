@@ -1,4 +1,5 @@
 from scraper.adapters.base_adapter import BaseAdapter
+from scraper.adapters.bookly_adapter import BooklyAdapter
 from scraper.adapters.catalog_adapter import CatalogAdapter
 from scraper.adapters.codek_adapter import CodeKAdapter
 from scraper.adapters.cubeescape_adapter import CubeEscapeAdapter
@@ -19,9 +20,11 @@ from scraper.adapters.shortstories_adapter import ShortstoriesAdapter
 from scraper.adapters.xdungeon_adapter import XdungeonAdapter
 from scraper.adapters.zero_world_adapter import ZeroWorldAdapter
 from scraper.adapters.ticket_to_escape_adapter import TicketToEscapeAdapter
+from scraper.adapters.wordpress_booked_adapter import WordPressBookedAdapter
 
 ADAPTERS: dict[str, type[BaseAdapter]] = {
     "catalog": CatalogAdapter,
+    "bookly": BooklyAdapter,
     "codek": CodeKAdapter,
     "cubeescape": CubeEscapeAdapter,
     "deepthinker": DeepthinkerAdapter,
@@ -41,6 +44,7 @@ ADAPTERS: dict[str, type[BaseAdapter]] = {
     "xdungeon": XdungeonAdapter,
     "zero_world": ZeroWorldAdapter,
     "ticket_to_escape": TicketToEscapeAdapter,
+    "wordpress_booked": WordPressBookedAdapter,
     "blocked": CatalogAdapter,
     "limited": CatalogAdapter,
     "permission_required": CatalogAdapter,
@@ -60,6 +64,7 @@ def get_adapter(adapter_type: str) -> BaseAdapter:
 
 __all__ = [
     "BaseAdapter",
+    "BooklyAdapter",
     "CatalogAdapter",
     "CodeKAdapter",
     "CubeEscapeAdapter",
@@ -80,5 +85,6 @@ __all__ = [
     "XdungeonAdapter",
     "ZeroWorldAdapter",
     "TicketToEscapeAdapter",
+    "WordPressBookedAdapter",
     "get_adapter",
 ]

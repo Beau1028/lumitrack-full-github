@@ -424,3 +424,55 @@ def collect_public_slots(
         collected.values(),
         key=lambda slot: (slot.theme_name, slot.time),
     )
+
+
+def complete_with_schedule_times(
+    slots: list[ReservationSlot],
+    store_config: StoreConfig,
+    target_date: date,
+    *,
+    missing_status: ReservationStatus = "reserved",
+) -> list[ReservationSlot]:
+    """Fill configured operating times that public widgets hide when sold out.
+
+    Some public booking widgets only render available times. When a theme has
+    schedule_times in stores.yaml, missing configured times are treated as
+    reserved by adapters that explicitly opt in to this behavior.
+    """
+    collected: dict[tuple[str, str], ReservationSlot] = {
+        (slot.theme_name, slot.time): slot for slot in slots
+    }
+    crawled_at = datetime.now(timezone.utc)
+    for theme in store_config.themes:
+        for raw_time in theme.schedule_times:
+            time_value = _extract_time(raw_time) or raw_time.strip()
+            if not time_value:
+                continue
+            key = (theme.theme_name, time_value)
+            if key in collected:
+                continue
+            expected_revenue = (
+                theme.estimated_booking_value(store_config.avg_people, target_date)
+                if missing_status == "reserved"
+                else 0.0
+            )
+            collected[key] = ReservationSlot(
+                store_id=store_config.store_id,
+                theme_name=theme.theme_name,
+                date=target_date,
+                time=time_value,
+                status=missing_status,
+                price=theme.price,
+                avg_people=store_config.avg_people,
+                expected_revenue=expected_revenue,
+                crawled_at=crawled_at,
+                genre=theme.genre,
+                duration_minutes=theme.duration_minutes,
+                price_note=theme.price_note,
+                price_source_url=theme.price_source_url,
+                price_verified_at=theme.price_verified_at,
+            )
+    return sorted(
+        collected.values(),
+        key=lambda slot: (slot.theme_name, slot.time),
+    )
