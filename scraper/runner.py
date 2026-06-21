@@ -198,9 +198,9 @@ def run_crawl(
     target_dates: Sequence[date],
     database: Database,
     delay_min_seconds: float = 5.0,
-    delay_max_seconds: float = 15.0,
+    delay_max_seconds: float = 6.0,
     minimum_recrawl_minutes: int = 0,
-    max_parallel_origins: int = 4,
+    max_parallel_origins: int = 8,
     max_navigation_timeout_ms: int | None = None,
     progress_callback: ProgressCallback | None = None,
 ) -> dict[str, int]:
@@ -487,7 +487,7 @@ def parse_args() -> argparse.Namespace:
         "--delay-min", type=float, default=5.0, help="Minimum request delay."
     )
     parser.add_argument(
-        "--delay-max", type=float, default=15.0, help="Maximum request delay."
+        "--delay-max", type=float, default=6.0, help="Maximum request delay."
     )
     parser.add_argument(
         "--minimum-recrawl-minutes",
@@ -498,8 +498,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--parallel-origins",
         type=int,
-        default=4,
-        help="Parallel public-site origins (1-8, default: 4).",
+        default=8,
+        help="Parallel public-site origins (1-8, default: 8).",
     )
     parser.add_argument(
         "--max-navigation-timeout-ms",

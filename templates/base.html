@@ -64,11 +64,6 @@
   </main>
 
   <script src="/static/lumitrack.js"></script>
-  {% if job and job.status in ['running', 'starting'] %}
-  <script>
-    setTimeout(() => window.location.reload(), 8000);
-  </script>
-  {% endif %}
   {% block scripts %}{% endblock %}
 </body>
 </html>

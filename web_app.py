@@ -120,15 +120,18 @@ def today_kst() -> date:
 
 def crawl_runtime_settings() -> dict[str, int]:
     delay_min = max(5, int(os.getenv("LUMITRACK_DELAY_MIN_SECONDS", "5")))
-    delay_max = max(delay_min, int(os.getenv("LUMITRACK_DELAY_MAX_SECONDS", "8")))
+    delay_max = max(delay_min, int(os.getenv("LUMITRACK_DELAY_MAX_SECONDS", "6")))
     return {
         "delay_min_seconds": delay_min,
         "delay_max_seconds": delay_max,
         "max_parallel_origins": max(
-            1, int(os.getenv("LUMITRACK_MAX_PARALLEL_ORIGINS", "6"))
+            1, int(os.getenv("LUMITRACK_MAX_PARALLEL_ORIGINS", "8"))
         ),
         "max_navigation_timeout_ms": max(
-            5_000, int(os.getenv("LUMITRACK_NAVIGATION_TIMEOUT_MS", "12000"))
+            5_000, int(os.getenv("LUMITRACK_NAVIGATION_TIMEOUT_MS", "10000"))
+        ),
+        "minimum_recrawl_minutes": max(
+            0, int(os.getenv("LUMITRACK_MINIMUM_RECRAWL_MINUTES", "30"))
         ),
     }
 
@@ -797,10 +800,13 @@ def crawl_start(days: int = Form(...)) -> RedirectResponse:
             db_path=DB_PATH,
             store_ids=None,
             delay_min_seconds=int(os.getenv("LUMITRACK_DELAY_MIN_SECONDS", "5")),
-            delay_max_seconds=int(os.getenv("LUMITRACK_DELAY_MAX_SECONDS", "8")),
-            max_parallel_origins=int(os.getenv("LUMITRACK_MAX_PARALLEL_ORIGINS", "6")),
+            delay_max_seconds=int(os.getenv("LUMITRACK_DELAY_MAX_SECONDS", "6")),
+            max_parallel_origins=int(os.getenv("LUMITRACK_MAX_PARALLEL_ORIGINS", "8")),
             max_navigation_timeout_ms=int(
-                os.getenv("LUMITRACK_NAVIGATION_TIMEOUT_MS", "12000")
+                os.getenv("LUMITRACK_NAVIGATION_TIMEOUT_MS", "10000")
+            ),
+            minimum_recrawl_minutes=int(
+                os.getenv("LUMITRACK_MINIMUM_RECRAWL_MINUTES", "30")
             ),
         )
     except CrawlJobAlreadyRunning:

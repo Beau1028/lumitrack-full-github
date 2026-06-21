@@ -134,6 +134,7 @@ def start_crawl_job(
     delay_max_seconds: int,
     max_parallel_origins: int,
     max_navigation_timeout_ms: int,
+    minimum_recrawl_minutes: int = 0,
 ) -> dict[str, Any]:
     jobs_path = job_dir(app_home)
     status_path = job_status_path(app_home)
@@ -200,6 +201,8 @@ def start_crawl_job(
         str(max_parallel_origins),
         "--max-navigation-timeout-ms",
         str(max_navigation_timeout_ms),
+        "--minimum-recrawl-minutes",
+        str(minimum_recrawl_minutes),
     ]
     for store_id in selected_store_ids:
         command.extend(["--store-id", store_id])

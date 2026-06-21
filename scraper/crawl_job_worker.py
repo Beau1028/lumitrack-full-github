@@ -23,9 +23,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--days", type=int, required=True)
     parser.add_argument("--store-id", action="append", default=[])
     parser.add_argument("--delay-min", type=float, default=5.0)
-    parser.add_argument("--delay-max", type=float, default=8.0)
-    parser.add_argument("--parallel-origins", type=int, default=4)
-    parser.add_argument("--max-navigation-timeout-ms", type=int, default=15_000)
+    parser.add_argument("--delay-max", type=float, default=6.0)
+    parser.add_argument("--parallel-origins", type=int, default=8)
+    parser.add_argument("--max-navigation-timeout-ms", type=int, default=10_000)
+    parser.add_argument("--minimum-recrawl-minutes", type=int, default=0)
     return parser.parse_args()
 
 
@@ -103,7 +104,7 @@ def main() -> int:
             database=Database(args.db),
             delay_min_seconds=args.delay_min,
             delay_max_seconds=args.delay_max,
-            minimum_recrawl_minutes=0,
+            minimum_recrawl_minutes=args.minimum_recrawl_minutes,
             max_parallel_origins=args.parallel_origins,
             max_navigation_timeout_ms=args.max_navigation_timeout_ms,
             progress_callback=progress_callback,
